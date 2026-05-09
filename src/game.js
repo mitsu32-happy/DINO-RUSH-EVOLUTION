@@ -4,7 +4,7 @@
   const WIDTH = 390;
   const HEIGHT = 844;
   const SAVE_KEY = "dinoRushEvolution.save.v1";
-  const ASSET_VERSION = "20260509-endless-bosses1";
+  const ASSET_VERSION = "20260509-input-audiofix1";
 
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
@@ -32,6 +32,8 @@
   let bgmKind = null;
   let titleVideoRef = null;
   let titleVideoUnlockHandler = null;
+  let titleOpenHomeHandler = null;
+  const activeSfxClips = new Set();
   const sfxLastPlayed = {};
 
   const AUDIO_FILES = {
@@ -528,6 +530,7 @@
 
   function bindInput() {
     window.addEventListener("keydown", (event) => {
+      unlockAudioFromGesture();
       keys.add(event.key.toLowerCase());
       if (["arrowup", "arrowdown", "arrowleft", "arrowright", " "].includes(event.key.toLowerCase())) {
         event.preventDefault();
@@ -546,6 +549,7 @@
     });
 
     appShell.addEventListener("pointerdown", (event) => {
+      unlockAudioFromGesture();
       if (!run || run.screen !== "playing" || joystickPointerId !== null || shouldIgnoreGameplayPointer(event)) {
         return;
       }
@@ -2460,6 +2464,7 @@
   }
 
   function showTitle() {
+    clearTitleOpenHomeHandler();
     stopTitleVideo();
     run = null;
     stopAudio();
@@ -2494,12 +2499,28 @@
       setTitleVideoAudio(titleVideo, nextAudioEnabled);
       updateTitleAudioButton(titleVideo, titleAudioButton);
     });
-    const openHome = () => showHome();
+    const openHome = () => {
+      clearTitleOpenHomeHandler();
+      showHome();
+    };
     document.getElementById("titleStartButton").addEventListener("click", (event) => {
       event.stopPropagation();
       openHome();
     });
-    overlay.addEventListener("click", openHome, { once: true });
+    titleOpenHomeHandler = (event) => {
+      if (event.target.closest("#titleAudioButton")) {
+        return;
+      }
+      openHome();
+    };
+    overlay.addEventListener("click", titleOpenHomeHandler);
+  }
+
+  function clearTitleOpenHomeHandler() {
+    if (titleOpenHomeHandler) {
+      overlay.removeEventListener("click", titleOpenHomeHandler);
+      titleOpenHomeHandler = null;
+    }
   }
 
   function armTitleVideoAudio(video) {
@@ -2541,6 +2562,7 @@
   }
 
   function stopTitleVideo() {
+    clearTitleOpenHomeHandler();
     if (titleVideoUnlockHandler) {
       window.removeEventListener("keydown", titleVideoUnlockHandler, true);
       titleVideoUnlockHandler = null;
@@ -2660,28 +2682,36 @@
     `;
     showOverlay();
     bindPanelHomeButtons();
-    bindDragScroll(panel.querySelector(".stage-scroll"));
-    bindDragScroll(panel.querySelector(".dinosaur-scroll"));
+    const selectMap = (button) => {
+      meta.selectedMap = button.dataset.map;
+      saveMeta();
+      showStageSelect();
+    };
+    const selectDinosaur = (button) => {
+      meta.selectedDinosaur = button.dataset.dinosaur;
+      saveMeta();
+      panel.querySelectorAll("[data-dinosaur]").forEach((card) => {
+        card.classList.toggle("is-selected", card.dataset.dinosaur === meta.selectedDinosaur);
+      });
+    };
+    bindDragScroll(panel.querySelector(".stage-scroll"), "[data-map]", selectMap);
+    bindDragScroll(panel.querySelector(".dinosaur-scroll"), "[data-dinosaur]", selectDinosaur);
     panel.querySelectorAll("[data-map]").forEach((button) => {
       button.addEventListener("click", () => {
-        if (button.dataset.dragSuppressed === "true") {
-          button.dataset.dragSuppressed = "false";
+        if (button.dataset.pointerTapHandled === "true") {
+          button.dataset.pointerTapHandled = "false";
           return;
         }
-        meta.selectedMap = button.dataset.map;
-        saveMeta();
-        showStageSelect();
+        selectMap(button);
       });
     });
     panel.querySelectorAll("[data-dinosaur]").forEach((button) => {
       button.addEventListener("click", () => {
-        if (button.dataset.dragSuppressed === "true") {
-          button.dataset.dragSuppressed = "false";
+        if (button.dataset.pointerTapHandled === "true") {
+          button.dataset.pointerTapHandled = "false";
           return;
         }
-        meta.selectedDinosaur = button.dataset.dinosaur;
-        saveMeta();
-        showStageSelect();
+        selectDinosaur(button);
       });
     });
     panel.querySelectorAll("[data-mode]").forEach((button) => {
@@ -2689,7 +2719,7 @@
     });
   }
 
-  function bindDragScroll(scroller) {
+  function bindDragScroll(scroller, tapSelector, onTap) {
     if (!scroller) {
       return;
     }
@@ -2697,6 +2727,7 @@
     let startX = 0;
     let scrollLeft = 0;
     let dragging = false;
+    let startButton = null;
 
     scroller.addEventListener("pointerdown", (event) => {
       if (event.button !== undefined && event.button !== 0) {
@@ -2706,6 +2737,7 @@
       startX = event.clientX;
       scrollLeft = scroller.scrollLeft;
       dragging = false;
+      startButton = tapSelector ? event.target.closest(tapSelector) : null;
       scroller.classList.add("is-dragging");
       if (scroller.setPointerCapture) {
         scroller.setPointerCapture(pointerId);
@@ -2730,19 +2762,34 @@
       if (pointerId !== event.pointerId) {
         return;
       }
-      if (dragging) {
-        const targetButton = event.target.closest("[data-map], [data-dinosaur]");
-        if (targetButton) {
-          targetButton.dataset.dragSuppressed = "true";
-        }
+      const wasDragging = dragging;
+      const tapButton = startButton;
+      if (wasDragging) {
+        scroller.dataset.suppressClick = "true";
+        window.setTimeout(() => {
+          scroller.dataset.suppressClick = "false";
+        }, 0);
       }
       scroller.classList.remove("is-dragging");
       if (scroller.releasePointerCapture) {
         scroller.releasePointerCapture(pointerId);
       }
       pointerId = null;
+      startButton = null;
+      if (!wasDragging && tapButton && scroller.contains(tapButton) && !tapButton.disabled && onTap) {
+        event.preventDefault();
+        tapButton.dataset.pointerTapHandled = "true";
+        onTap(tapButton);
+      }
     };
 
+    scroller.addEventListener("click", (event) => {
+      if (scroller.dataset.suppressClick === "true") {
+        event.preventDefault();
+        event.stopPropagation();
+        scroller.dataset.suppressClick = "false";
+      }
+    }, true);
     scroller.addEventListener("pointerup", finishDrag);
     scroller.addEventListener("pointercancel", finishDrag);
     scroller.addEventListener("pointerleave", (event) => {
@@ -3095,6 +3142,11 @@
       bgmTrack.pause();
       bgmTrack.currentTime = 0;
     }
+    activeSfxClips.forEach((clip) => {
+      clip.pause();
+      clip.currentTime = 0;
+    });
+    activeSfxClips.clear();
     bgmKind = null;
   }
 
@@ -3136,6 +3188,19 @@
     }
     ensureAudio();
     startBgmTrack("home");
+  }
+
+  function unlockAudioFromGesture() {
+    if (!meta.settings.audio) {
+      return;
+    }
+    const engine = ensureAudio();
+    if (engine && engine.context && engine.context.state === "suspended") {
+      engine.context.resume().catch(() => {});
+    }
+    if (bgmTrack && bgmTrack.paused && bgmKind) {
+      bgmTrack.play().catch(() => {});
+    }
   }
 
   function startBgmTrack(kind) {
@@ -3195,14 +3260,22 @@
     const clip = new Audio(withVersion(src));
     clip.preload = "auto";
     clip.volume = (SFX_VOLUME[key] ?? 0.4) * getSfxVolume();
+    activeSfxClips.add(clip);
+    const cleanup = () => activeSfxClips.delete(clip);
+    clip.addEventListener("ended", cleanup, { once: true });
+    clip.addEventListener("error", cleanup, { once: true });
     const playPromise = clip.play();
     if (playPromise && playPromise.catch) {
-      playPromise.catch(() => {});
+      playPromise.catch(() => {
+        cleanup();
+        playProceduralSound(key);
+      });
     }
     const maxDuration = SFX_MAX_DURATION[key] || 1.1;
     window.setTimeout(() => {
       clip.pause();
       clip.currentTime = 0;
+      cleanup();
     }, Math.round(maxDuration * 1000));
     return true;
   }
@@ -3211,7 +3284,15 @@
     if (!meta.settings.audio) {
       return;
     }
+    unlockAudioFromGesture();
     if (playAudioClip(key)) {
+      return;
+    }
+    playProceduralSound(key);
+  }
+
+  function playProceduralSound(key) {
+    if (!meta.settings.audio) {
       return;
     }
     const engine = ensureAudio();

@@ -204,6 +204,11 @@ Scalability rules:
   - `obsidian_ceratops` now has its own AI-generated sprite and a telegraphed obsidian spike eruption attack.
   - `storm_quetzal` now has its own AI-generated sprite and fires spread storm-bolt projectiles.
   - Boss attack assets are transparent PNGs under `assets/bosses/` and `assets/effects/`; source/keyed files are preserved under `assets/sheets/`.
+- 2026-05-09 input/audio fix pass:
+  - Asset version: `20260509-input-audiofix1`.
+  - Stage select dinosaur taps no longer re-render the stage select view, preserving horizontal scroll position.
+  - The title-to-home click handler is explicitly removed when leaving the title screen so the first home click is not swallowed.
+  - SFX clips are tracked and cleaned up; failed HTMLAudio playback falls back to procedural WebAudio sounds.
   - Home Stage icon was replaced with `assets/ui/home-stage-icon-20260509.png`.
   - Evolution icons were regenerated from transparent sprites into a consistent circular badge format.
   - Previously corrupted Japanese strings in the newly added raptor/triceratops evolutions were restored.
