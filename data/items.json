@@ -1,0 +1,23 @@
+[
+  {
+    "id": "meat",
+    "name": "肉",
+    "description": "HPを少し回復する。",
+    "sprite": "assets/items/item-meat-stylized.png",
+    "displaySize": 34,
+    "effect": {
+      "heal": 32
+    }
+  },
+  {
+    "id": "dna_shard",
+    "name": "DNA結晶",
+    "description": "経験値とDNAポイントを獲得する。",
+    "sprite": "assets/items/item-dna-stylized.png",
+    "displaySize": 34,
+    "effect": {
+      "xp": 10,
+      "dna": 1
+    }
+  }
+]

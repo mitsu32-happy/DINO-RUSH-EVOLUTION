@@ -1,0 +1,37 @@
+[
+  {
+    "id": "triassic",
+    "name": "三畳紀の密林",
+    "description": "湿った地表と巨大なシダが広がる最初の狩場。",
+    "background": "assets/backgrounds/triassic-jungle-ground.png",
+    "terrain": {
+      "base": "#184839",
+      "deep": "#0f2a24",
+      "grass": "#77a653",
+      "stone": "#786f5f",
+      "water": "#287c83"
+    },
+    "spawnTable": [
+      {
+        "enemyId": "small_carnivore",
+        "weight": 8,
+        "minElapsed": 0
+      },
+      {
+        "enemyId": "insect_swarm",
+        "weight": 3,
+        "minElapsed": 0
+      },
+      {
+        "enemyId": "horned_runner",
+        "weight": 4,
+        "minElapsed": 45
+      },
+      {
+        "enemyId": "poison_crawler",
+        "weight": 3,
+        "minElapsed": 95
+      }
+    ]
+  }
+]

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="dna" x1="16" y1="10" x2="64" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d6fff8"/>
+      <stop offset=".45" stop-color="#60d5c8"/>
+      <stop offset="1" stop-color="#2a7ba0"/>
+    </linearGradient>
+  </defs>
+  <path d="M40 5 71 40 40 75 9 40Z" fill="url(#dna)"/>
+  <path d="M40 12 63 40 40 68 17 40Z" fill="none" stroke="#eafffb" stroke-opacity=".55" stroke-width="4"/>
+  <path d="M28 54c17-5 24-15 24-28M28 26c17 5 24 15 24 28" fill="none" stroke="#123633" stroke-width="4" stroke-linecap="round"/>
+  <path d="M31 32h18M31 48h18" fill="none" stroke="#eafffb" stroke-width="3" stroke-linecap="round"/>
+</svg>

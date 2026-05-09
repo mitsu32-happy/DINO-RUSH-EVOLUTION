@@ -1,0 +1,6 @@
+tmp/
+assets/sheets/
+
+.DS_Store
+Thumbs.db
+desktop.ini
