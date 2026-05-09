@@ -4,7 +4,7 @@
   const WIDTH = 390;
   const HEIGHT = 844;
   const SAVE_KEY = "dinoRushEvolution.save.v1";
-  const ASSET_VERSION = "20260509-balance2";
+  const ASSET_VERSION = "20260509-content8";
 
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
@@ -167,7 +167,7 @@
     enemy: { bob: 2.2, squash: 0.035, tilt: 0.06, cadence: 7 },
     pickup: { bob: 3.4, squash: 0.025, tilt: 0.05, cadence: 5.4 }
   };
-  const MIN_ACTIVE_SKILLS = 8;
+  const MIN_ACTIVE_SKILLS = 6;
 
   function loadMeta() {
     try {
@@ -467,7 +467,10 @@
         actionPose: null,
         evolutionSprite: null,
         displayScale: 1,
-        pickupRange: 92,
+        trait: dinosaur.trait || {},
+        barrierCooldown: dinosaur.trait && dinosaur.trait.barrierInterval ? dinosaur.trait.barrierInterval : 0,
+        barrierTime: 0,
+        pickupRange: 92 + ((dinosaur.trait && dinosaur.trait.pickupRangeBonus) || 0),
         statUpgrades: {
           hp: 0,
           damage: 0,
@@ -535,7 +538,7 @@
   }
 
   function getSkillFilterCandidates() {
-    return data.skills.filter((skill) => skill.id !== "bite");
+    return data.skills.filter((skill) => skill.id !== "bite" && !skill.basicOnly);
   }
 
   function isSkillAvailableForFilter(skill) {
@@ -768,6 +771,7 @@
     run.elapsed += dt;
     run.alertTimer = Math.max(0, run.alertTimer - dt);
     updateMovement(dt);
+    updateDinosaurTraits(dt);
     updateSkills(dt);
     updateSkillActions(dt);
     updateProjectiles(dt);
@@ -805,6 +809,32 @@
     player.hitFlash = Math.max(0, (player.hitFlash || 0) - dt);
     run.camera.x += (player.x - run.camera.x) * 0.18;
     run.camera.y += (player.y - run.camera.y) * 0.18;
+  }
+
+  function updateDinosaurTraits(dt) {
+    const player = run.player;
+    const trait = player.trait || {};
+    if (trait.hpRegen && player.hp > 0 && player.hp < player.maxHp) {
+      player.hp = Math.min(player.maxHp, player.hp + trait.hpRegen * dt);
+    }
+
+    if (trait.barrierInterval && trait.barrierDuration) {
+      player.barrierTime = Math.max(0, (player.barrierTime || 0) - dt);
+      player.barrierCooldown = Math.max(0, (player.barrierCooldown || 0) - dt);
+      if (player.barrierCooldown <= 0 && player.barrierTime <= 0) {
+        player.barrierTime = trait.barrierDuration;
+        player.barrierCooldown = trait.barrierInterval;
+        run.effects.push({
+          type: "ring",
+          x: player.x,
+          y: player.y,
+          life: 0.55,
+          maxLife: 0.55,
+          radius: player.size * 2.5,
+          color: trait.barrierColor || "#72dfff"
+        });
+      }
+    }
   }
 
   function getInputVector() {
@@ -850,7 +880,8 @@
   }
 
   function getBasicCooldown() {
-    return Math.max(0.34, run.basicAttack.cooldown);
+    const trait = run.player.trait || {};
+    return Math.max(0.28, run.basicAttack.cooldown * (trait.basicCooldownMultiplier || 1));
   }
 
   function getBasicDamage() {
@@ -858,13 +889,33 @@
   }
 
   function useBasicAttack() {
-    const target = nearestEnemy(run.basicAttack.range);
+    const attack = run.basicAttack;
+    if (attack.action === "cleave") {
+      return useBasicCleave();
+    }
+    if (attack.action === "rapid_claw") {
+      return useBasicRapidClaw();
+    }
+    if (attack.action === "horn_thrust") {
+      return useBasicLineAttack("assets/effects/basic-horn-thrust-effect.png", "#ffdf72");
+    }
+    if (attack.action === "tail_club") {
+      return useBasicAreaAttack("assets/effects/basic-tail-club-effect.png", "#d9a15e");
+    }
+    if (attack.action === "spine_wave") {
+      return fireBasicProjectiles("assets/effects/projectile-water-spine.png", "#72dfff", 3, 0.24);
+    }
+    if (attack.action === "wind_feather") {
+      return fireBasicProjectiles("assets/effects/projectile-wind-feather.png", "#9ff9e8", 1, 0);
+    }
+
+    const target = nearestEnemy(attack.range);
     if (!target) {
       return;
     }
 
     run.player.attackPulse = 0.16;
-    playSound("bite");
+    playSound(attack.sound || "bite");
     damageEnemy(target, getBasicDamage(), "basic");
     run.effects.push({
       type: "slash",
@@ -875,6 +926,144 @@
       radius: 30,
       color: "#fff0b8"
     });
+  }
+
+  function useBasicCleave() {
+    const player = run.player;
+    const facing = normalize(player.facingX, player.facingY);
+    const range = run.basicAttack.range;
+    let hit = false;
+    run.enemies.forEach((enemy) => {
+      const dx = enemy.x - player.x;
+      const dy = enemy.y - player.y;
+      const distance = Math.hypot(dx, dy);
+      if (distance <= range + enemy.size && Math.abs(angleDelta(Math.atan2(dy, dx), Math.atan2(facing.y, facing.x))) < 0.74) {
+        damageEnemy(enemy, getBasicDamage(), "basic");
+        pushEnemy(enemy, player, 24);
+        hit = true;
+      }
+    });
+    if (!hit) return;
+    player.attackPulse = 0.18;
+    playSound("bite");
+    run.effects.push({
+      type: "cone",
+      x: player.x + facing.x * 24,
+      y: player.y + facing.y * 24,
+      dx: facing.x,
+      dy: facing.y,
+      life: 0.18,
+      maxLife: 0.18,
+      radius: range,
+      color: "rgba(255, 223, 114, 0.34)"
+    });
+  }
+
+  function useBasicRapidClaw() {
+    const target = nearestEnemy(run.basicAttack.range);
+    if (!target) return;
+    const damage = getBasicDamage();
+    run.player.attackPulse = 0.16;
+    playSound("claw");
+    damageEnemy(target, damage, "basic");
+    const second = run.enemies
+      .filter((enemy) => enemy !== target && getDistance(enemy, target) < 72)
+      .sort((a, b) => getDistance(a, target) - getDistance(b, target))[0];
+    if (second) {
+      damageEnemy(second, damage * 0.55, "basic");
+    }
+    run.effects.push({
+      type: "clawSlash",
+      x: target.x,
+      y: target.y,
+      angle: Math.atan2(target.y - run.player.y, target.x - run.player.x),
+      life: 0.2,
+      maxLife: 0.2,
+      radius: 38,
+      color: "#ffdf72"
+    });
+  }
+
+  function useBasicLineAttack(sprite, color) {
+    const player = run.player;
+    const facing = normalize(player.facingX, player.facingY);
+    const end = { x: player.x + facing.x * run.basicAttack.range, y: player.y + facing.y * run.basicAttack.range };
+    const hits = new Set();
+    damageEnemiesAlongSegment(player, end, 30, getBasicDamage(), "basic", hits);
+    if (!hits.size) return;
+    player.attackPulse = 0.2;
+    playSound(run.basicAttack.sound || "impact");
+    run.effects.push({
+      type: "dashSprite",
+      sprite,
+      x: player.x + facing.x * 42,
+      y: player.y + facing.y * 42,
+      dx: facing.x,
+      dy: facing.y,
+      life: 0.24,
+      maxLife: 0.24,
+      radius: run.basicAttack.range,
+      color,
+      skillId: "basic"
+    });
+  }
+
+  function useBasicAreaAttack(sprite, color) {
+    const player = run.player;
+    const range = run.basicAttack.range;
+    let hit = false;
+    run.enemies.forEach((enemy) => {
+      if (getDistance(player, enemy) <= range + enemy.size) {
+        damageEnemy(enemy, getBasicDamage(), "basic");
+        pushEnemy(enemy, player, 34);
+        hit = true;
+      }
+    });
+    if (!hit) return;
+    player.attackPulse = 0.22;
+    playSound(run.basicAttack.sound || "tail");
+    run.effects.push({
+      type: "skillSprite",
+      sprite,
+      x: player.x,
+      y: player.y,
+      life: 0.3,
+      maxLife: 0.3,
+      radius: range * 1.7,
+      color
+    });
+  }
+
+  function fireBasicProjectiles(sprite, color, count, spread) {
+    const player = run.player;
+    const target = nearestEnemy(run.basicAttack.range);
+    if (!target) return;
+    const baseAngle = Math.atan2(target.y - player.y, target.x - player.x);
+    const speed = run.basicAttack.projectileSpeed || 250;
+    const life = run.basicAttack.projectileLife || 0.78;
+    for (let i = 0; i < count; i += 1) {
+      const offset = count === 1 ? 0 : (i - (count - 1) / 2) * spread;
+      const angle = baseAngle + offset;
+      run.projectiles.push({
+        type: "basic",
+        sprite,
+        skillId: "basic",
+        color,
+        x: player.x + Math.cos(angle) * (player.size + 14),
+        y: player.y + Math.sin(angle) * (player.size + 14),
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        angle,
+        life,
+        maxLife: life,
+        radius: run.basicAttack.projectileRadius || 12,
+        damage: getBasicDamage() * (count > 1 ? 0.72 : 1),
+        hitEnemies: new Set()
+      });
+    }
+    player.attackPulse = 0.16;
+    playSound(run.basicAttack.sound || "skill");
+    sprayParticles(player.x, player.y, Math.cos(baseAngle), Math.sin(baseAngle), 8 + count * 2, color);
   }
 
   function getSkillCooldown(skill) {
@@ -1522,7 +1711,41 @@
       return false;
     }
 
-    const damage = Math.max(2, Math.round(rawDamage - player.armor * 1.6));
+    if (player.barrierTime > 0) {
+      player.barrierTime = 0;
+      player.invulnerable = Math.max(player.invulnerable, 0.35);
+      playSound("guard");
+      run.effects.push({
+        type: "ring",
+        x: player.x,
+        y: player.y,
+        life: 0.34,
+        maxLife: 0.34,
+        radius: player.size * 2.9,
+        color: (player.trait && player.trait.barrierColor) || "#72dfff"
+      });
+      return false;
+    }
+
+    if (player.trait && player.trait.dodgeChance && Math.random() < player.trait.dodgeChance) {
+      player.invulnerable = Math.max(player.invulnerable, 0.24);
+      playSound("rush");
+      run.effects.push({
+        type: "afterimage",
+        x: player.x,
+        y: player.y,
+        dx: player.facingX || 1,
+        dy: player.facingY || 0,
+        life: 0.28,
+        maxLife: 0.28,
+        radius: player.size * 1.7,
+        color: "rgba(159, 249, 232, 0.42)"
+      });
+      return false;
+    }
+
+    const traitReduction = player.trait && player.trait.damageReduction ? player.trait.damageReduction : 0;
+    const damage = Math.max(2, Math.round(rawDamage * (1 - traitReduction) - player.armor * 1.6));
     const direction = normalize(player.x - sourceX, player.y - sourceY);
     playSound("damage");
     player.hp -= damage;
@@ -3996,6 +4219,17 @@
       hitFlash: run.player.hitFlash,
       time: run.elapsed
     });
+    if (run.player.barrierTime > 0) {
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      ctx.strokeStyle = run.player.trait.barrierColor || "#72dfff";
+      ctx.lineWidth = 4 + Math.sin(run.elapsed * 14) * 1.4;
+      ctx.globalAlpha = 0.62 + Math.sin(run.elapsed * 9) * 0.12;
+      ctx.beginPath();
+      ctx.arc(playerPosition.x, playerPosition.y, run.player.size * 1.75, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
 
     if (run.screen === "evolving") {
       renderEvolutionOverlay(playerPosition);

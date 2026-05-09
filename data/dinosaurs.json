@@ -3,12 +3,12 @@
     "id": "tyranno",
     "name": "ティラノサウルス",
     "role": "近接火力型",
-    "description": "噛みつきを軸に、獲得スキルで前線をこじ開ける初期恐竜。",
+    "description": "強い噛みつきで正面の敵をまとめて削る、扱いやすい近接火力型。HPと攻撃力のバランスが高く、序盤から押し返しやすい。",
     "sprite": "assets/characters/tyranno-game-sample-sprite.png",
     "baseStats": {
-      "hp": 165,
+      "hp": 175,
       "speed": 124,
-      "damage": 20,
+      "damage": 22,
       "armor": 3,
       "size": 30
     },
@@ -23,24 +23,27 @@
     ],
     "specialId": "primal_roar",
     "unlockCost": 0,
-    "icon": "assets/characters/tyranno-game-sample-sprite.png"
+    "icon": "assets/characters/tyranno-game-sample-sprite.png",
+    "trait": {
+      "basicCooldownMultiplier": 0.96
+    }
   },
   {
     "id": "velociraptor",
     "name": "ヴェロキラプトル",
-    "role": "高速近接アタッカー",
-    "description": "素早い移動と連続攻撃で敵の包囲を切り抜けるスピード型恐竜。",
+    "role": "高速連撃型",
+    "description": "移動速度と手数に優れ、疾風爪で近くの敵へ素早く追撃する。耐久は低めだが、攻撃回転と機動力で距離を作れる。",
     "sprite": "assets/characters/velociraptor-sprite.png",
     "icon": "assets/characters/velociraptor-icon.png",
     "unlockCost": 320,
     "baseStats": {
-      "hp": 132,
-      "speed": 152,
-      "damage": 18,
+      "hp": 140,
+      "speed": 158,
+      "damage": 19,
       "armor": 1,
       "size": 25
     },
-    "basicAttack": "bite",
+    "basicAttack": "raptor_slash",
     "specialId": "raptor_pounce",
     "skillPool": [
       "rush",
@@ -49,24 +52,27 @@
       "fire_breath",
       "crystal_spikes",
       "guard_roar"
-    ]
+    ],
+    "trait": {
+      "basicCooldownMultiplier": 0.9
+    }
   },
   {
     "id": "triceratops",
     "name": "トリケラトプス",
-    "role": "重装防御タンク",
-    "description": "高いHPと防御力で押し返しながら戦う、安定感のある突撃型恐竜。",
+    "role": "重装防御型",
+    "description": "高いHPと防御力を持ち、ガードホーンで正面の敵を押し返す。囲まれる前に敵の列を崩す安定型。",
     "sprite": "assets/characters/triceratops-sprite.png",
     "icon": "assets/characters/triceratops-icon.png",
     "unlockCost": 360,
     "baseStats": {
-      "hp": 205,
-      "speed": 104,
+      "hp": 220,
+      "speed": 106,
       "damage": 21,
-      "armor": 6,
+      "armor": 7,
       "size": 33
     },
-    "basicAttack": "bite",
+    "basicAttack": "horn_thrust",
     "specialId": "guardian_charge",
     "skillPool": [
       "tail_sweep",
@@ -75,24 +81,27 @@
       "rending_claw",
       "rush",
       "fire_breath"
-    ]
+    ],
+    "trait": {
+      "damageReduction": 0.04
+    }
   },
   {
     "id": "ankylosaurus",
     "name": "アンキロサウルス",
-    "role": "重装カウンター型",
-    "description": "高い耐久と尾の一撃で包囲を崩す、防御寄りの恐竜。",
+    "role": "装甲カウンター型",
+    "description": "装甲尾撃で周囲を薙ぎ払い、一定時間ごとに短い無敵バリアを張る。足は遅いが、乱戦に強い防御寄りの恐竜。",
     "sprite": "assets/characters/ankylosaurus-sprite.png",
     "icon": "assets/characters/ankylosaurus-icon.png",
     "unlockCost": 900,
     "baseStats": {
-      "hp": 225,
-      "speed": 96,
+      "hp": 238,
+      "speed": 98,
       "damage": 22,
-      "armor": 8,
+      "armor": 9,
       "size": 34
     },
-    "basicAttack": "bite",
+    "basicAttack": "tail_club",
     "specialId": "iron_tail_crash",
     "skillPool": [
       "tail_sweep",
@@ -101,24 +110,29 @@
       "rending_claw",
       "crystal_spikes",
       "guard_roar"
-    ]
+    ],
+    "trait": {
+      "barrierInterval": 18,
+      "barrierDuration": 2.5,
+      "barrierColor": "#72dfff"
+    }
   },
   {
     "id": "spinosaurus",
     "name": "スピノサウルス",
-    "role": "中距離制圧型",
-    "description": "大きな帆と長い腕で前方を制圧する、範囲攻撃向きの恐竜。",
+    "role": "中距離再生型",
+    "description": "水棘ショットで前方を制圧し、HPを少しずつ自動回復する。近接に寄りすぎず、中距離から戦う持久型。",
     "sprite": "assets/characters/spinosaurus-sprite.png",
     "icon": "assets/characters/spinosaurus-icon.png",
     "unlockCost": 1200,
     "baseStats": {
-      "hp": 178,
-      "speed": 118,
+      "hp": 188,
+      "speed": 120,
       "damage": 23,
       "armor": 4,
       "size": 32
     },
-    "basicAttack": "bite",
+    "basicAttack": "spine_wave",
     "specialId": "tidal_spine",
     "skillPool": [
       "fire_breath",
@@ -127,24 +141,27 @@
       "guard_roar",
       "rush",
       "rending_claw"
-    ]
+    ],
+    "trait": {
+      "hpRegen": 1.4
+    }
   },
   {
     "id": "pteranodon",
     "name": "プテラノドン",
     "role": "機動遠距離型",
-    "description": "高い機動力と風の必殺技で距離を取りながら戦う恐竜。",
+    "description": "風羽根で離れた敵を狙い、一定確率で攻撃を回避する。HPは低めだが、移動速度と射程で安全圏を作りやすい。",
     "sprite": "assets/characters/pteranodon-sprite.png",
     "icon": "assets/characters/pteranodon-icon.png",
     "unlockCost": 1500,
     "baseStats": {
-      "hp": 126,
-      "speed": 166,
+      "hp": 132,
+      "speed": 170,
       "damage": 18,
       "armor": 1,
       "size": 24
     },
-    "basicAttack": "bite",
+    "basicAttack": "wind_feather",
     "specialId": "sky_cyclone",
     "skillPool": [
       "rush",
@@ -153,6 +170,10 @@
       "fire_breath",
       "crystal_spikes",
       "guard_roar"
-    ]
+    ],
+    "trait": {
+      "dodgeChance": 0.14,
+      "pickupRangeBonus": 10
+    }
   }
 ]

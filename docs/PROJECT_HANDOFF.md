@@ -189,6 +189,15 @@ Scalability rules:
   - Softened the opening of `volcanic_ridge`: lower spawn intensity, delayed lava vents, slightly lighter vent damage/radius, and later introduction of the second/third enemy types.
   - Early special attacks are delayed on the first wave enemies for the later stages so players can secure skills before ranged shots or charges begin.
 
+- 2026-05-09 character/item polish pass:
+  - Asset/code version: `20260509-content8`.
+  - Replaced `ancient_amber` and `adrenal_fang` with standalone transparent drop sprites, matching the existing meat/DNA item format instead of circular UI badges.
+  - Normalized alpha on `skill-bone-shards` and `skill-cyclone-feather`.
+  - Added dedicated VFX assets for inferno, gaia, storm, tidal spine, and sky cyclone special families plus new basic-attack projectile/impact assets.
+  - Added dinosaur-specific normal attacks and passive traits: Tyranno cleave, Velociraptor rapid claw, Triceratops horn thrust, Ankylosaurus tail sweep plus timed barrier, Spinosaurus water-spine shots plus HP regen, and Pteranodon wind feather shots plus dodge.
+  - Skill appearance filtering now requires at least 6 enabled available skills instead of 8.
+  - Repaired corrupted `????` Japanese text in dinosaur descriptions and basic attack names/descriptions, then scanned all `data/*.json` for question-mark runs and common mojibake markers.
+
 - Added a separate Title -> Home flow. Home contains Stage, Shop, Codex, High Score, and Settings.
 - Stage opens the existing map/mode selection.
 - Shop currently unlocks DNA-gated skills: `lightning_dash`, `toxic_spit`, and `meteor_stomp`. The dinosaur shop slot is present for future additions.

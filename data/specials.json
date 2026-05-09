@@ -52,13 +52,13 @@
     "name": "スパインバースト",
     "description": "帆に力を集めて前方と周囲へ爆発的な衝撃を放つ。",
     "icon": "assets/specials/special-inferno-burst.png",
-    "projectileSprite": "assets/effects/projectile-fireball.png",
+    "projectileSprite": "assets/effects/projectile-water-spine.png",
     "cooldown": 10.4,
     "damage": 78,
     "range": 188,
     "effect": "inferno_burst",
     "sound": "special",
-    "effectSprite": "assets/effects/effect-meteor-stomp.png"
+    "effectSprite": "assets/effects/special-tidal-spine-effect.png"
   },
   {
     "id": "sky_cyclone",
@@ -70,6 +70,6 @@
     "range": 218,
     "effect": "storm_crash",
     "sound": "lightning",
-    "effectSprite": "assets/effects/special-raptor-pounce-effect.png"
+    "effectSprite": "assets/effects/special-sky-cyclone-effect.png"
   }
 ]
