@@ -4,7 +4,7 @@
   const WIDTH = 390;
   const HEIGHT = 844;
   const SAVE_KEY = "dinoRushEvolution.save.v1";
-  const ASSET_VERSION = "20260509-mobile-audio-layout1";
+  const ASSET_VERSION = "20260509-bgm-sfx-balance1";
 
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
@@ -30,6 +30,7 @@
   let audio = null;
   let bgmTrack = null;
   let bgmKind = null;
+  let bgmSourceNode = null;
   let titleVideoRef = null;
   let titleVideoUnlockHandler = null;
   let titleOpenHomeHandler = null;
@@ -3129,8 +3130,8 @@
     const musicGain = context.createGain();
     const sfxGain = context.createGain();
     master.gain.value = 0.42;
-    musicGain.gain.value = 0.18 * getBgmVolume();
-    sfxGain.gain.value = 0.5 * getSfxVolume();
+    musicGain.gain.value = getMusicGainValue(bgmKind);
+    sfxGain.gain.value = getSfxVolume();
     musicGain.connect(master);
     sfxGain.connect(master);
     master.connect(context.destination);
@@ -3147,6 +3148,15 @@
       bgmTrack.pause();
       bgmTrack.currentTime = 0;
     }
+    if (bgmSourceNode) {
+      try {
+        bgmSourceNode.disconnect();
+      } catch (_error) {
+        // Already disconnected.
+      }
+      bgmSourceNode = null;
+    }
+    bgmTrack = null;
     activeSfxNodes.forEach((node) => {
       stopSfxNode(node);
     });
@@ -3214,16 +3224,35 @@
     if (!src) {
       return false;
     }
+    const engine = ensureAudio();
+    if (!engine) {
+      return false;
+    }
     if (!bgmTrack || bgmKind !== kind) {
       if (bgmTrack) {
         bgmTrack.pause();
+      }
+      if (bgmSourceNode) {
+        try {
+          bgmSourceNode.disconnect();
+        } catch (_error) {
+          // Already disconnected.
+        }
+        bgmSourceNode = null;
       }
       bgmTrack = new Audio(withVersion(src));
       bgmTrack.loop = true;
       bgmTrack.preload = "auto";
       bgmKind = kind;
+      try {
+        bgmSourceNode = engine.context.createMediaElementSource(bgmTrack);
+        bgmSourceNode.connect(engine.musicGain);
+      } catch (_error) {
+        bgmSourceNode = null;
+      }
     }
-    bgmTrack.volume = meta.settings.audio ? getTrackVolume(kind) : 0;
+    engine.musicGain.gain.value = getMusicGainValue(kind);
+    bgmTrack.volume = bgmSourceNode ? 1 : getMusicGainValue(kind);
     const playPromise = bgmTrack.play();
     if (playPromise && playPromise.catch) {
       playPromise.catch(() => {});
@@ -3236,13 +3265,20 @@
     return base * getBgmVolume();
   }
 
+  function getMusicGainValue(kind) {
+    if (!meta.settings.audio) {
+      return 0;
+    }
+    return getTrackVolume(kind || bgmKind || "game");
+  }
+
   function updateLiveAudioVolumes() {
     if (audio && audio.musicGain && audio.sfxGain) {
-      audio.musicGain.gain.value = 0.18 * getBgmVolume();
-      audio.sfxGain.gain.value = 0.5 * getSfxVolume();
+      audio.musicGain.gain.value = getMusicGainValue(bgmKind);
+      audio.sfxGain.gain.value = getSfxVolume();
     }
     if (bgmTrack) {
-      bgmTrack.volume = meta.settings.audio ? getTrackVolume(bgmKind) : 0;
+      bgmTrack.volume = bgmSourceNode ? 1 : getMusicGainValue(bgmKind);
     }
     const titleVideo = document.getElementById("titleVideo");
     if (titleVideo) {
@@ -3346,7 +3382,7 @@
       activeSfxNodes.delete(node);
     };
     source.buffer = buffer;
-    gain.gain.value = (SFX_VOLUME[key] ?? 0.4) * getSfxVolume();
+    gain.gain.value = (SFX_VOLUME[key] ?? 0.4) * 1.15;
     source.connect(gain);
     gain.connect(engine.sfxGain);
     source.onended = cleanup;

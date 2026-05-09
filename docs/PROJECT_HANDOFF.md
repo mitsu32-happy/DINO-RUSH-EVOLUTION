@@ -214,6 +214,10 @@ Scalability rules:
   - SFX playback now uses decoded WebAudio buffers instead of creating overlapping `HTMLAudioElement` instances, reducing iOS Safari audio dropouts when many skill sounds overlap.
   - SFX has a small polyphony cap and older nodes are stopped first to avoid runaway overlap.
   - The app shell keeps the fixed 390:844 game aspect ratio and scales down to fit the current mobile viewport instead of stretching vertically.
+- 2026-05-09 BGM/SFX balance pass:
+  - Asset version: `20260509-bgm-sfx-balance1`.
+  - BGM media elements are routed through a WebAudio `MediaElementSource` into `musicGain`, so the BGM slider works on mobile Safari instead of relying only on `HTMLAudioElement.volume`.
+  - SFX volume is applied once through the shared SFX gain plus a slightly stronger per-sound base, improving balance against BGM.
   - Home Stage icon was replaced with `assets/ui/home-stage-icon-20260509.png`.
   - Evolution icons were regenerated from transparent sprites into a consistent circular badge format.
   - Previously corrupted Japanese strings in the newly added raptor/triceratops evolutions were restored.
