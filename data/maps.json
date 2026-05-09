@@ -19,18 +19,292 @@
       },
       {
         "enemyId": "insect_swarm",
-        "weight": 3,
+        "weight": 4,
         "minElapsed": 0
       },
       {
         "enemyId": "horned_runner",
         "weight": 4,
-        "minElapsed": 45
+        "minElapsed": 35
       },
       {
         "enemyId": "poison_crawler",
+        "weight": 4,
+        "minElapsed": 70,
+        "minMode": "hard"
+      },
+      {
+        "enemyId": "crystal_scarab",
         "weight": 3,
-        "minElapsed": 95
+        "minElapsed": 120,
+        "minMode": "endless"
+      },
+      {
+        "enemyId": "mirror_raptor",
+        "weight": 3,
+        "minElapsed": 165,
+        "minMode": "endless"
+      }
+    ],
+    "bossId": "ancient_spino",
+    "bossPool": [
+      "ancient_spino",
+      "obsidian_ceratops",
+      "storm_quetzal"
+    ],
+    "endlessBosses": [
+      {
+        "enemyId": "ancient_spino",
+        "at": 120
+      },
+      {
+        "enemyId": "obsidian_ceratops",
+        "at": 300
+      },
+      {
+        "enemyId": "storm_quetzal",
+        "at": 480
+      }
+    ]
+  },
+  {
+    "id": "volcanic_ridge",
+    "name": "火山稜線",
+    "description": "溶岩の裂け目が走る高熱地帯。時間ごとに噴気孔が開き、足元への注意が必要。",
+    "background": "assets/backgrounds/volcanic-ridge-ground.png",
+    "terrain": {
+      "base": "#2b211d",
+      "deep": "#15100f",
+      "grass": "#48633f",
+      "stone": "#5d5148",
+      "water": "#b94b21"
+    },
+    "dnaMultiplier": 1.25,
+    "spawnIntensity": 1,
+    "rareDropRate": 0.045,
+    "hazard": {
+      "type": "lava_vent",
+      "interval": 8.2,
+      "grace": 30,
+      "warning": 0.8,
+      "radius": 50,
+      "damage": 9,
+      "color": "#ff7a2d"
+    },
+    "spawnTable": [
+      {
+        "enemyId": "ember_spitter",
+        "weight": 5,
+        "minElapsed": 0
+      },
+      {
+        "enemyId": "cinder_runner",
+        "weight": 5,
+        "minElapsed": 24
+      },
+      {
+        "enemyId": "magma_shellback",
+        "weight": 3,
+        "minElapsed": 58
+      },
+      {
+        "enemyId": "ash_wyvern",
+        "weight": 4,
+        "minElapsed": 82,
+        "minMode": "hard"
+      },
+      {
+        "enemyId": "lava_beetle",
+        "weight": 3,
+        "minElapsed": 130,
+        "minMode": "endless"
+      },
+      {
+        "enemyId": "basalt_charger",
+        "weight": 3,
+        "minElapsed": 178,
+        "minMode": "endless"
+      }
+    ],
+    "bossId": "volcanic_tyrant",
+    "bossPool": [
+      "volcanic_tyrant",
+      "lava_spino",
+      "ancient_spino"
+    ],
+    "endlessBosses": [
+      {
+        "enemyId": "volcanic_tyrant",
+        "at": 120
+      },
+      {
+        "enemyId": "lava_spino",
+        "at": 300
+      },
+      {
+        "enemyId": "ancient_spino",
+        "at": 480
+      }
+    ]
+  },
+  {
+    "id": "crystal_cavern",
+    "name": "結晶洞窟",
+    "description": "青い結晶が反射する洞窟。結晶棘の予兆を避けながら、硬い敵を削るステージ。",
+    "background": "assets/backgrounds/crystal-cavern-ground.png",
+    "terrain": {
+      "base": "#162c33",
+      "deep": "#0b181d",
+      "grass": "#3d7d75",
+      "stone": "#55707a",
+      "water": "#1f91a5"
+    },
+    "dnaMultiplier": 1.45,
+    "spawnIntensity": 1.16,
+    "rareDropRate": 0.055,
+    "hazard": {
+      "type": "crystal_spike",
+      "interval": 6.6,
+      "grace": 24,
+      "warning": 0.92,
+      "radius": 50,
+      "damage": 13,
+      "color": "#60d5c8",
+      "sprite": "assets/effects/effect-crystal-spikes.png"
+    },
+    "spawnTable": [
+      {
+        "enemyId": "crystal_scarab",
+        "weight": 5,
+        "minElapsed": 0
+      },
+      {
+        "enemyId": "shard_spitter",
+        "weight": 4,
+        "minElapsed": 18
+      },
+      {
+        "enemyId": "mirror_raptor",
+        "weight": 4,
+        "minElapsed": 48
+      },
+      {
+        "enemyId": "geode_tank",
+        "weight": 3,
+        "minElapsed": 90,
+        "minMode": "hard"
+      },
+      {
+        "enemyId": "crystal_wasp",
+        "weight": 3,
+        "minElapsed": 132,
+        "minMode": "endless"
+      },
+      {
+        "enemyId": "prism_stalker",
+        "weight": 3,
+        "minElapsed": 176,
+        "minMode": "endless"
+      }
+    ],
+    "bossId": "crystal_behemoth",
+    "bossPool": [
+      "crystal_behemoth",
+      "prism_ceratops",
+      "obsidian_ceratops"
+    ],
+    "endlessBosses": [
+      {
+        "enemyId": "crystal_behemoth",
+        "at": 120
+      },
+      {
+        "enemyId": "prism_ceratops",
+        "at": 300
+      },
+      {
+        "enemyId": "obsidian_ceratops",
+        "at": 480
+      }
+    ]
+  },
+  {
+    "id": "storm_coast",
+    "name": "嵐の海岸",
+    "description": "雷雨に濡れた海岸。落雷と遠距離攻撃が重なり、回避精度が試される。",
+    "background": "assets/backgrounds/storm-coast-ground.png",
+    "terrain": {
+      "base": "#16313a",
+      "deep": "#0b151c",
+      "grass": "#58765f",
+      "stone": "#607982",
+      "water": "#1d6f8f"
+    },
+    "dnaMultiplier": 1.7,
+    "spawnIntensity": 1.24,
+    "rareDropRate": 0.065,
+    "hazard": {
+      "type": "lightning_strike",
+      "interval": 5.8,
+      "grace": 22,
+      "warning": 0.76,
+      "radius": 46,
+      "damage": 15,
+      "color": "#72dfff"
+    },
+    "spawnTable": [
+      {
+        "enemyId": "reef_pouncer",
+        "weight": 5,
+        "minElapsed": 0
+      },
+      {
+        "enemyId": "storm_pteranodon",
+        "weight": 4,
+        "minElapsed": 20
+      },
+      {
+        "enemyId": "thunder_charger",
+        "weight": 3,
+        "minElapsed": 52
+      },
+      {
+        "enemyId": "tide_spitter",
+        "weight": 4,
+        "minElapsed": 88,
+        "minMode": "hard"
+      },
+      {
+        "enemyId": "gale_wing",
+        "weight": 3,
+        "minElapsed": 130,
+        "minMode": "endless"
+      },
+      {
+        "enemyId": "storm_shellback",
+        "weight": 3,
+        "minElapsed": 178,
+        "minMode": "endless"
+      }
+    ],
+    "bossId": "tempest_quetzal",
+    "bossPool": [
+      "tempest_quetzal",
+      "gale_quetzal",
+      "storm_quetzal"
+    ],
+    "endlessBosses": [
+      {
+        "enemyId": "tempest_quetzal",
+        "at": 120
+      },
+      {
+        "enemyId": "gale_quetzal",
+        "at": 300
+      },
+      {
+        "enemyId": "storm_quetzal",
+        "at": 480
       }
     ]
   }

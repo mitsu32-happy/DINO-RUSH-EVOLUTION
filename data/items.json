@@ -19,5 +19,29 @@
       "xp": 10,
       "dna": 1
     }
+  },
+  {
+    "id": "ancient_amber",
+    "name": "古代琥珀",
+    "description": "DNAと経験値を同時に得る希少素材。",
+    "sprite": "assets/items/item-ancient-amber.png",
+    "displaySize": 34,
+    "effect": {
+      "dna": 4,
+      "xp": 22
+    },
+    "unlockCost": 520
+  },
+  {
+    "id": "adrenal_fang",
+    "name": "竜脈牙",
+    "description": "必殺技の再使用時間を大きく短縮する牙。",
+    "sprite": "assets/items/item-adrenal-fang.png",
+    "displaySize": 34,
+    "effect": {
+      "specialCharge": 0.38,
+      "xp": 8
+    },
+    "unlockCost": 680
   }
 ]

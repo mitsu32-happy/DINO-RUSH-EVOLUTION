@@ -4,7 +4,7 @@
   const WIDTH = 390;
   const HEIGHT = 844;
   const SAVE_KEY = "dinoRushEvolution.save.v1";
-  const ASSET_VERSION = "20260509-zoom-guard1";
+  const ASSET_VERSION = "20260509-balance2";
 
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
@@ -167,6 +167,7 @@
     enemy: { bob: 2.2, squash: 0.035, tilt: 0.06, cadence: 7 },
     pickup: { bob: 3.4, squash: 0.025, tilt: 0.05, cadence: 5.4 }
   };
+  const MIN_ACTIVE_SKILLS = 8;
 
   function loadMeta() {
     try {
@@ -179,6 +180,7 @@
         discoveredDinosaurs: Array.isArray(saved.discoveredDinosaurs) ? saved.discoveredDinosaurs : ["tyranno"],
         unlockedSkills: Array.isArray(saved.unlockedSkills) ? saved.unlockedSkills : [],
         unlockedDinosaurs: Array.isArray(saved.unlockedDinosaurs) ? saved.unlockedDinosaurs : ["tyranno"],
+        unlockedItems: Array.isArray(saved.unlockedItems) ? saved.unlockedItems : ["meat", "dna_shard"],
         selectedDinosaur: saved.selectedDinosaur || "tyranno",
         selectedMap: saved.selectedMap || "triassic",
         clears: saved.clears && typeof saved.clears === "object" ? saved.clears : {},
@@ -189,7 +191,8 @@
           audio: saved.settings && saved.settings.audio === false ? false : true,
           bgmVolume: clampVolume(saved.settings && saved.settings.bgmVolume, 0.72),
           sfxVolume: clampVolume(saved.settings && saved.settings.sfxVolume, 0.78),
-          controlsSwapped: Boolean(saved.settings && saved.settings.controlsSwapped)
+          controlsSwapped: Boolean(saved.settings && saved.settings.controlsSwapped),
+          enabledSkills: Array.isArray(saved.settings && saved.settings.enabledSkills) ? saved.settings.enabledSkills : null
         }
       };
     } catch (_error) {
@@ -201,13 +204,14 @@
         discoveredDinosaurs: ["tyranno"],
         unlockedSkills: [],
         unlockedDinosaurs: ["tyranno"],
+        unlockedItems: ["meat", "dna_shard"],
         selectedDinosaur: "tyranno",
         selectedMap: "triassic",
         clears: {},
         endlessBestTime: 0,
         endlessBestBosses: 0,
         endlessRecords: {},
-        settings: { audio: true, bgmVolume: 0.72, sfxVolume: 0.78, controlsSwapped: false }
+        settings: { audio: true, bgmVolume: 0.72, sfxVolume: 0.78, controlsSwapped: false, enabledSkills: null }
       };
     }
   }
@@ -242,6 +246,7 @@
 
   function setPanelVariant(variant) {
     panel.classList.toggle("title-panel", variant === "title");
+    panel.classList.toggle("stage-select-panel", variant === "stage");
   }
 
   function applyControlLayout() {
@@ -421,6 +426,7 @@
       map,
       elapsed: 0,
       spawnTimer: 0,
+      hazardTimer: (map.hazard && (map.hazard.grace || map.hazard.interval) ? map.hazard.grace || map.hazard.interval * 0.55 : 0),
       bossTimer: 0,
       bossSpawned: false,
       bossActive: false,
@@ -513,7 +519,70 @@
 
   function getRunSkillPool(dinosaur) {
     const base = dinosaur.skillPool || data.skills.filter((skill) => skill.id !== (dinosaur.basicAttack || "bite") && !skill.unlockCost).map((skill) => skill.id);
-    return [...new Set([...base, ...meta.unlockedSkills])];
+    const available = [...new Set([...base, ...meta.unlockedSkills])].filter((id) => byId(data.skills, id));
+    const enabled = getEnabledSkillSet();
+    if (!enabled || available.length <= MIN_ACTIVE_SKILLS) {
+      return available;
+    }
+    const filtered = available.filter((id) => enabled.has(id));
+    if (filtered.length >= MIN_ACTIVE_SKILLS) {
+      return filtered;
+    }
+    return [
+      ...filtered,
+      ...available.filter((id) => !filtered.includes(id)).slice(0, MIN_ACTIVE_SKILLS - filtered.length)
+    ];
+  }
+
+  function getSkillFilterCandidates() {
+    return data.skills.filter((skill) => skill.id !== "bite");
+  }
+
+  function isSkillAvailableForFilter(skill) {
+    return !skill.unlockCost || meta.unlockedSkills.includes(skill.id);
+  }
+
+  function getEnabledSkillSet() {
+    const candidates = getSkillFilterCandidates().map((skill) => skill.id);
+    const stored = Array.isArray(meta.settings && meta.settings.enabledSkills) ? meta.settings.enabledSkills : null;
+    const enabled = stored ? stored.filter((id) => candidates.includes(id)) : candidates;
+    return new Set(enabled);
+  }
+
+  function getEnabledAvailableSkillCount() {
+    const enabled = getEnabledSkillSet();
+    return getSkillFilterCandidates().filter((skill) => isSkillAvailableForFilter(skill) && enabled.has(skill.id)).length;
+  }
+
+  function toggleSkillFilter(skillId) {
+    const skill = byId(data.skills, skillId);
+    if (!skill || !isSkillAvailableForFilter(skill)) {
+      return;
+    }
+    const candidates = getSkillFilterCandidates().map((item) => item.id);
+    const enabled = getEnabledSkillSet();
+    const availableCount = getSkillFilterCandidates().filter(isSkillAvailableForFilter).length;
+    if (enabled.has(skillId)) {
+      const enabledAvailable = getEnabledAvailableSkillCount();
+      if (availableCount > MIN_ACTIVE_SKILLS && enabledAvailable <= MIN_ACTIVE_SKILLS) {
+        return;
+      }
+      enabled.delete(skillId);
+    } else {
+      enabled.add(skillId);
+    }
+    meta.settings.enabledSkills = candidates.filter((id) => enabled.has(id));
+    saveMeta();
+  }
+
+  function ensureSkillFilterIncludes(skillId) {
+    if (!Array.isArray(meta.settings && meta.settings.enabledSkills)) {
+      return;
+    }
+    if (!meta.settings.enabledSkills.includes(skillId)) {
+      meta.settings.enabledSkills.push(skillId);
+      saveMeta();
+    }
   }
 
   function markSkillDiscovered(id) {
@@ -705,6 +774,7 @@
     updateEnemyProjectiles(dt);
     updateEnemies(dt);
     updatePickups(dt);
+    updateMapHazard(dt);
     updateEffects(dt);
     updateSpawns(dt);
     updateBossSpawns();
@@ -973,7 +1043,9 @@
       guard_roar: "#ffdf72",
       lightning_dash: "#72dfff",
       toxic_spit: "#8cff46",
-      meteor_stomp: "#ff7a2d"
+      meteor_stomp: "#ff7a2d",
+      bone_shards: "#f0dfb5",
+      cyclone_feather: "#72dfff"
     }[skill.id] || "#f3b13d";
   }
 
@@ -1202,6 +1274,89 @@
     });
   }
 
+  function updateEnemySpecialAttack(enemy, dt) {
+    if (enemy.boss || !enemy.attackPattern) {
+      return;
+    }
+    if (run.elapsed < (enemy.specialMinElapsed || 0)) {
+      return;
+    }
+    enemy.specialTimer = Math.max(0, (enemy.specialTimer ?? enemy.attackInterval ?? 3.2) - dt);
+    const distance = getDistance(run.player, enemy);
+    if (enemy.specialTimer > 0 || distance > (enemy.attackRange || 300)) {
+      return;
+    }
+
+    enemy.specialTimer = (enemy.attackInterval || 3.2) * randomBetween(0.86, 1.18);
+    enemy.attackPulse = 0.25;
+    if (enemy.attackPattern === "charger") {
+      triggerEnemyCharge(enemy);
+      return;
+    }
+    fireEnemyProjectile(enemy);
+  }
+
+  function fireEnemyProjectile(enemy) {
+    const colors = {
+      fire_spit: "#ff7a2d",
+      crystal_shard: "#60d5c8",
+      storm_bolt: "#72dfff",
+      poison_spit: "#8cff46"
+    };
+    const color = colors[enemy.attackPattern] || "#ffdf72";
+    playSound(enemy.attackSound || "line");
+    const angle = Math.atan2(run.player.y - enemy.y, run.player.x - enemy.x);
+    const speed = enemy.projectileSpeed || 190;
+    run.enemyProjectiles.push({
+      type: enemy.attackPattern,
+      sprite: enemy.projectileSprite,
+      x: enemy.x + Math.cos(angle) * enemy.size,
+      y: enemy.y + Math.sin(angle) * enemy.size,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      angle,
+      life: 2.2,
+      maxLife: 2.2,
+      radius: enemy.projectileRadius || 14,
+      damage: enemy.damage * (enemy.attackDamageMultiplier || 0.72),
+      knockback: 34,
+      color
+    });
+    run.effects.push({
+      type: "bossCast",
+      x: enemy.x,
+      y: enemy.y,
+      life: 0.28,
+      maxLife: 0.28,
+      radius: enemy.size * 1.35,
+      color
+    });
+  }
+
+  function triggerEnemyCharge(enemy) {
+    playSound(enemy.attackSound || "rush");
+    const direction = normalize(run.player.x - enemy.x, run.player.y - enemy.y);
+    const start = { x: enemy.x, y: enemy.y };
+    const distance = Math.min(enemy.attackRange || 230, 78 + enemy.speed * 0.48);
+    enemy.x += direction.x * distance;
+    enemy.y += direction.y * distance;
+    const color = enemy.attackSound === "lightning" ? "#72dfff" : "#ffdf72";
+    run.effects.push({
+      type: "rushPath",
+      x: start.x,
+      y: start.y,
+      dx: direction.x,
+      dy: direction.y,
+      life: 0.28,
+      maxLife: 0.28,
+      radius: distance,
+      color
+    });
+    if (getDistance(run.player, enemy) < run.player.size + enemy.size + 10) {
+      applyPlayerDamage(enemy.damage * (enemy.attackDamageMultiplier || 1), enemy.x, enemy.y, 42, 0.6, color);
+    }
+  }
+
   function updateBossSpecialAttack(enemy, dt) {
     if (!enemy.boss || !enemy.attackPattern) {
       return;
@@ -1222,6 +1377,14 @@
     }
     if (enemy.attackPattern === "storm_bolts") {
       fireStormBolts(enemy);
+      return;
+    }
+    if (["fire_spit", "crystal_shard", "storm_bolt", "poison_spit"].includes(enemy.attackPattern)) {
+      fireEnemyProjectile(enemy);
+      return;
+    }
+    if (enemy.attackPattern === "charger") {
+      triggerEnemyCharge(enemy);
     }
   }
 
@@ -1290,6 +1453,7 @@
 
     run.enemies.forEach((enemy) => {
       enemy.attackTimer = Math.max(0, enemy.attackTimer - dt);
+      updateEnemySpecialAttack(enemy, dt);
       updateBossSpecialAttack(enemy, dt);
       const dx = player.x - enemy.x;
       const dy = player.y - enemy.y;
@@ -1425,6 +1589,35 @@
     }
   }
 
+  function updateMapHazard(dt) {
+    const hazard = run.map.hazard;
+    if (!hazard) {
+      return;
+    }
+    run.hazardTimer -= dt;
+    if (run.hazardTimer > 0) {
+      return;
+    }
+    const angle = Math.random() * Math.PI * 2;
+    const distance = randomBetween(28, 92);
+    const x = run.player.x + Math.cos(angle) * distance;
+    const y = run.player.y + Math.sin(angle) * distance;
+    run.effects.push({
+      type: "bossSpikeTelegraph",
+      x,
+      y,
+      life: (hazard.warning || 0.85) + 0.36,
+      maxLife: (hazard.warning || 0.85) + 0.36,
+      delay: hazard.warning || 0.85,
+      radius: hazard.radius || 48,
+      damage: hazard.damage || 10,
+      sprite: hazard.sprite,
+      color: hazard.color || "#ff7a2d",
+      triggered: false
+    });
+    run.hazardTimer = (hazard.interval || 7) * randomBetween(0.82, 1.18);
+  }
+
   function updateSpawns(dt) {
     run.spawnTimer -= dt;
     if (run.spawnTimer > 0) {
@@ -1432,9 +1625,9 @@
     }
 
     const difficulty = getModeDifficulty();
-    const interval = Math.max(0.38, (1.45 - run.elapsed / 240) * (run.mode.spawnIntervalMultiplier || 1) / difficulty);
+    const interval = Math.max(0.34, (1.45 - run.elapsed / 240) * (run.mode.spawnIntervalMultiplier || 1) / difficulty / (run.map.spawnIntensity || 1));
     run.spawnTimer = interval;
-    const count = run.elapsed > 135 ? 3 : run.elapsed > 75 ? 2 : 1;
+    const count = (run.elapsed > 135 ? 3 : run.elapsed > 75 ? 2 : 1) + (run.map.spawnCountBonus || 0);
     for (let i = 0; i < count; i += 1) {
       spawnEnemy(chooseEnemyId());
     }
@@ -1454,7 +1647,18 @@
   }
 
   function chooseEnemyId() {
-    const table = run.map.spawnTable.filter((item) => run.elapsed >= (item.minElapsed || 0));
+    const table = run.map.spawnTable.filter((item) => {
+      if (run.elapsed < (item.minElapsed || 0)) {
+        return false;
+      }
+      if (item.modes && !item.modes.includes(run.mode.id)) {
+        return false;
+      }
+      return getModeRank(run.mode.id) >= getModeRank(item.minMode || "normal");
+    });
+    if (!table.length) {
+      return run.map.spawnTable[0].enemyId;
+    }
     const total = table.reduce((sum, item) => sum + item.weight, 0);
     let roll = Math.random() * total;
     for (const item of table) {
@@ -1464,6 +1668,10 @@
       }
     }
     return table[0].enemyId;
+  }
+
+  function getModeRank(modeId) {
+    return { normal: 0, hard: 1, endless: 2 }[modeId] ?? 0;
   }
 
   function spawnEnemy(enemyId) {
@@ -1482,7 +1690,8 @@
       damage: template.damage * (1 + run.elapsed / 780) * (run.mode.enemyDamageMultiplier || 1) * Math.min(1.9, 1 + (difficulty - 1) * 0.3),
       wobble: Math.random() * 8,
       wobbleSpeed: 4 + Math.random() * 3,
-      attackTimer: 0.65 + Math.random() * 0.35
+      attackTimer: 0.65 + Math.random() * 0.35,
+      specialTimer: template.attackPattern ? (template.attackInterval || 3.2) * randomBetween(0.55, 1.15) : 0
     });
   }
 
@@ -1492,7 +1701,7 @@
     }
 
     if (run.mode.clearType === "endless") {
-      const schedule = run.mode.endlessBosses || [];
+      const schedule = run.map.endlessBosses || run.mode.endlessBosses || [];
       const next = schedule[run.endlessBossIndex];
       if (next && run.elapsed >= next.at) {
         spawnBoss(next.enemyId || ENEMY_BOSS_ID);
@@ -1510,12 +1719,13 @@
     }
 
     if (run.elapsed >= run.mode.bossAt && !run.bossSpawned) {
-      spawnBoss(ENEMY_BOSS_ID);
+      spawnBoss(run.map.bossId || ENEMY_BOSS_ID);
     }
   }
 
   function chooseRandomBossId() {
-    const bosses = data.enemies.filter((enemy) => enemy.boss);
+    const pool = Array.isArray(run && run.map && run.map.bossPool) ? run.map.bossPool : null;
+    const bosses = pool && pool.length ? pool.map((id) => byId(data.enemies, id)).filter(Boolean) : data.enemies.filter((enemy) => enemy.boss);
     return (bosses[Math.floor(Math.random() * bosses.length)] || byId(data.enemies, ENEMY_BOSS_ID)).id;
   }
 
@@ -1838,11 +2048,14 @@
   }
 
   function defeatEnemy(enemy) {
-    run.dnaRun += enemy.dna || 0;
+    run.dnaRun += Math.ceil((enemy.dna || 0) * (run.map.dnaMultiplier || 1));
     addPickup("dna_shard", enemy.x, enemy.y);
     const meatDropRate = run.mode.id === "hard" ? 0.045 : run.mode.clearType === "endless" ? 0.05 : 0.07;
     if (Math.random() < meatDropRate && !enemy.boss) {
       addPickup("meat", enemy.x + randomBetween(-18, 18), enemy.y + randomBetween(-18, 18));
+    }
+    if (!enemy.boss) {
+      maybeDropUnlockedRareItem(enemy);
     }
 
     if (enemy.boss) {
@@ -1866,12 +2079,25 @@
 
   function addPickup(itemId, x, y) {
     const template = byId(data.items, itemId);
+    if (!template) {
+      return;
+    }
     run.pickups.push({
       ...template,
       x,
       y,
       pulse: Math.random() * Math.PI * 2
     });
+  }
+
+  function maybeDropUnlockedRareItem(enemy) {
+    const rareRate = (run.map.rareDropRate || 0.035) * (run.mode.clearType === "endless" ? 1.15 : 1);
+    if (meta.unlockedItems.includes("ancient_amber") && Math.random() < rareRate) {
+      addPickup("ancient_amber", enemy.x + randomBetween(-20, 20), enemy.y + randomBetween(-20, 20));
+    }
+    if (meta.unlockedItems.includes("adrenal_fang") && Math.random() < rareRate * 0.7) {
+      addPickup("adrenal_fang", enemy.x + randomBetween(-20, 20), enemy.y + randomBetween(-20, 20));
+    }
   }
 
   function collectPickup(pickup) {
@@ -1895,6 +2121,19 @@
     }
     if (effect.dna) {
       run.dnaRun += effect.dna;
+    }
+    if (effect.specialCharge) {
+      playSound("pickup");
+      run.special.cooldown = Math.max(0, run.special.cooldown * (1 - effect.specialCharge));
+      run.effects.push({
+        type: "ring",
+        x: run.player.x,
+        y: run.player.y,
+        life: 0.34,
+        maxLife: 0.34,
+        radius: 70,
+        color: "#ffdf72"
+      });
     }
   }
 
@@ -2661,7 +2900,7 @@
   function showStageSelect() {
     run = null;
     setControlsVisible(false);
-    setPanelVariant();
+    setPanelVariant("stage");
     const availableMaps = data.maps.filter((map) => isModeUnlocked(map.id, "normal"));
     const fallbackMap = availableMaps[0] || data.maps[0] || byId(data.maps, "triassic");
     const selectedMapId = availableMaps.some((map) => map.id === meta.selectedMap) ? meta.selectedMap : fallbackMap.id;
@@ -2712,12 +2951,20 @@
 
     panel.innerHTML = `
       ${panelHeader("\u30b9\u30c6\u30fc\u30b8\u9078\u629e")}
-      <div class="section-label">\u30b9\u30c6\u30fc\u30b8</div>
-      <div class="horizontal-scroll stage-scroll">${mapCards}</div>
-      <div class="section-label">\u4f7f\u7528\u6050\u7adc</div>
-      <div class="horizontal-scroll dinosaur-scroll">${dinosaurCards}</div>
-      <div class="section-label">\u30e2\u30fc\u30c9</div>
-      <div class="cards compact-mode-list">${modeCards}</div>
+      <div class="stage-select-stack">
+        <div>
+          <div class="section-label">\u30b9\u30c6\u30fc\u30b8</div>
+          <div class="horizontal-scroll stage-scroll">${mapCards}</div>
+        </div>
+        <div>
+          <div class="section-label">\u4f7f\u7528\u6050\u7adc</div>
+          <div class="horizontal-scroll dinosaur-scroll">${dinosaurCards}</div>
+        </div>
+        <div>
+          <div class="section-label">\u30e2\u30fc\u30c9</div>
+          <div class="cards compact-mode-list">${modeCards}</div>
+        </div>
+      </div>
     `;
     showOverlay();
     bindPanelHomeButtons();
@@ -2875,18 +3122,34 @@
         </button>
       `;
     }).join("");
+    const itemCards = data.items
+      .filter((item) => item.unlockCost)
+      .map((item) => {
+        const unlocked = meta.unlockedItems.includes(item.id);
+        const affordable = meta.dna >= item.unlockCost;
+        const status = unlocked ? "\u89e3\u653e\u6e08\u307f" : `${item.unlockCost} DNA`;
+        return `
+          <button class="card-button skill-card-button shop-card-button" type="button" data-buy-item="${item.id}" ${unlocked || !affordable ? "disabled" : ""}>
+            <img class="skill-card-icon" src="${withVersion(item.sprite)}" alt="">
+            <span class="skill-card-copy">
+              <strong>${item.name}</strong>
+              <span>${item.description}</span>
+              <small>${status}</small>
+            </span>
+          </button>
+        `;
+      }).join("");
 
     panel.innerHTML = `
       ${panelHeader("\u30b7\u30e7\u30c3\u30d7")}
+      <div class="screen-resource-pill"><span>DNA</span><b>${meta.dna}</b></div>
       <h2>DNA\u89e3\u653e</h2>
-      <div class="stats-grid">
-        <div class="stat-tile"><b>${meta.dna}</b><span>\u6240\u6301DNA</span></div>
-        <div class="stat-tile"><b>${meta.unlockedSkills.length}</b><span>\u89e3\u653e\u30b9\u30ad\u30eb</span></div>
-      </div>
       <div class="section-label">\u30b9\u30ad\u30eb</div>
       <div class="cards">${skillCards}</div>
       <div class="section-label">\u6050\u7adc</div>
       <div class="cards">${dinosaurCards}</div>
+      <div class="section-label">\u30a2\u30a4\u30c6\u30e0</div>
+      <div class="cards">${itemCards}</div>
     `;
     showOverlay();
     bindPanelHomeButtons();
@@ -2909,6 +3172,7 @@
             }
             meta.dna -= skill.unlockCost;
             meta.unlockedSkills.push(skill.id);
+            ensureSkillFilterIncludes(skill.id);
             markSkillDiscovered(skill.id);
             saveMeta();
             playSound("buy");
@@ -2941,6 +3205,33 @@
               meta.discoveredDinosaurs.push(dinosaur.id);
             }
             meta.selectedDinosaur = dinosaur.id;
+            saveMeta();
+            playSound("buy");
+            showShop();
+          }
+        });
+      });
+    });
+    panel.querySelectorAll("[data-buy-item]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const item = byId(data.items, button.dataset.buyItem);
+        const cost = item ? item.unlockCost || 0 : 0;
+        if (!item || meta.unlockedItems.includes(item.id) || meta.dna < cost) {
+          return;
+        }
+        showConfirmDialog({
+          kicker: "\u30b7\u30e7\u30c3\u30d7",
+          title: "\u8cfc\u5165\u78ba\u8a8d",
+          message: `${item.name}\u3092 ${cost} DNA \u3067\u8cfc\u5165\u3057\u307e\u3059\u304b\uff1f`,
+          confirmLabel: "\u8cfc\u5165\u3059\u308b",
+          onCancel: showShop,
+          onConfirm: () => {
+            if (meta.unlockedItems.includes(item.id) || meta.dna < cost) {
+              showShop();
+              return;
+            }
+            meta.dna -= cost;
+            meta.unlockedItems.push(item.id);
             saveMeta();
             playSound("buy");
             showShop();
@@ -3066,6 +3357,20 @@
     setControlsVisible(false);
     setPanelVariant();
     const controlLabel = meta.settings.controlsSwapped ? "\u53f3\u30d1\u30c3\u30c9 / \u5de6\u5fc5\u6bba" : "\u5de6\u30d1\u30c3\u30c9 / \u53f3\u5fc5\u6bba";
+    const enabledSkills = getEnabledSkillSet();
+    const enabledAvailableCount = getEnabledAvailableSkillCount();
+    const skillFilterCards = getSkillFilterCandidates().map((skill) => {
+      const unlocked = isSkillAvailableForFilter(skill);
+      const enabled = enabledSkills.has(skill.id);
+      const canToggle = !enabled || enabledAvailableCount > MIN_ACTIVE_SKILLS;
+      return `
+        <button class="skill-filter-toggle ${enabled ? "is-enabled" : ""}" type="button" data-filter-skill="${skill.id}" ${!unlocked || !canToggle ? "disabled" : ""}>
+          <img src="${withVersion(skill.icon)}" alt="">
+          <span>${skill.name}</span>
+          <small>${!unlocked ? "未解放" : enabled ? "ON" : "OFF"}</small>
+        </button>
+      `;
+    }).join("");
     panel.innerHTML = `
       ${panelHeader("\u8a2d\u5b9a")}
       <h2>\u30aa\u30d7\u30b7\u30e7\u30f3</h2>
@@ -3087,6 +3392,9 @@
           <small>START\u753b\u9762\u3078</small>
         </button>
       </div>
+      <div class="section-label">\u51fa\u73fe\u30b9\u30ad\u30eb</div>
+      <div class="skill-filter-summary">\u89e3\u653e\u6e08\u307f\u30b9\u30ad\u30eb\u304b\u3089\u6700\u4f4e${MIN_ACTIVE_SKILLS}\u500b\u306fON\u306b\u3057\u307e\u3059\u3002</div>
+      <div class="skill-filter-grid">${skillFilterCards}</div>
       <div class="button-row">
         <button id="resetButton" class="secondary-button danger-button" type="button">\u30bb\u30fc\u30d6\u521d\u671f\u5316</button>
       </div>
@@ -3114,6 +3422,12 @@
     document.getElementById("titleMenuButton").addEventListener("click", (event) => {
       event.stopPropagation();
       showTitle();
+    });
+    panel.querySelectorAll("[data-filter-skill]").forEach((button) => {
+      button.addEventListener("click", () => {
+        toggleSkillFilter(button.dataset.filterSkill);
+        showSettings();
+      });
     });
     document.getElementById("resetButton").addEventListener("click", () => {
       showConfirmDialog({

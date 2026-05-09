@@ -1,8 +1,8 @@
 [
   {
     "id": "primal_roar",
-    "name": "\u539f\u59cb\u5486\u54ee",
-    "description": "\u5468\u56f2\u3078\u885d\u6483\u6ce2\u3092\u653e\u3061\u3001\u6575\u3092\u5927\u304d\u304f\u5439\u304d\u98db\u3070\u3059\u3002",
+    "name": "原始咆哮",
+    "description": "周囲へ衝撃波を放ち、敵を大きく吹き飛ばす。",
     "icon": "assets/specials/special-primal-roar.png",
     "cooldown": 10.5,
     "damage": 62,
@@ -13,8 +13,8 @@
   },
   {
     "id": "raptor_pounce",
-    "name": "\u75be\u98a8\u88c2\u722a",
-    "description": "\u96f7\u3092\u307e\u3068\u3063\u3066\u524d\u65b9\u3078\u8df3\u3073\u8fbc\u307f\u3001\u76f4\u7dda\u4e0a\u306e\u6575\u3092\u5207\u308a\u88c2\u304f\u3002",
+    "name": "疾風裂爪",
+    "description": "雷をまとって前方へ跳び込み、直線上の敵を切り裂く。",
     "icon": "assets/specials/special-raptor-pounce.png",
     "cooldown": 9.2,
     "damage": 72,
@@ -25,8 +25,8 @@
   },
   {
     "id": "guardian_charge",
-    "name": "\u5b88\u8b77\u89d2\u7a81\u6483",
-    "description": "\u89d2\u3068\u30d5\u30ea\u30eb\u3067\u524d\u65b9\u3092\u62bc\u3057\u6f70\u3057\u3001\u5468\u56f2\u306b\u5b88\u8b77\u885d\u6483\u6ce2\u3092\u5e83\u3052\u308b\u3002",
+    "name": "守護角突撃",
+    "description": "角とフリルで前方を押し潰し、周囲に守護衝撃波を広げる。",
     "icon": "assets/specials/special-triceratops-guardian.png",
     "cooldown": 11.6,
     "damage": 76,
@@ -34,5 +34,42 @@
     "effect": "guardian_charge",
     "effectSprite": "assets/effects/special-triceratops-guardian-effect.png",
     "sound": "special"
+  },
+  {
+    "id": "iron_tail_crash",
+    "name": "鋼尾クラッシュ",
+    "description": "尾の棍棒で大地を砕き、周囲を硬質な衝撃波で吹き飛ばす。",
+    "icon": "assets/specials/special-iron-roar.png",
+    "cooldown": 11.4,
+    "damage": 82,
+    "range": 185,
+    "effect": "iron_roar",
+    "sound": "impact",
+    "effectSprite": "assets/effects/special-iron-roar-effect.png"
+  },
+  {
+    "id": "tidal_spine",
+    "name": "スパインバースト",
+    "description": "帆に力を集めて前方と周囲へ爆発的な衝撃を放つ。",
+    "icon": "assets/specials/special-inferno-burst.png",
+    "projectileSprite": "assets/effects/projectile-fireball.png",
+    "cooldown": 10.4,
+    "damage": 78,
+    "range": 188,
+    "effect": "inferno_burst",
+    "sound": "special",
+    "effectSprite": "assets/effects/effect-meteor-stomp.png"
+  },
+  {
+    "id": "sky_cyclone",
+    "name": "スカイサイクロン",
+    "description": "風の渦をまとって一直線に切り抜ける高速必殺技。",
+    "icon": "assets/skills/skill-cyclone-feather.png",
+    "cooldown": 8.8,
+    "damage": 74,
+    "range": 218,
+    "effect": "storm_crash",
+    "sound": "lightning",
+    "effectSprite": "assets/effects/special-raptor-pounce-effect.png"
   }
 ]

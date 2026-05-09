@@ -141,7 +141,9 @@ Preferred naming:
 
 Scalability rules:
 
-- Prefer shared base assets plus recolor/part/event overlays when possible.
+- Prefer shared base assets plus part/event overlays when possible.
+- Do not treat simple recolors as new enemies, bosses, playable dinosaurs, or evolution forms. Recolors are only acceptable for clearly labeled variants such as skins, seasonal/event versions, rarity tiers, or temporary placeholders.
+- Production enemies and bosses need distinct silhouettes, anatomy, and role-readable visual features, especially when they belong to different stages or attack patterns.
 - Keep transparent padding consistent and crop final runtime files.
 - Keep JSON references stable so skins, color variants, evolution differences, and limited-event assets can be swapped without combat-code changes.
 - Do not create one-off formats per asset. Reuse the same pipeline: generate, chroma-key, crop/resize, save to folder, reference in JSON.
@@ -158,6 +160,34 @@ Scalability rules:
 ## Verification Checklist
 
 ## 2026-05-09 Update Notes
+
+- 2026-05-09 content expansion pass:
+  - Asset/code version: `20260509-content6`.
+  - Added three post-Triassic stages: `volcanic_ridge`, `crystal_cavern`, and `storm_coast`.
+  - New stages reuse the same boss-count/mode structure as the first stage: Normal/Hard clear by boss defeat, Endless continues with the existing endless boss schedule.
+  - Stage differences are handled through `spawnTable`, `minMode`, `spawnIntensity`, `dnaMultiplier`, `rareDropRate`, and optional `hazard` fields.
+  - Added generic non-boss enemy attack patterns in `src/game.js`: `fire_spit`, `crystal_shard`, `storm_bolt`, and `charger`.
+  - Added map hazards through `updateMapHazard`; hazards use world-space telegraphs so they stay aligned with the camera/item/background invariant.
+  - Added shop dinosaurs: `ankylosaurus`, `spinosaurus`, and `pteranodon`.
+  - Added two evolution routes each for the three new dinosaurs.
+  - Added shop skills: `bone_shards` and `cyclone_feather`.
+  - Added shop-unlocked rare drops: `ancient_amber` and `adrenal_fang`.
+  - Save data remains under `dinoRushEvolution.save.v1`; new fields are additive (`unlockedItems`, `settings.enabledSkills`) with backward-compatible defaults.
+  - Stage select was compressed for one-screen smartphone use; it should not require vertical scrolling at the 390x844 target.
+  - Shop no longer shows skill-count stats. Current DNA is shown as a compact resource pill near the top of the shop panel.
+  - Settings now includes skill appearance filtering. It enforces a minimum of 8 enabled available skills once enough skills are unlocked.
+  - Replaced the simple recolor enemy/boss placeholders with AI-generated stage-specific enemy sheets and boss sheets. Enemy and boss additions should remain distinct creature designs, not color-only variants.
+  - Replaced clipped runtime sprites for `boss-gale-quetzal`, `boss-lava-spino`, `boss-tempest-quetzal`, `boss-volcanic-tyrant`, `enemy-basalt-charger`, `enemy-magma-shellback`, `enemy-prism-stalker`, `enemy-shard-spitter`, and `enemy-storm-shellback`; each was validated with transparent edge padding.
+  - Replaced upgrade icons with AI-generated dark circular medallion assets under `assets/upgrades/`.
+  - Added unique item art for `ancient_amber` and `adrenal_fang`; these no longer reuse the DNA/meat item art.
+  - Audited evolution sprites and replaced the color-variant-leaning Tyranno evolution set with distinct silhouettes plus regenerated circular evolution icons.
+
+- 2026-05-09 stage balance pass:
+  - Asset/code version: `20260509-balance2`.
+  - Added `specialMinElapsed` support so non-boss enemy special attacks can be delayed during the opening phase of a run.
+  - Stage hazards now support a `grace` value before the first hazard fires.
+  - Softened the opening of `volcanic_ridge`: lower spawn intensity, delayed lava vents, slightly lighter vent damage/radius, and later introduction of the second/third enemy types.
+  - Early special attacks are delayed on the first wave enemies for the later stages so players can secure skills before ranged shots or charges begin.
 
 - Added a separate Title -> Home flow. Home contains Stage, Shop, Codex, High Score, and Settings.
 - Stage opens the existing map/mode selection.

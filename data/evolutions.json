@@ -2,16 +2,16 @@
   {
     "id": "tyrant_rex",
     "baseDinosaur": "tyranno",
-    "name": "\u30bf\u30a4\u30e9\u30f3\u30c8\u30ec\u30c3\u30af\u30b9",
-    "description": "\u653b\u6483\u529b\u3068\u6700\u5927HP\u304c\u4e0a\u304c\u308a\u3001\u6575\u3092\u5012\u3059\u305f\u3073\u77ed\u6642\u9593\u52a0\u901f\u3059\u308b\u3002",
-    "condition": "Lv6\u5230\u9054 + \u7a81\u9032Lv2 + \u5c3b\u5c3e\u8599\u304e\u6255\u3044Lv2",
+    "name": "タイラントレックス",
+    "description": "攻撃力と最大HPが上がり、敵を倒すたび短時間加速する。",
+    "condition": "Lv6到達 + 突進Lv2 + 尻尾薙ぎ払いLv2",
     "icon": "assets/evolutions/evolution-tyrant-rex-icon.png",
     "sprite": "assets/characters/evolution-tyrant-rex.png",
     "displayScale": 1.42,
     "special": {
       "id": "tyrant_crash",
-      "name": "\u30bf\u30a4\u30e9\u30f3\u30c8\u30af\u30e9\u30c3\u30b7\u30e5",
-      "description": "\u524d\u65b9\u3092\u7c89\u7815\u3057\u3001\u5468\u56f2\u3078\u5730\u5272\u308c\u306e\u885d\u6483\u6ce2\u3092\u5e83\u3052\u308b\u3002",
+      "name": "タイラントクラッシュ",
+      "description": "前方を粉砕し、周囲へ地割れの衝撃波を広げる。",
       "icon": "assets/specials/special-tyrant-crash.png",
       "cooldown": 9.8,
       "damage": 96,
@@ -36,16 +36,16 @@
   {
     "id": "blaze_rex",
     "baseDinosaur": "tyranno",
-    "name": "\u30d6\u30ec\u30a4\u30ba\u30ec\u30c3\u30af\u30b9",
-    "description": "\u706b\u708e\u306e\u4f59\u6ce2\u3067\u5468\u56f2\u3092\u713c\u304d\u3001\u5fc5\u6bba\u6280\u306e\u56de\u8ee2\u7387\u304c\u4e0a\u304c\u308b\u3002",
-    "condition": "Lv6\u5230\u9054 + \u706b\u708e\u30d6\u30ec\u30b9Lv2 + \u7a81\u9032Lv2\u307e\u305f\u306f\u5c3b\u5c3e\u8599\u304e\u6255\u3044Lv2",
+    "name": "ブレイズレックス",
+    "description": "火炎の余波で周囲を焼き、必殺技の回転率が上がる。",
+    "condition": "Lv6到達 + 火炎ブレスLv2 + 突進Lv2または尻尾薙ぎ払いLv2",
     "icon": "assets/evolutions/evolution-blaze-rex-icon.png",
     "sprite": "assets/characters/evolution-blaze-rex.png",
     "displayScale": 1.45,
     "special": {
       "id": "inferno_burst",
-      "name": "\u30a4\u30f3\u30d5\u30a7\u30eb\u30ce\u30d0\u30fc\u30b9\u30c8",
-      "description": "\u708e\u306e\u7206\u767a\u3067\u5468\u56f2\u3092\u713c\u304d\u3001\u5168\u65b9\u4f4d\u3078\u706b\u708e\u5f3e\u3092\u653e\u3064\u3002",
+      "name": "インフェルノバースト",
+      "description": "炎の爆発で周囲を焼き、全方位へ火炎弾を放つ。",
       "icon": "assets/specials/special-inferno-burst.png",
       "projectileSprite": "assets/effects/projectile-fireball.png",
       "cooldown": 10.8,
@@ -75,16 +75,16 @@
   {
     "id": "gaia_rex",
     "baseDinosaur": "tyranno",
-    "name": "\u30ac\u30a4\u30a2\u30ec\u30c3\u30af\u30b9",
-    "description": "\u5927\u5730\u306e\u529b\u3067\u8010\u4e45\u529b\u304c\u4f38\u3073\u3001\u5468\u56f2\u3078\u306e\u7d99\u7d9a\u30c0\u30e1\u30fc\u30b8\u3092\u5f97\u308b\u3002",
-    "condition": "Lv7\u5230\u9054 + \u7d50\u6676\u30b9\u30d1\u30a4\u30afLv3 + \u5b88\u8b77\u5486\u54eeLv2",
+    "name": "ガイアレックス",
+    "description": "大地の力で耐久力が伸び、周囲への継続ダメージを得る。",
+    "condition": "Lv7到達 + 結晶スパイクLv3 + 守護咆哮Lv2",
     "icon": "assets/evolutions/evolution-gaia-rex-icon.png",
     "sprite": "assets/characters/evolution-gaia-rex.png",
     "displayScale": 1.43,
     "special": {
       "id": "gaia_break",
-      "name": "\u30ac\u30a4\u30a2\u30d6\u30ec\u30a4\u30af",
-      "description": "\u5927\u5730\u3092\u5272\u308b\u885d\u6483\u6ce2\u3067\u5468\u56f2\u3092\u62bc\u3057\u8fd4\u3059\u3002",
+      "name": "ガイアブレイク",
+      "description": "大地を割る衝撃波で周囲を押し返す。",
       "icon": "assets/specials/special-gaia-break.png",
       "cooldown": 10.6,
       "damage": 88,
@@ -109,16 +109,16 @@
   {
     "id": "storm_rex",
     "baseDinosaur": "tyranno",
-    "name": "\u30b9\u30c8\u30fc\u30e0\u30ec\u30c3\u30af\u30b9",
-    "description": "\u96f7\u306e\u901f\u5ea6\u3067\u99c6\u3051\u3001\u79fb\u52d5\u3068\u5fc5\u6bba\u306e\u56de\u8ee2\u7387\u304c\u4e0a\u304c\u308b\u3002",
-    "condition": "Lv7\u5230\u9054 + \u96f7\u5149\u30c0\u30c3\u30b7\u30e5Lv3 + \u7a81\u9032Lv2",
+    "name": "ストームレックス",
+    "description": "雷の速度で駆け、移動と必殺の回転率が上がる。",
+    "condition": "Lv7到達 + 雷光ダッシュLv3 + 突進Lv2",
     "icon": "assets/evolutions/evolution-storm-rex-icon.png",
     "sprite": "assets/characters/evolution-storm-rex.png",
     "displayScale": 1.38,
     "special": {
       "id": "storm_crash",
-      "name": "\u30b9\u30c8\u30fc\u30e0\u30af\u30e9\u30c3\u30b7\u30e5",
-      "description": "\u96f7\u901f\u306e\u7a81\u6483\u3067\u524d\u65b9\u3092\u5207\u308a\u88c2\u304f\u3002",
+      "name": "ストームクラッシュ",
+      "description": "雷速の突撃で前方を切り裂く。",
       "icon": "assets/specials/special-storm-crash.png",
       "cooldown": 8.8,
       "damage": 90,
@@ -144,16 +144,16 @@
   {
     "id": "venom_rex",
     "baseDinosaur": "tyranno",
-    "name": "\u30f4\u30a7\u30ce\u30e0\u30ec\u30c3\u30af\u30b9",
-    "description": "\u6bd2\u6027\u306e\u708e\u3067\u7bc4\u56f2\u706b\u529b\u3068\u7d99\u7d9a\u30c0\u30e1\u30fc\u30b8\u306b\u512a\u308c\u308b\u3002",
-    "condition": "Lv7\u5230\u9054 + \u6bd2\u6db2\u30b9\u30d4\u30c3\u30c8Lv3 + \u706b\u708e\u30d6\u30ec\u30b9Lv2",
+    "name": "ヴェノムレックス",
+    "description": "毒性の炎で範囲火力と継続ダメージに優れる。",
+    "condition": "Lv7到達 + 毒液スピットLv3 + 火炎ブレスLv2",
     "icon": "assets/evolutions/evolution-venom-rex-icon.png",
     "sprite": "assets/characters/evolution-venom-rex.png",
     "displayScale": 1.4,
     "special": {
       "id": "venom_inferno",
-      "name": "\u30f4\u30a7\u30ce\u30e0\u30a4\u30f3\u30d5\u30a7\u30eb\u30ce",
-      "description": "\u6bd2\u708e\u306e\u7206\u767a\u3067\u5468\u56f2\u3092\u713c\u304d\u6255\u3046\u3002",
+      "name": "ヴェノムインフェルノ",
+      "description": "毒炎の爆発で周囲を焼き払う。",
       "icon": "assets/specials/special-venom-inferno.png",
       "projectileSprite": "assets/effects/projectile-fireball.png",
       "cooldown": 10.2,
@@ -180,16 +180,16 @@
   {
     "id": "iron_rex",
     "baseDinosaur": "tyranno",
-    "name": "\u30a2\u30a4\u30a2\u30f3\u30ec\u30c3\u30af\u30b9",
-    "description": "\u92fc\u306e\u9c57\u3067\u8010\u4e45\u3057\u3001\u722a\u6483\u306e\u5a01\u529b\u3092\u4f38\u3070\u3059\u9632\u5fa1\u578b\u9032\u5316\u3002",
-    "condition": "Lv7\u5230\u9054 + \u5b88\u8b77\u5486\u54eeLv3 + \u88c2\u722aLv2",
+    "name": "アイアンレックス",
+    "description": "鋼の鱗で耐久し、爪撃の威力を伸ばす防御型進化。",
+    "condition": "Lv7到達 + 守護咆哮Lv3 + 裂爪Lv2",
     "icon": "assets/evolutions/evolution-iron-rex-icon.png",
     "sprite": "assets/characters/evolution-iron-rex.png",
     "displayScale": 1.48,
     "special": {
       "id": "iron_roar",
-      "name": "\u30a2\u30a4\u30a2\u30f3\u30ed\u30a2",
-      "description": "\u92fc\u306e\u5486\u54ee\u3067\u6575\u3092\u307e\u3068\u3081\u3066\u5f3e\u304d\u98db\u3070\u3059\u3002",
+      "name": "アイアンロア",
+      "description": "鋼の咆哮で敵をまとめて弾き飛ばす。",
       "icon": "assets/specials/special-iron-roar.png",
       "cooldown": 11.2,
       "damage": 78,
@@ -214,16 +214,16 @@
   {
     "id": "storm_raptor",
     "baseDinosaur": "velociraptor",
-    "name": "\u30b9\u30c8\u30fc\u30e0\u30e9\u30d7\u30c8\u30eb",
-    "description": "\u96f7\u3092\u307e\u3068\u3063\u305f\u9ad8\u901f\u9032\u5316\u3002\u79fb\u52d5\u3068\u5fc5\u6bba\u6280\u56de\u8ee2\u304c\u4f38\u3073\u3001\u76f4\u7dda\u7a81\u7834\u529b\u304c\u9ad8\u3044\u3002",
-    "condition": "Lv6\u5230\u9054 + \u7a81\u9032Lv2 + \u88c2\u722aLv2",
+    "name": "ストームラプトル",
+    "description": "雷をまとった高速進化。移動と必殺技回転が伸び、直線突破力が高い。",
+    "condition": "Lv6到達 + 突進Lv2 + 裂爪Lv2",
     "icon": "assets/evolutions/evolution-storm-raptor-icon.png",
     "sprite": "assets/characters/evolution-storm-raptor.png",
     "displayScale": 1.28,
     "special": {
       "id": "storm_pounce",
-      "name": "\u96f7\u7259\u77ac\u8972",
-      "description": "\u9752\u3044\u96f7\u3068\u306a\u3063\u3066\u524d\u65b9\u3092\u5207\u308a\u88c2\u304f\u9ad8\u901f\u5fc5\u6bba\u6280\u3002",
+      "name": "雷牙瞬襲",
+      "description": "青い雷となって前方を切り裂く高速必殺技。",
       "icon": "assets/specials/special-raptor-pounce.png",
       "cooldown": 8.4,
       "damage": 94,
@@ -249,16 +249,16 @@
   {
     "id": "fortress_triceratops",
     "baseDinosaur": "triceratops",
-    "name": "\u30d5\u30a9\u30fc\u30c8\u30ec\u30b9\u30c8\u30ea\u30b1\u30e9",
-    "description": "\u8981\u585e\u306e\u3088\u3046\u306a\u5b88\u8b77\u9032\u5316\u3002HP\u3068\u9632\u5fa1\u529b\u304c\u4f38\u3073\u3001\u5468\u56f2\u3092\u62bc\u3057\u8fd4\u3059\u529b\u304c\u9ad8\u3044\u3002",
-    "condition": "Lv6\u5230\u9054 + \u5b88\u8b77\u5486\u54eeLv2 + \u7d50\u6676\u30b9\u30d1\u30a4\u30afLv2",
+    "name": "フォートレストリケラ",
+    "description": "要塞のような守護進化。HPと防御力が伸び、周囲を押し返す力が高い。",
+    "condition": "Lv6到達 + 守護咆哮Lv2 + 結晶スパイクLv2",
     "icon": "assets/evolutions/evolution-fortress-triceratops-icon.png",
     "sprite": "assets/characters/evolution-fortress-triceratops.png",
     "displayScale": 1.35,
     "special": {
       "id": "fortress_bastion",
-      "name": "\u57ce\u585e\u89d2\u9663",
-      "description": "\u5de8\u5927\u306a\u5b88\u8b77\u58c1\u3092\u53e9\u304d\u3064\u3051\u3001\u5468\u56f2\u306e\u6575\u3092\u5439\u304d\u98db\u3070\u3059\u3002",
+      "name": "城塞角陣",
+      "description": "巨大な守護壁を叩きつけ、周囲の敵を吹き飛ばす。",
       "icon": "assets/specials/special-triceratops-guardian.png",
       "cooldown": 10.8,
       "damage": 88,
@@ -284,16 +284,16 @@
   {
     "id": "blaze_raptor",
     "baseDinosaur": "velociraptor",
-    "name": "\u30d6\u30ec\u30a4\u30ba\u30e9\u30d7\u30c8\u30eb",
-    "description": "\u708e\u3092\u307e\u3068\u3063\u3066\u8df3\u3073\u8fbc\u3080\u9ad8\u901f\u9032\u5316\u3002\u7a81\u9032\u5f8c\u306e\u7206\u767a\u529b\u3068\u7bc4\u56f2\u706b\u529b\u306b\u512a\u308c\u308b\u3002",
-    "condition": "Lv7\u5230\u9054 + \u706b\u708e\u30d6\u30ec\u30b9Lv2 + \u7a81\u9032Lv2",
+    "name": "ブレイズラプトル",
+    "description": "炎をまとって跳び込む高速進化。突進後の爆発力と範囲火力に優れる。",
+    "condition": "Lv7到達 + 火炎ブレスLv2 + 突進Lv2",
     "icon": "assets/evolutions/evolution-blaze-raptor-icon.png",
     "sprite": "assets/characters/evolution-blaze-raptor.png",
     "displayScale": 1.28,
     "special": {
       "id": "blaze_pounce",
-      "name": "\u707c\u7259\u70c8\u8972",
-      "description": "\u708e\u306e\u8ecc\u8de1\u3092\u6b8b\u3057\u3066\u524d\u65b9\u3078\u8df3\u3073\u8fbc\u307f\u3001\u7740\u5730\u70b9\u3092\u7206\u708e\u3067\u713c\u304d\u6255\u3046\u3002",
+      "name": "灼牙烈襲",
+      "description": "炎の軌跡を残して前方へ跳び込み、着地点を爆炎で焼き払う。",
       "icon": "assets/specials/special-inferno-burst.png",
       "cooldown": 8.8,
       "damage": 90,
@@ -321,16 +321,16 @@
   {
     "id": "venom_raptor",
     "baseDinosaur": "velociraptor",
-    "name": "\u30f4\u30a7\u30ce\u30e0\u30e9\u30d7\u30c8\u30eb",
-    "description": "\u6bd2\u722a\u3067\u7372\u7269\u3092\u524a\u308b\u5947\u8972\u9032\u5316\u3002\u7d99\u7d9a\u30c0\u30e1\u30fc\u30b8\u3068\u624b\u6570\u3067\u62bc\u3057\u5207\u308b\u3002",
-    "condition": "Lv7\u5230\u9054 + \u6bd2\u6db2\u30b9\u30d4\u30c3\u30c8Lv2 + \u88c2\u722aLv2",
+    "name": "ヴェノムラプトル",
+    "description": "毒爪で獲物を削る奇襲進化。継続ダメージと手数で押し切る。",
+    "condition": "Lv7到達 + 毒液スピットLv2 + 裂爪Lv2",
     "icon": "assets/evolutions/evolution-venom-raptor-icon.png",
     "sprite": "assets/characters/evolution-venom-raptor.png",
     "displayScale": 1.28,
     "special": {
       "id": "venom_pounce",
-      "name": "\u6bd2\u7259\u77ac\u8972",
-      "description": "\u6bd2\u9727\u3092\u307e\u3068\u3063\u305f\u8df3\u8e8d\u3067\u6575\u7fa4\u3092\u5207\u308a\u88c2\u304d\u3001\u5468\u56f2\u306b\u6bd2\u708e\u3092\u6b8b\u3059\u3002",
+      "name": "毒牙瞬襲",
+      "description": "毒霧をまとった跳躍で敵群を切り裂き、周囲に毒炎を残す。",
       "icon": "assets/specials/special-venom-inferno.png",
       "cooldown": 8.6,
       "damage": 86,
@@ -358,16 +358,16 @@
   {
     "id": "crystal_raptor",
     "baseDinosaur": "velociraptor",
-    "name": "\u30af\u30ea\u30b9\u30bf\u30eb\u30e9\u30d7\u30c8\u30eb",
-    "description": "\u7d50\u6676\u306e\u5203\u3092\u80cc\u8ca0\u3046\u6280\u5de7\u9032\u5316\u3002\u7a81\u9032\u3068\u68d8\u306e\u9023\u643a\u3067\u7fa4\u308c\u3092\u5272\u308b\u3002",
-    "condition": "Lv7\u5230\u9054 + \u7d50\u6676\u30b9\u30d1\u30a4\u30afLv3 + \u7a81\u9032Lv2",
+    "name": "クリスタルラプトル",
+    "description": "結晶の刃を背負う技巧進化。突進と棘の連携で群れを割る。",
+    "condition": "Lv7到達 + 結晶スパイクLv3 + 突進Lv2",
     "icon": "assets/evolutions/evolution-crystal-raptor-icon.png",
     "sprite": "assets/characters/evolution-crystal-raptor.png",
     "displayScale": 1.26,
     "special": {
       "id": "crystal_pounce",
-      "name": "\u6676\u7259\u30d6\u30ec\u30a4\u30af",
-      "description": "\u7d50\u6676\u68d8\u3092\u6563\u3089\u3057\u306a\u304c\u3089\u99c6\u3051\u629c\u3051\u3001\u524d\u65b9\u3092\u786c\u8cea\u306a\u885d\u6483\u3067\u7815\u304f\u3002",
+      "name": "晶牙ブレイク",
+      "description": "結晶棘を散らしながら駆け抜け、前方を硬質な衝撃で砕く。",
       "icon": "assets/specials/special-gaia-break.png",
       "cooldown": 9.2,
       "damage": 92,
@@ -394,16 +394,16 @@
   {
     "id": "shadow_raptor",
     "baseDinosaur": "velociraptor",
-    "name": "\u30b7\u30e3\u30c9\u30a6\u30e9\u30d7\u30c8\u30eb",
-    "description": "\u5f71\u306e\u3088\u3046\u306b\u56de\u308a\u8fbc\u3080\u6697\u8972\u9032\u5316\u3002\u77ed\u3044\u9593\u9694\u3067\u524d\u65b9\u3092\u5207\u308a\u88c2\u304f\u3002",
-    "condition": "Lv7\u5230\u9054 + \u5c3b\u5c3e\u8599\u304e\u6255\u3044Lv3 + \u88c2\u722aLv2",
+    "name": "シャドウラプトル",
+    "description": "影のように回り込む暗襲進化。短い間隔で前方を切り裂く。",
+    "condition": "Lv7到達 + 尻尾薙ぎ払いLv3 + 裂爪Lv2",
     "icon": "assets/evolutions/evolution-shadow-raptor-icon.png",
     "sprite": "assets/characters/evolution-shadow-raptor.png",
     "displayScale": 1.27,
     "special": {
       "id": "shadow_pounce",
-      "name": "\u5f71\u722a\u9023\u9583",
-      "description": "\u59ff\u3092\u6c88\u3081\u3066\u304b\u3089\u92ed\u304f\u8df3\u3073\u3001\u9ed2\u3044\u722a\u75d5\u3067\u524d\u65b9\u3092\u9023\u7d9a\u65ac\u6483\u3059\u308b\u3002",
+      "name": "影爪連閃",
+      "description": "姿を沈めてから鋭く跳び、黒い爪痕で前方を連続斬撃する。",
       "icon": "assets/specials/special-raptor-pounce.png",
       "cooldown": 7.8,
       "damage": 88,
@@ -429,16 +429,16 @@
   {
     "id": "alpha_raptor",
     "baseDinosaur": "velociraptor",
-    "name": "\u30a2\u30eb\u30d5\u30a1\u30e9\u30d7\u30c8\u30eb",
-    "description": "\u7fa4\u308c\u3092\u7387\u3044\u308b\u738b\u8005\u306e\u9032\u5316\u3002\u653b\u6483\u30fb\u901f\u5ea6\u30fb\u8010\u4e45\u306e\u30d0\u30e9\u30f3\u30b9\u304c\u9ad8\u3044\u3002",
-    "condition": "Lv8\u5230\u9054 + \u5b88\u8b77\u5486\u54eeLv2 + \u88c2\u722aLv3",
+    "name": "アルファラプトル",
+    "description": "群れを率いる王者の進化。攻撃・速度・耐久のバランスが高い。",
+    "condition": "Lv8到達 + 守護咆哮Lv2 + 裂爪Lv3",
     "icon": "assets/evolutions/evolution-alpha-raptor-icon.png",
     "sprite": "assets/characters/evolution-alpha-raptor.png",
     "displayScale": 1.3,
     "special": {
       "id": "alpha_pounce",
-      "name": "\u738b\u7259\u53f7\u4ee4",
-      "description": "\u5486\u54ee\u3067\u6575\u3092\u602f\u307e\u305b\u3001\u738b\u8005\u306e\u8df3\u8e8d\u3067\u524d\u65b9\u3092\u307e\u3068\u3081\u3066\u5236\u5727\u3059\u308b\u3002",
+      "name": "王牙号令",
+      "description": "咆哮で敵を怯ませ、王者の跳躍で前方をまとめて制圧する。",
       "icon": "assets/specials/special-raptor-pounce.png",
       "cooldown": 8.9,
       "damage": 96,
@@ -464,16 +464,16 @@
   {
     "id": "magma_triceratops",
     "baseDinosaur": "triceratops",
-    "name": "\u30de\u30b0\u30de\u30c8\u30ea\u30b1\u30e9",
-    "description": "\u6eb6\u5ca9\u306e\u89d2\u3092\u6301\u3064\u7a81\u6483\u9032\u5316\u3002\u9ad8\u8010\u4e45\u306e\u307e\u307e\u708e\u3067\u6575\u9663\u3092\u5d29\u3059\u3002",
-    "condition": "Lv7\u5230\u9054 + \u706b\u708e\u30d6\u30ec\u30b9Lv2 + \u5c3b\u5c3e\u8599\u304e\u6255\u3044Lv2",
+    "name": "マグマトリケラ",
+    "description": "溶岩の角を持つ突撃進化。高耐久のまま炎で敵陣を崩す。",
+    "condition": "Lv7到達 + 火炎ブレスLv2 + 尻尾薙ぎ払いLv2",
     "icon": "assets/evolutions/evolution-magma-triceratops-icon.png",
     "sprite": "assets/characters/evolution-magma-triceratops.png",
     "displayScale": 1.35,
     "special": {
       "id": "magma_bastion",
-      "name": "\u6eb6\u89d2\u30d0\u30fc\u30b9\u30c8",
-      "description": "\u707c\u71b1\u306e\u89d2\u3067\u5927\u5730\u3092\u53e9\u304d\u3001\u5468\u56f2\u3092\u7206\u708e\u3068\u885d\u6483\u6ce2\u3067\u62bc\u3057\u8fd4\u3059\u3002",
+      "name": "溶角バースト",
+      "description": "灼熱の角で大地を叩き、周囲を爆炎と衝撃波で押し返す。",
       "icon": "assets/specials/special-inferno-burst.png",
       "cooldown": 10.6,
       "damage": 92,
@@ -501,16 +501,16 @@
   {
     "id": "crystal_triceratops",
     "baseDinosaur": "triceratops",
-    "name": "\u30af\u30ea\u30b9\u30bf\u30eb\u30c8\u30ea\u30b1\u30e9",
-    "description": "\u7d50\u6676\u88c5\u7532\u3092\u307e\u3068\u3063\u305f\u5b88\u8b77\u9032\u5316\u3002\u786c\u3055\u3068\u7bc4\u56f2\u5236\u5727\u306b\u512a\u308c\u308b\u3002",
-    "condition": "Lv7\u5230\u9054 + \u7d50\u6676\u30b9\u30d1\u30a4\u30afLv3 + \u5b88\u8b77\u5486\u54eeLv2",
+    "name": "クリスタルトリケラ",
+    "description": "結晶装甲をまとった守護進化。硬さと範囲制圧に優れる。",
+    "condition": "Lv7到達 + 結晶スパイクLv3 + 守護咆哮Lv2",
     "icon": "assets/evolutions/evolution-crystal-triceratops-icon.png",
     "sprite": "assets/characters/evolution-crystal-triceratops.png",
     "displayScale": 1.34,
     "special": {
       "id": "crystal_bastion",
-      "name": "\u6676\u89d2\u57ce\u58c1",
-      "description": "\u7d50\u6676\u306e\u89d2\u58c1\u3092\u6253\u3061\u7acb\u3066\u3001\u5468\u56f2\u306e\u6575\u3092\u7815\u304d\u306a\u304c\u3089\u62bc\u3057\u623b\u3059\u3002",
+      "name": "晶角城壁",
+      "description": "結晶の角壁を打ち立て、周囲の敵を砕きながら押し戻す。",
       "icon": "assets/specials/special-gaia-break.png",
       "cooldown": 10.4,
       "damage": 88,
@@ -537,16 +537,16 @@
   {
     "id": "storm_triceratops",
     "baseDinosaur": "triceratops",
-    "name": "\u30b9\u30c8\u30fc\u30e0\u30c8\u30ea\u30b1\u30e9",
-    "description": "\u96f7\u3092\u5e2f\u3073\u3066\u7a81\u304d\u9032\u3080\u91cd\u88c5\u9032\u5316\u3002\u920d\u91cd\u3055\u3092\u88dc\u3046\u77ac\u9593\u7a81\u7834\u529b\u3092\u6301\u3064\u3002",
-    "condition": "Lv7\u5230\u9054 + \u96f7\u5149\u30c0\u30c3\u30b7\u30e5Lv2 + \u7a81\u9032Lv2",
+    "name": "ストームトリケラ",
+    "description": "雷を帯びて突き進む重装進化。鈍重さを補う瞬間突破力を持つ。",
+    "condition": "Lv7到達 + 雷光ダッシュLv2 + 突進Lv2",
     "icon": "assets/evolutions/evolution-storm-triceratops-icon.png",
     "sprite": "assets/characters/evolution-storm-triceratops.png",
     "displayScale": 1.34,
     "special": {
       "id": "storm_bastion",
-      "name": "\u96f7\u89d2\u7a81\u9663",
-      "description": "\u96f7\u306e\u89d2\u3067\u4e00\u76f4\u7dda\u306b\u7a81\u304d\u629c\u3051\u3001\u9032\u8def\u4e0a\u306e\u6575\u3092\u5f3e\u304d\u98db\u3070\u3059\u3002",
+      "name": "雷角突陣",
+      "description": "雷の角で一直線に突き抜け、進路上の敵を弾き飛ばす。",
       "icon": "assets/specials/special-storm-crash.png",
       "cooldown": 9.4,
       "damage": 94,
@@ -572,16 +572,16 @@
   {
     "id": "venom_triceratops",
     "baseDinosaur": "triceratops",
-    "name": "\u30f4\u30a7\u30ce\u30e0\u30c8\u30ea\u30b1\u30e9",
-    "description": "\u6bd2\u68d8\u306e\u88c5\u7532\u3067\u5bc4\u305b\u4ed8\u3051\u306a\u3044\u9632\u885b\u9032\u5316\u3002\u63a5\u8fd1\u3057\u305f\u6575\u3092\u3058\u308f\u3058\u308f\u524a\u308b\u3002",
-    "condition": "Lv7\u5230\u9054 + \u6bd2\u6db2\u30b9\u30d4\u30c3\u30c8Lv2 + \u5b88\u8b77\u5486\u54eeLv2",
+    "name": "ヴェノムトリケラ",
+    "description": "毒棘の装甲で寄せ付けない防衛進化。接近した敵をじわじわ削る。",
+    "condition": "Lv7到達 + 毒液スピットLv2 + 守護咆哮Lv2",
     "icon": "assets/evolutions/evolution-venom-triceratops-icon.png",
     "sprite": "assets/characters/evolution-venom-triceratops.png",
     "displayScale": 1.35,
     "special": {
       "id": "venom_bastion",
-      "name": "\u6bd2\u89d2\u7634\u58c1",
-      "description": "\u6bd2\u9727\u306e\u58c1\u3092\u5c55\u958b\u3057\u3001\u5468\u56f2\u306e\u6575\u3092\u5439\u304d\u98db\u3070\u3057\u3066\u6bd2\u708e\u3092\u6b8b\u3059\u3002",
+      "name": "毒角瘴壁",
+      "description": "毒霧の壁を展開し、周囲の敵を吹き飛ばして毒炎を残す。",
       "icon": "assets/specials/special-venom-inferno.png",
       "cooldown": 10.2,
       "damage": 86,
@@ -609,18 +609,18 @@
   {
     "id": "titan_triceratops",
     "baseDinosaur": "triceratops",
-    "name": "\u30bf\u30a4\u30bf\u30f3\u30c8\u30ea\u30b1\u30e9",
-    "description": "\u5de8\u5927\u306a\u89d2\u3068\u91cd\u88c5\u7532\u3092\u6975\u3081\u305f\u6700\u7d42\u9632\u885b\u9032\u5316\u3002\u8010\u4e45\u3068\u62bc\u3057\u8fd4\u3057\u304c\u5727\u5012\u7684\u3002",
-    "condition": "Lv8\u5230\u9054 + \u5c3b\u5c3e\u8599\u304e\u6255\u3044Lv3 + \u5b88\u8b77\u5486\u54eeLv3",
+    "name": "タイタントリケラ",
+    "description": "巨大な角と重装甲を極めた最終防衛進化。耐久と押し返しが圧倒的。",
+    "condition": "Lv8到達 + 尻尾薙ぎ払いLv3 + 守護咆哮Lv3",
     "icon": "assets/evolutions/evolution-titan-triceratops-icon.png",
     "sprite": "assets/characters/evolution-titan-triceratops.png",
     "displayScale": 1.38,
     "special": {
       "id": "titan_bastion",
-      "name": "\u5de8\u89d2\u30a2\u30a4\u30a2\u30f3\u30ed\u30a2",
-      "description": "\u92fc\u306e\u5486\u54ee\u3068\u5de8\u89d2\u306e\u885d\u6483\u3067\u3001\u5468\u56f2\u306e\u6575\u3092\u307e\u3068\u3081\u3066\u7c89\u7815\u3059\u308b\u3002",
+      "name": "巨角アイアンロア",
+      "description": "鋼の咆哮と巨角の衝撃で、周囲の敵をまとめて粉砕する。",
       "icon": "assets/specials/special-iron-roar.png",
-      "cooldown": 11.0,
+      "cooldown": 11,
       "damage": 98,
       "range": 215,
       "effect": "iron_roar",
@@ -639,6 +639,651 @@
       "damageMultiplier": 1.14,
       "speedMultiplier": 0.94,
       "specialCooldownMultiplier": 0.92
+    }
+  },
+  {
+    "id": "magma_ankylosaurus",
+    "baseDinosaur": "ankylosaurus",
+    "name": "マグマアンキロ",
+    "description": "溶岩の装甲をまとった防御進化。尾撃と周囲火力で群れを押し返す。",
+    "condition": "Lv7到達 + 火炎ブレスLv2 + 守護咆哮Lv2",
+    "icon": "assets/evolutions/evolution-magma-ankylosaurus-icon.png",
+    "sprite": "assets/characters/evolution-magma-ankylosaurus.png",
+    "displayScale": 1.16,
+    "special": {
+      "id": "magma_tail_crash",
+      "name": "溶尾クラッシュ",
+      "description": "灼熱の尾で大地を叩き、周囲を爆炎で吹き飛ばす。",
+      "icon": "assets/specials/special-inferno-burst.png",
+      "cooldown": 10.8,
+      "damage": 92,
+      "range": 194,
+      "effect": "inferno_burst",
+      "sound": "impact",
+      "effectSprite": "assets/effects/effect-meteor-stomp.png",
+      "projectileSprite": "assets/effects/projectile-fireball.png"
+    },
+    "requirements": {
+      "level": 7,
+      "skillLevels": {
+        "fire_breath": 2,
+        "guard_roar": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.42,
+      "damageMultiplier": 1.14,
+      "speedMultiplier": 0.98,
+      "specialCooldownMultiplier": 0.9,
+      "auraDamage": 5
+    }
+  },
+  {
+    "id": "crystal_ankylosaurus",
+    "baseDinosaur": "ankylosaurus",
+    "name": "クリスタルアンキロ",
+    "description": "結晶装甲の耐久進化。硬さと結晶棘で近づく敵を削る。",
+    "condition": "Lv7到達 + 結晶スパイクLv3 + 尻尾薙ぎ払いLv2",
+    "icon": "assets/evolutions/evolution-crystal-ankylosaurus-icon.png",
+    "sprite": "assets/characters/evolution-crystal-ankylosaurus.png",
+    "displayScale": 1.14,
+    "special": {
+      "id": "crystal_tail_bastion",
+      "name": "晶尾城壁",
+      "description": "結晶の尾撃で周囲に棘の衝撃波を広げる。",
+      "icon": "assets/specials/special-gaia-break.png",
+      "cooldown": 10.6,
+      "damage": 88,
+      "range": 205,
+      "effect": "gaia_break",
+      "sound": "crystal",
+      "effectSprite": "assets/effects/effect-crystal-spikes.png"
+    },
+    "requirements": {
+      "level": 7,
+      "skillLevels": {
+        "crystal_spikes": 3,
+        "tail_sweep": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.48,
+      "damageMultiplier": 1.1,
+      "speedMultiplier": 0.96,
+      "specialCooldownMultiplier": 0.92,
+      "auraDamage": 4
+    }
+  },
+  {
+    "id": "tide_spinosaurus",
+    "baseDinosaur": "spinosaurus",
+    "name": "タイドスピノ",
+    "description": "水流のように敵を押し流す制圧進化。前方攻撃と回転率に優れる。",
+    "condition": "Lv7到達 + 火炎ブレスLv2 + 結晶スパイクLv2",
+    "icon": "assets/evolutions/evolution-tide-spinosaurus-icon.png",
+    "sprite": "assets/characters/evolution-tide-spinosaurus.png",
+    "displayScale": 1.24,
+    "special": {
+      "id": "tidal_spine_burst",
+      "name": "潮帆バースト",
+      "description": "帆から圧縮した衝撃波を放ち、全方位へ弾を散らす。",
+      "icon": "assets/specials/special-inferno-burst.png",
+      "cooldown": 9.8,
+      "damage": 86,
+      "range": 198,
+      "effect": "inferno_burst",
+      "sound": "special",
+      "effectSprite": "assets/effects/effect-meteor-stomp.png",
+      "projectileSprite": "assets/effects/projectile-fireball.png"
+    },
+    "requirements": {
+      "level": 7,
+      "skillLevels": {
+        "fire_breath": 2,
+        "crystal_spikes": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.2,
+      "damageMultiplier": 1.2,
+      "speedMultiplier": 1.08,
+      "specialCooldownMultiplier": 0.82
+    }
+  },
+  {
+    "id": "venom_spinosaurus",
+    "baseDinosaur": "spinosaurus",
+    "name": "ヴェノムスピノ",
+    "description": "毒霧と広範囲攻撃で戦場を染める進化。継続火力に優れる。",
+    "condition": "Lv8到達 + 毒液スピットLv3 + 守護咆哮Lv2",
+    "icon": "assets/evolutions/evolution-venom-spinosaurus-icon.png",
+    "sprite": "assets/characters/evolution-venom-spinosaurus.png",
+    "displayScale": 1.22,
+    "special": {
+      "id": "venom_spine_inferno",
+      "name": "毒帆インフェルノ",
+      "description": "毒を帯びた衝撃波で周囲を焼き払い、毒炎を残す。",
+      "icon": "assets/specials/special-venom-inferno.png",
+      "cooldown": 10.1,
+      "damage": 88,
+      "range": 205,
+      "effect": "venom_inferno",
+      "sound": "toxic",
+      "effectSprite": "assets/effects/special-venom-inferno-effect.png",
+      "projectileSprite": "assets/effects/projectile-toxic-venom.png"
+    },
+    "requirements": {
+      "level": 8,
+      "skillLevels": {
+        "toxic_spit": 3,
+        "guard_roar": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.18,
+      "damageMultiplier": 1.22,
+      "speedMultiplier": 1.04,
+      "specialCooldownMultiplier": 0.84,
+      "auraDamage": 8
+    }
+  },
+  {
+    "id": "storm_pteranodon",
+    "baseDinosaur": "pteranodon",
+    "name": "ストームプテラノドン",
+    "description": "雷雲を切り裂く高速進化。移動と必殺技の回転率が高い。",
+    "condition": "Lv7到達 + 雷光ダッシュLv2 + 突進Lv2",
+    "icon": "assets/evolutions/evolution-storm-pteranodon-icon.png",
+    "sprite": "assets/characters/evolution-storm-pteranodon.png",
+    "displayScale": 1.18,
+    "special": {
+      "id": "storm_wing_cyclone",
+      "name": "雷翼サイクロン",
+      "description": "雷をまとった翼で一直線に敵群を切り裂く。",
+      "icon": "assets/skills/skill-cyclone-feather.png",
+      "cooldown": 8.2,
+      "damage": 88,
+      "range": 235,
+      "effect": "storm_crash",
+      "sound": "lightning",
+      "effectSprite": "assets/effects/special-raptor-pounce-effect.png"
+    },
+    "requirements": {
+      "level": 7,
+      "skillLevels": {
+        "lightning_dash": 2,
+        "rush": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.08,
+      "damageMultiplier": 1.2,
+      "speedMultiplier": 1.24,
+      "specialCooldownMultiplier": 0.78
+    }
+  },
+  {
+    "id": "alpha_pteranodon",
+    "baseDinosaur": "pteranodon",
+    "name": "アルファプテラノドン",
+    "description": "群れの空を支配する進化。軽快さを保ったまま攻撃性能を高める。",
+    "condition": "Lv8到達 + 裂爪Lv3 + 尻尾薙ぎ払いLv2",
+    "icon": "assets/evolutions/evolution-alpha-pteranodon-icon.png",
+    "sprite": "assets/characters/evolution-alpha-pteranodon.png",
+    "displayScale": 1.18,
+    "special": {
+      "id": "alpha_wing_order",
+      "name": "王翼号令",
+      "description": "翼の衝撃で前方を裂き、周囲へ威圧の波を広げる。",
+      "icon": "assets/specials/special-primal-roar.png",
+      "cooldown": 8.9,
+      "damage": 92,
+      "range": 215,
+      "effect": "raptor_pounce",
+      "sound": "special",
+      "effectSprite": "assets/effects/special-raptor-pounce-effect.png"
+    },
+    "requirements": {
+      "level": 8,
+      "skillLevels": {
+        "rending_claw": 3,
+        "tail_sweep": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.14,
+      "damageMultiplier": 1.22,
+      "speedMultiplier": 1.18,
+      "specialCooldownMultiplier": 0.82
+    }
+  },
+  {
+    "id": "storm_ankylosaurus",
+    "baseDinosaur": "ankylosaurus",
+    "name": "ストームアンキロ",
+    "description": "雷を帯びた装甲で突進力を得た進化。",
+    "condition": "Lv7到達 + 雷光ダッシュLv2 + 守護咆哮Lv2",
+    "icon": "assets/evolutions/evolution-storm-ankylosaurus-icon.png",
+    "sprite": "assets/characters/evolution-storm-ankylosaurus.png",
+    "displayScale": 1.15,
+    "special": {
+      "id": "storm_tail_crash",
+      "name": "雷尾クラッシュ",
+      "description": "雷の尾撃で直線と周囲を制圧する。",
+      "icon": "assets/specials/special-storm-crash.png",
+      "cooldown": 9.8,
+      "damage": 92,
+      "range": 210,
+      "effect": "storm_crash",
+      "sound": "lightning",
+      "effectSprite": "assets/effects/special-raptor-pounce-effect.png"
+    },
+    "requirements": {
+      "level": 7,
+      "skillLevels": {
+        "lightning_dash": 2,
+        "guard_roar": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.34,
+      "damageMultiplier": 1.15,
+      "speedMultiplier": 1.08,
+      "specialCooldownMultiplier": 0.86
+    }
+  },
+  {
+    "id": "iron_ankylosaurus",
+    "baseDinosaur": "ankylosaurus",
+    "name": "アイアンアンキロ",
+    "description": "鋼の装甲で極めて高い耐久を得る進化。",
+    "condition": "Lv8到達 + 守護咆哮Lv3 + 裂爪Lv2",
+    "icon": "assets/evolutions/evolution-iron-ankylosaurus-icon.png",
+    "sprite": "assets/characters/evolution-iron-ankylosaurus.png",
+    "displayScale": 1.16,
+    "special": {
+      "id": "iron_tail_roar",
+      "name": "鋼尾ロア",
+      "description": "鋼の尾撃と咆哮で周囲を吹き飛ばす。",
+      "icon": "assets/specials/special-iron-roar.png",
+      "cooldown": 11,
+      "damage": 94,
+      "range": 210,
+      "effect": "iron_roar",
+      "sound": "impact",
+      "effectSprite": "assets/effects/special-iron-roar-effect.png"
+    },
+    "requirements": {
+      "level": 8,
+      "skillLevels": {
+        "guard_roar": 3,
+        "rending_claw": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.58,
+      "damageMultiplier": 1.1,
+      "speedMultiplier": 0.94,
+      "specialCooldownMultiplier": 0.92
+    }
+  },
+  {
+    "id": "venom_ankylosaurus",
+    "baseDinosaur": "ankylosaurus",
+    "name": "ヴェノムアンキロ",
+    "description": "毒棘の装甲で近接した敵を削る進化。",
+    "condition": "Lv8到達 + 毒液スピットLv3 + 尻尾薙ぎ払いLv2",
+    "icon": "assets/evolutions/evolution-venom-ankylosaurus-icon.png",
+    "sprite": "assets/characters/evolution-venom-ankylosaurus.png",
+    "displayScale": 1.15,
+    "special": {
+      "id": "venom_tail_inferno",
+      "name": "毒尾インフェルノ",
+      "description": "毒霧と尾撃で周囲を浸食する。",
+      "icon": "assets/specials/special-venom-inferno.png",
+      "cooldown": 10.4,
+      "damage": 88,
+      "range": 202,
+      "effect": "venom_inferno",
+      "sound": "toxic",
+      "effectSprite": "assets/effects/special-venom-inferno-effect.png",
+      "projectileSprite": "assets/effects/projectile-toxic-venom.png"
+    },
+    "requirements": {
+      "level": 8,
+      "skillLevels": {
+        "toxic_spit": 3,
+        "tail_sweep": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.42,
+      "damageMultiplier": 1.12,
+      "speedMultiplier": 0.98,
+      "specialCooldownMultiplier": 0.88,
+      "auraDamage": 8
+    }
+  },
+  {
+    "id": "titan_ankylosaurus",
+    "baseDinosaur": "ankylosaurus",
+    "name": "タイタンアンキロ",
+    "description": "最重装の巨体進化。耐久と押し返しに優れる。",
+    "condition": "Lv8到達 + メテオスタンプLv3 + 守護咆哮Lv3",
+    "icon": "assets/evolutions/evolution-titan-ankylosaurus-icon.png",
+    "sprite": "assets/characters/evolution-titan-ankylosaurus.png",
+    "displayScale": 1.18,
+    "special": {
+      "id": "titan_tail_bastion",
+      "name": "巨尾城壁",
+      "description": "巨大な尾で大地を叩き周囲を粉砕する。",
+      "icon": "assets/specials/special-iron-roar.png",
+      "cooldown": 11.4,
+      "damage": 102,
+      "range": 220,
+      "effect": "iron_roar",
+      "sound": "impact",
+      "effectSprite": "assets/effects/special-iron-roar-effect.png"
+    },
+    "requirements": {
+      "level": 8,
+      "skillLevels": {
+        "meteor_stomp": 3,
+        "guard_roar": 3
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.64,
+      "damageMultiplier": 1.16,
+      "speedMultiplier": 0.9,
+      "specialCooldownMultiplier": 0.94
+    }
+  },
+  {
+    "id": "blaze_spinosaurus",
+    "baseDinosaur": "spinosaurus",
+    "name": "ブレイズスピノ",
+    "description": "炎の帆で前方制圧を極めた進化。",
+    "condition": "Lv7到達 + 火炎ブレスLv3 + 突進Lv2",
+    "icon": "assets/evolutions/evolution-blaze-spinosaurus-icon.png",
+    "sprite": "assets/characters/evolution-blaze-spinosaurus.png",
+    "displayScale": 1.24,
+    "special": {
+      "id": "blaze_spine_burst",
+      "name": "炎帆バースト",
+      "description": "炎の帆から全方位へ爆炎を放つ。",
+      "icon": "assets/specials/special-inferno-burst.png",
+      "cooldown": 9.9,
+      "damage": 90,
+      "range": 200,
+      "effect": "inferno_burst",
+      "sound": "fire",
+      "effectSprite": "assets/effects/effect-meteor-stomp.png",
+      "projectileSprite": "assets/effects/projectile-fireball.png"
+    },
+    "requirements": {
+      "level": 7,
+      "skillLevels": {
+        "fire_breath": 3,
+        "rush": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.16,
+      "damageMultiplier": 1.22,
+      "speedMultiplier": 1.06,
+      "specialCooldownMultiplier": 0.82,
+      "auraDamage": 5
+    }
+  },
+  {
+    "id": "storm_spinosaurus",
+    "baseDinosaur": "spinosaurus",
+    "name": "ストームスピノ",
+    "description": "雷を帯びた帆で機動力を高めた進化。",
+    "condition": "Lv7到達 + 雷光ダッシュLv2 + 火炎ブレスLv2",
+    "icon": "assets/evolutions/evolution-storm-spinosaurus-icon.png",
+    "sprite": "assets/characters/evolution-storm-spinosaurus.png",
+    "displayScale": 1.22,
+    "special": {
+      "id": "storm_spine_crash",
+      "name": "雷帆クラッシュ",
+      "description": "雷速で前方を切り裂く帆の衝撃。",
+      "icon": "assets/specials/special-storm-crash.png",
+      "cooldown": 8.8,
+      "damage": 90,
+      "range": 228,
+      "effect": "storm_crash",
+      "sound": "lightning",
+      "effectSprite": "assets/effects/special-raptor-pounce-effect.png"
+    },
+    "requirements": {
+      "level": 7,
+      "skillLevels": {
+        "lightning_dash": 2,
+        "fire_breath": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.12,
+      "damageMultiplier": 1.2,
+      "speedMultiplier": 1.16,
+      "specialCooldownMultiplier": 0.8
+    }
+  },
+  {
+    "id": "crystal_spinosaurus",
+    "baseDinosaur": "spinosaurus",
+    "name": "クリスタルスピノ",
+    "description": "結晶の帆をもつ制圧進化。範囲攻撃に優れる。",
+    "condition": "Lv8到達 + 結晶スパイクLv3 + サイクロンフェザーLv2",
+    "icon": "assets/evolutions/evolution-crystal-spinosaurus-icon.png",
+    "sprite": "assets/characters/evolution-crystal-spinosaurus.png",
+    "displayScale": 1.22,
+    "special": {
+      "id": "crystal_spine_wall",
+      "name": "晶帆城壁",
+      "description": "結晶の衝撃波で周囲を破壊する。",
+      "icon": "assets/specials/special-gaia-break.png",
+      "cooldown": 10.2,
+      "damage": 92,
+      "range": 210,
+      "effect": "gaia_break",
+      "sound": "crystal",
+      "effectSprite": "assets/effects/effect-crystal-spikes.png"
+    },
+    "requirements": {
+      "level": 8,
+      "skillLevels": {
+        "crystal_spikes": 3,
+        "cyclone_feather": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.24,
+      "damageMultiplier": 1.17,
+      "speedMultiplier": 1.04,
+      "specialCooldownMultiplier": 0.86,
+      "auraDamage": 4
+    }
+  },
+  {
+    "id": "alpha_spinosaurus",
+    "baseDinosaur": "spinosaurus",
+    "name": "アルファスピノ",
+    "description": "水辺の王として攻守のバランスを極めた進化。",
+    "condition": "Lv8到達 + ボーンシャードLv3 + 尻尾薙ぎ払いLv2",
+    "icon": "assets/evolutions/evolution-alpha-spinosaurus-icon.png",
+    "sprite": "assets/characters/evolution-alpha-spinosaurus.png",
+    "displayScale": 1.24,
+    "special": {
+      "id": "alpha_spine_order",
+      "name": "王帆号令",
+      "description": "帆の振動で前方と周囲を同時に制圧する。",
+      "icon": "assets/specials/special-primal-roar.png",
+      "cooldown": 9.2,
+      "damage": 96,
+      "range": 216,
+      "effect": "guardian_charge",
+      "sound": "special",
+      "effectSprite": "assets/effects/special-triceratops-guardian-effect.png"
+    },
+    "requirements": {
+      "level": 8,
+      "skillLevels": {
+        "bone_shards": 3,
+        "tail_sweep": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.22,
+      "damageMultiplier": 1.22,
+      "speedMultiplier": 1.08,
+      "specialCooldownMultiplier": 0.84
+    }
+  },
+  {
+    "id": "blaze_pteranodon",
+    "baseDinosaur": "pteranodon",
+    "name": "ブレイズプテラノドン",
+    "description": "炎翼で前方を焼き払う進化。",
+    "condition": "Lv7到達 + 火炎ブレスLv2 + 突進Lv2",
+    "icon": "assets/evolutions/evolution-blaze-pteranodon-icon.png",
+    "sprite": "assets/characters/evolution-blaze-pteranodon.png",
+    "displayScale": 1.16,
+    "special": {
+      "id": "blaze_wing_burst",
+      "name": "炎翼バースト",
+      "description": "翼から火炎弾を放つ高速必殺。",
+      "icon": "assets/specials/special-inferno-burst.png",
+      "cooldown": 8.7,
+      "damage": 86,
+      "range": 200,
+      "effect": "inferno_burst",
+      "sound": "fire",
+      "effectSprite": "assets/effects/effect-meteor-stomp.png",
+      "projectileSprite": "assets/effects/projectile-fireball.png"
+    },
+    "requirements": {
+      "level": 7,
+      "skillLevels": {
+        "fire_breath": 2,
+        "rush": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.08,
+      "damageMultiplier": 1.2,
+      "speedMultiplier": 1.2,
+      "specialCooldownMultiplier": 0.8,
+      "auraDamage": 4
+    }
+  },
+  {
+    "id": "crystal_pteranodon",
+    "baseDinosaur": "pteranodon",
+    "name": "クリスタルプテラノドン",
+    "description": "結晶の羽で遠距離から制圧する進化。",
+    "condition": "Lv7到達 + 結晶スパイクLv3 + ボーンシャードLv2",
+    "icon": "assets/evolutions/evolution-crystal-pteranodon-icon.png",
+    "sprite": "assets/characters/evolution-crystal-pteranodon.png",
+    "displayScale": 1.16,
+    "special": {
+      "id": "crystal_wing_break",
+      "name": "晶翼ブレイク",
+      "description": "結晶羽の嵐で周囲を破壊する。",
+      "icon": "assets/specials/special-gaia-break.png",
+      "cooldown": 9.6,
+      "damage": 88,
+      "range": 205,
+      "effect": "gaia_break",
+      "sound": "crystal",
+      "effectSprite": "assets/effects/effect-crystal-spikes.png"
+    },
+    "requirements": {
+      "level": 7,
+      "skillLevels": {
+        "crystal_spikes": 3,
+        "bone_shards": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.1,
+      "damageMultiplier": 1.18,
+      "speedMultiplier": 1.18,
+      "specialCooldownMultiplier": 0.84
+    }
+  },
+  {
+    "id": "venom_pteranodon",
+    "baseDinosaur": "pteranodon",
+    "name": "ヴェノムプテラノドン",
+    "description": "毒翼で敵を削り続ける奇襲進化。",
+    "condition": "Lv8到達 + 毒液スピットLv3 + 裂爪Lv2",
+    "icon": "assets/evolutions/evolution-venom-pteranodon-icon.png",
+    "sprite": "assets/characters/evolution-venom-pteranodon.png",
+    "displayScale": 1.16,
+    "special": {
+      "id": "venom_wing_inferno",
+      "name": "毒翼インフェルノ",
+      "description": "毒の嵐を放ち周囲に毒炎を残す。",
+      "icon": "assets/specials/special-venom-inferno.png",
+      "cooldown": 8.9,
+      "damage": 86,
+      "range": 202,
+      "effect": "venom_inferno",
+      "sound": "toxic",
+      "effectSprite": "assets/effects/special-venom-inferno-effect.png",
+      "projectileSprite": "assets/effects/projectile-toxic-venom.png"
+    },
+    "requirements": {
+      "level": 8,
+      "skillLevels": {
+        "toxic_spit": 3,
+        "rending_claw": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.1,
+      "damageMultiplier": 1.2,
+      "speedMultiplier": 1.18,
+      "specialCooldownMultiplier": 0.78,
+      "auraDamage": 6
+    }
+  },
+  {
+    "id": "iron_pteranodon",
+    "baseDinosaur": "pteranodon",
+    "name": "アイアンプテラノドン",
+    "description": "鋼の翼で耐久を補った安定進化。",
+    "condition": "Lv8到達 + 守護咆哮Lv3 + サイクロンフェザーLv2",
+    "icon": "assets/evolutions/evolution-iron-pteranodon-icon.png",
+    "sprite": "assets/characters/evolution-iron-pteranodon.png",
+    "displayScale": 1.16,
+    "special": {
+      "id": "iron_wing_roar",
+      "name": "鋼翼ロア",
+      "description": "鋼翼の振動で敵群を吹き飛ばす。",
+      "icon": "assets/specials/special-iron-roar.png",
+      "cooldown": 9.8,
+      "damage": 88,
+      "range": 208,
+      "effect": "iron_roar",
+      "sound": "impact",
+      "effectSprite": "assets/effects/special-iron-roar-effect.png"
+    },
+    "requirements": {
+      "level": 8,
+      "skillLevels": {
+        "guard_roar": 3,
+        "cyclone_feather": 2
+      }
+    },
+    "effects": {
+      "hpMultiplier": 1.22,
+      "damageMultiplier": 1.12,
+      "speedMultiplier": 1.08,
+      "specialCooldownMultiplier": 0.86
     }
   }
 ]

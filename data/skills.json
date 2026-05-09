@@ -92,7 +92,7 @@
     "effect": "guard_roar",
     "action": "pulse_area",
     "type": "area",
-    "cooldown": 4.0,
+    "cooldown": 4,
     "damage": 16,
     "range": 128,
     "maxLevel": 8
@@ -138,11 +138,43 @@
     "effect": "meteor_stomp",
     "action": "pulse_area",
     "type": "area",
-    "cooldown": 5.0,
+    "cooldown": 5,
     "damage": 31,
     "range": 118,
     "maxLevel": 8,
     "unlockCost": 260,
     "effectSprite": "assets/effects/effect-meteor-stomp.png"
+  },
+  {
+    "id": "bone_shards",
+    "name": "ボーンシャード",
+    "description": "前方へ骨片を散弾のように放ち、広い角度の敵を削る。",
+    "icon": "assets/skills/skill-bone-shards.png",
+    "sound": "crystal",
+    "effect": "bone_shards",
+    "action": "fireball_burst",
+    "projectileSprite": "assets/effects/projectile-bone-shard.png",
+    "type": "cone",
+    "cooldown": 4.15,
+    "damage": 24,
+    "range": 132,
+    "maxLevel": 8,
+    "unlockCost": 620
+  },
+  {
+    "id": "cyclone_feather",
+    "name": "サイクロンフェザー",
+    "description": "風をまとった羽根の渦で周囲を切り裂き、敵を押し返す。",
+    "icon": "assets/skills/skill-cyclone-feather.png",
+    "sound": "lightning",
+    "effect": "cyclone_feather",
+    "action": "pulse_area",
+    "type": "area",
+    "cooldown": 4.55,
+    "damage": 23,
+    "range": 138,
+    "maxLevel": 8,
+    "unlockCost": 760,
+    "effectSprite": "assets/effects/special-raptor-pounce-effect.png"
   }
 ]
