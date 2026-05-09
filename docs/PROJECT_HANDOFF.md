@@ -218,6 +218,9 @@ Scalability rules:
   - Asset version: `20260509-bgm-sfx-balance1`.
   - BGM media elements are routed through a WebAudio `MediaElementSource` into `musicGain`, so the BGM slider works on mobile Safari instead of relying only on `HTMLAudioElement.volume`.
   - SFX volume is applied once through the shared SFX gain plus a slightly stronger per-sound base, improving balance against BGM.
+- 2026-05-09 mobile zoom guard pass:
+  - Asset version: `20260509-zoom-guard1`.
+  - Viewport metadata, CSS touch handling, and iOS gesture/double-tap guards prevent accidental page zoom while playing on mobile.
   - Home Stage icon was replaced with `assets/ui/home-stage-icon-20260509.png`.
   - Evolution icons were regenerated from transparent sprites into a consistent circular badge format.
   - Previously corrupted Japanese strings in the newly added raptor/triceratops evolutions were restored.

@@ -35,13 +35,17 @@ body {
   font-family: "Yu Gothic UI", "Hiragino Sans", "Meiryo", system-ui, sans-serif;
   letter-spacing: 0;
   touch-action: none;
+  overscroll-behavior: none;
   -webkit-text-size-adjust: 100%;
   -webkit-user-select: none;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button {
   font: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .app-shell {
@@ -52,6 +56,7 @@ button {
   aspect-ratio: 390 / 844;
   margin: 0 auto;
   overflow: hidden;
+  touch-action: none;
   background: #10261f;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 24px 60px rgba(0, 0, 0, 0.45);
 }
@@ -60,6 +65,7 @@ button {
   display: block;
   width: 100%;
   height: 100%;
+  touch-action: none;
   background: #173a2f;
 }
 

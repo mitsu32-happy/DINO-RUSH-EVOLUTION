@@ -4,7 +4,7 @@
   const WIDTH = 390;
   const HEIGHT = 844;
   const SAVE_KEY = "dinoRushEvolution.save.v1";
-  const ASSET_VERSION = "20260509-bgm-sfx-balance1";
+  const ASSET_VERSION = "20260509-zoom-guard1";
 
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
@@ -390,6 +390,7 @@
         playSound("ui");
       }
     });
+    bindViewportGuards();
     bindInput();
     applyControlLayout();
     showTitle();
@@ -594,6 +595,38 @@
     });
 
     pauseButton.addEventListener("click", togglePause);
+  }
+
+  function bindViewportGuards() {
+    let lastTouchEnd = 0;
+    const preventZoom = (event) => {
+      event.preventDefault();
+    };
+
+    ["gesturestart", "gesturechange", "gestureend"].forEach((type) => {
+      document.addEventListener(type, preventZoom, { passive: false });
+    });
+
+    document.addEventListener("touchmove", (event) => {
+      if (event.touches && event.touches.length > 1) {
+        event.preventDefault();
+      }
+    }, { passive: false });
+
+    document.addEventListener("touchend", (event) => {
+      if (!event.changedTouches || event.changedTouches.length !== 1) {
+        return;
+      }
+      const target = event.target;
+      if (!(target instanceof Element) || !target.closest(".app-shell")) {
+        return;
+      }
+      const now = window.performance.now();
+      if (now - lastTouchEnd < 360) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, { passive: false });
   }
 
   function shouldIgnoreGameplayPointer(event) {
