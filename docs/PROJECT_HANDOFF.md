@@ -209,6 +209,11 @@ Scalability rules:
   - Stage select dinosaur taps no longer re-render the stage select view, preserving horizontal scroll position.
   - The title-to-home click handler is explicitly removed when leaving the title screen so the first home click is not swallowed.
   - SFX clips are tracked and cleaned up; failed HTMLAudio playback falls back to procedural WebAudio sounds.
+- 2026-05-09 mobile audio/layout pass:
+  - Asset version: `20260509-mobile-audio-layout1`.
+  - SFX playback now uses decoded WebAudio buffers instead of creating overlapping `HTMLAudioElement` instances, reducing iOS Safari audio dropouts when many skill sounds overlap.
+  - SFX has a small polyphony cap and older nodes are stopped first to avoid runaway overlap.
+  - The app shell keeps the fixed 390:844 game aspect ratio and scales down to fit the current mobile viewport instead of stretching vertically.
   - Home Stage icon was replaced with `assets/ui/home-stage-icon-20260509.png`.
   - Evolution icons were regenerated from transparent sprites into a consistent circular badge format.
   - Previously corrupted Japanese strings in the newly added raptor/triceratops evolutions were restored.

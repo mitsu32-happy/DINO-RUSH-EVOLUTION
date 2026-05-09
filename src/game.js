@@ -4,7 +4,7 @@
   const WIDTH = 390;
   const HEIGHT = 844;
   const SAVE_KEY = "dinoRushEvolution.save.v1";
-  const ASSET_VERSION = "20260509-input-audiofix1";
+  const ASSET_VERSION = "20260509-mobile-audio-layout1";
 
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
@@ -33,8 +33,11 @@
   let titleVideoRef = null;
   let titleVideoUnlockHandler = null;
   let titleOpenHomeHandler = null;
-  const activeSfxClips = new Set();
+  const sfxBuffers = new Map();
+  const sfxBufferPromises = new Map();
+  const activeSfxNodes = new Set();
   const sfxLastPlayed = {};
+  const MAX_ACTIVE_SFX = 14;
 
   const AUDIO_FILES = {
     gameBgm: "assets/audio/bgm-rumble-jungle.ogg",
@@ -573,6 +576,7 @@
 
     appShell.addEventListener("pointermove", (event) => {
       if (event.pointerId === joystickPointerId) {
+        unlockAudioFromGesture();
         event.preventDefault();
         updateJoystick(event.clientX, event.clientY);
       }
@@ -583,6 +587,7 @@
 
     specialButton.addEventListener("pointerdown", (event) => {
       event.preventDefault();
+      unlockAudioFromGesture();
       ensureAudio();
       triggerSpecial();
     });
@@ -3142,11 +3147,10 @@
       bgmTrack.pause();
       bgmTrack.currentTime = 0;
     }
-    activeSfxClips.forEach((clip) => {
-      clip.pause();
-      clip.currentTime = 0;
+    activeSfxNodes.forEach((node) => {
+      stopSfxNode(node);
     });
-    activeSfxClips.clear();
+    activeSfxNodes.clear();
     bgmKind = null;
   }
 
@@ -3155,6 +3159,7 @@
       return;
     }
     const engine = ensureAudio();
+    warmSfxBuffers(engine);
     if (startBgmTrack("game")) {
       return;
     }
@@ -3186,7 +3191,8 @@
     if (!meta.settings.audio) {
       return;
     }
-    ensureAudio();
+    const engine = ensureAudio();
+    warmSfxBuffers(engine);
     startBgmTrack("home");
   }
 
@@ -3257,27 +3263,123 @@
     }
     sfxLastPlayed[key] = now;
 
-    const clip = new Audio(withVersion(src));
-    clip.preload = "auto";
-    clip.volume = (SFX_VOLUME[key] ?? 0.4) * getSfxVolume();
-    activeSfxClips.add(clip);
-    const cleanup = () => activeSfxClips.delete(clip);
-    clip.addEventListener("ended", cleanup, { once: true });
-    clip.addEventListener("error", cleanup, { once: true });
-    const playPromise = clip.play();
-    if (playPromise && playPromise.catch) {
-      playPromise.catch(() => {
-        cleanup();
-        playProceduralSound(key);
-      });
+    const engine = ensureAudio();
+    if (!engine) {
+      return false;
     }
+
+    const cached = sfxBuffers.get(key);
+    if (cached) {
+      playSfxBuffer(key, cached);
+      return true;
+    }
+    if (cached === null) {
+      playProceduralSound(key);
+      return true;
+    }
+
+    loadSfxBuffer(key, src, engine);
+    playProceduralSound(key);
+    return true;
+  }
+
+  function loadSfxBuffer(key, src, engine) {
+    if (sfxBufferPromises.has(key) || sfxBuffers.has(key)) {
+      return;
+    }
+    const promise = fetch(withVersion(src))
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`SFX load failed: ${src}`);
+        }
+        return response.arrayBuffer();
+      })
+      .then((arrayBuffer) => engine.context.decodeAudioData(arrayBuffer))
+      .then((buffer) => {
+        sfxBuffers.set(key, buffer);
+      })
+      .catch(() => {
+        sfxBuffers.set(key, null);
+      })
+      .finally(() => {
+        sfxBufferPromises.delete(key);
+      });
+    sfxBufferPromises.set(key, promise);
+  }
+
+  function warmSfxBuffers(engine) {
+    if (!engine) {
+      return;
+    }
+    Object.entries(AUDIO_FILES).forEach(([key, src]) => {
+      if (key === "gameBgm" || key === "homeBgm") {
+        return;
+      }
+      loadSfxBuffer(key, src, engine);
+    });
+  }
+
+  function playSfxBuffer(key, buffer) {
+    const engine = ensureAudio();
+    if (!engine || !buffer) {
+      return false;
+    }
+    if (engine.context.state === "suspended") {
+      engine.context.resume().catch(() => {});
+    }
+    while (activeSfxNodes.size >= MAX_ACTIVE_SFX) {
+      const oldest = activeSfxNodes.values().next().value;
+      if (!oldest) {
+        break;
+      }
+      stopSfxNode(oldest);
+    }
+
+    const source = engine.context.createBufferSource();
+    const gain = engine.context.createGain();
+    const node = { source, gain, timeoutId: null };
+    const cleanup = () => {
+      if (node.timeoutId) {
+        window.clearTimeout(node.timeoutId);
+        node.timeoutId = null;
+      }
+      activeSfxNodes.delete(node);
+    };
+    source.buffer = buffer;
+    gain.gain.value = (SFX_VOLUME[key] ?? 0.4) * getSfxVolume();
+    source.connect(gain);
+    gain.connect(engine.sfxGain);
+    source.onended = cleanup;
+    activeSfxNodes.add(node);
+    source.start();
     const maxDuration = SFX_MAX_DURATION[key] || 1.1;
-    window.setTimeout(() => {
-      clip.pause();
-      clip.currentTime = 0;
-      cleanup();
+    node.timeoutId = window.setTimeout(() => {
+      stopSfxNode(node);
     }, Math.round(maxDuration * 1000));
     return true;
+  }
+
+  function stopSfxNode(node) {
+    if (!node || !activeSfxNodes.has(node)) {
+      return;
+    }
+    if (node.timeoutId) {
+      window.clearTimeout(node.timeoutId);
+      node.timeoutId = null;
+    }
+    activeSfxNodes.delete(node);
+    try {
+      node.source.onended = null;
+      node.source.stop();
+    } catch (_error) {
+      // Source nodes can only be stopped once.
+    }
+    try {
+      node.source.disconnect();
+      node.gain.disconnect();
+    } catch (_error) {
+      // Already disconnected.
+    }
   }
 
   function playSound(key) {

@@ -2,6 +2,7 @@
   color-scheme: dark;
   --screen-w: 390px;
   --screen-h: 844px;
+  --screen-aspect: 0.462085;
   --ink: #f4f2de;
   --muted: #b9c4a7;
   --leaf: #163f32;
@@ -21,8 +22,12 @@ html,
 body {
   width: 100%;
   height: 100%;
+  min-height: 100dvh;
   margin: 0;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   background:
     radial-gradient(circle at 20% 10%, rgba(96, 213, 200, 0.13), transparent 30%),
     linear-gradient(160deg, #081511 0%, #173d31 48%, #1f2b1c 100%);
@@ -30,6 +35,7 @@ body {
   font-family: "Yu Gothic UI", "Hiragino Sans", "Meiryo", system-ui, sans-serif;
   letter-spacing: 0;
   touch-action: none;
+  -webkit-text-size-adjust: 100%;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -40,9 +46,10 @@ button {
 
 .app-shell {
   position: relative;
-  width: min(100vw, var(--screen-w));
-  height: min(100dvh, var(--screen-h));
-  min-height: 640px;
+  width: min(100vw, calc(100dvh * var(--screen-aspect)), var(--screen-w));
+  height: auto;
+  max-height: 100dvh;
+  aspect-ratio: 390 / 844;
   margin: 0 auto;
   overflow: hidden;
   background: #10261f;
@@ -685,7 +692,6 @@ button {
 
 @media (min-width: 700px) {
   .app-shell {
-    height: var(--screen-h);
     margin-top: max(0px, calc((100dvh - var(--screen-h)) / 2));
     border-radius: 8px;
   }
