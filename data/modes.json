@@ -16,11 +16,11 @@
     "name": "ハード",
     "bossAt": 215,
     "clearType": "boss",
-    "spawnIntervalMultiplier": 0.68,
-    "enemyHpMultiplier": 1.38,
-    "enemyDamageMultiplier": 1.32,
-    "enemySpeedMultiplier": 1.1,
-    "xpMultiplier": 1.1,
+    "spawnIntervalMultiplier": 0.64,
+    "enemyHpMultiplier": 1.44,
+    "enemyDamageMultiplier": 1.37,
+    "enemySpeedMultiplier": 1.12,
+    "xpMultiplier": 1.12,
     "description": "短めに締まった時間で、敵の圧が高い上級モード。"
   },
   {

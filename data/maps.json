@@ -44,6 +44,17 @@
         "weight": 3,
         "minElapsed": 165,
         "minMode": "endless"
+      },
+      {
+        "enemyId": "mossback_grazer",
+        "weight": 3,
+        "minElapsed": 60
+      },
+      {
+        "enemyId": "canopy_spitter",
+        "weight": 3,
+        "minElapsed": 135,
+        "minMode": "endless"
       }
     ],
     "bossId": "ancient_spino",
@@ -66,7 +77,8 @@
         "at": 480
       }
     ],
-    "spawnIntensity": 0.88
+    "spawnIntensity": 0.88,
+    "bgm": "assets/audio/bgm-triassic-jungle.wav"
   },
   {
     "id": "volcanic_ridge",
@@ -125,6 +137,18 @@
         "weight": 3,
         "minElapsed": 220,
         "minMode": "endless"
+      },
+      {
+        "enemyId": "slag_hornet",
+        "weight": 3,
+        "minElapsed": 135,
+        "minMode": "hard"
+      },
+      {
+        "enemyId": "obsidian_mauler",
+        "weight": 3,
+        "minElapsed": 245,
+        "minMode": "endless"
       }
     ],
     "bossId": "volcanic_tyrant",
@@ -146,7 +170,8 @@
         "enemyId": "ancient_spino",
         "at": 480
       }
-    ]
+    ],
+    "bgm": "assets/audio/bgm-volcanic-ridge.wav"
   },
   {
     "id": "crystal_cavern",
@@ -206,6 +231,18 @@
         "weight": 3,
         "minElapsed": 225,
         "minMode": "endless"
+      },
+      {
+        "enemyId": "quartz_lancer",
+        "weight": 3,
+        "minElapsed": 115,
+        "minMode": "hard"
+      },
+      {
+        "enemyId": "echo_glider",
+        "weight": 3,
+        "minElapsed": 235,
+        "minMode": "endless"
       }
     ],
     "bossId": "crystal_behemoth",
@@ -227,7 +264,8 @@
         "enemyId": "obsidian_ceratops",
         "at": 480
       }
-    ]
+    ],
+    "bgm": "assets/audio/bgm-crystal-cavern.wav"
   },
   {
     "id": "storm_coast",
@@ -286,6 +324,18 @@
         "weight": 3,
         "minElapsed": 230,
         "minMode": "endless"
+      },
+      {
+        "enemyId": "brine_strider",
+        "weight": 3,
+        "minElapsed": 118,
+        "minMode": "hard"
+      },
+      {
+        "enemyId": "tempest_raptor",
+        "weight": 3,
+        "minElapsed": 235,
+        "minMode": "endless"
       }
     ],
     "bossId": "tempest_quetzal",
@@ -307,6 +357,7 @@
         "enemyId": "storm_quetzal",
         "at": 480
       }
-    ]
+    ],
+    "bgm": "assets/audio/bgm-storm-coast.wav"
   }
 ]

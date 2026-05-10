@@ -1,0 +1,101 @@
+[
+  {
+    "id": "power",
+    "name": "攻撃力",
+    "description": "基礎ダメージがランクごとに5%上がります。",
+    "icon": "assets/upgrades/upgrade-power.png",
+    "maxLevel": 5,
+    "valuePerLevel": 0.05,
+    "costs": [180, 360, 720, 1280, 2100]
+  },
+  {
+    "id": "armor",
+    "name": "防御力",
+    "description": "防御値が上がり、受けるダメージも少し抑えます。",
+    "icon": "assets/upgrades/upgrade-armor.png",
+    "maxLevel": 4,
+    "valuePerLevel": 1,
+    "costs": [180, 420, 900, 1700]
+  },
+  {
+    "id": "vitality",
+    "name": "最大HP",
+    "description": "最大HPがランクごとに6%上がります。",
+    "icon": "assets/upgrades/upgrade-hp.png",
+    "maxLevel": 5,
+    "valuePerLevel": 0.06,
+    "costs": [160, 340, 680, 1250, 2000]
+  },
+  {
+    "id": "speed",
+    "name": "素早さ",
+    "description": "移動速度がランクごとに3%上がります。",
+    "icon": "assets/upgrades/upgrade-speed.png",
+    "maxLevel": 4,
+    "valuePerLevel": 0.03,
+    "costs": [150, 320, 700, 1400]
+  },
+  {
+    "id": "cooldown",
+    "name": "クールダウン",
+    "description": "通常技・スキル・必殺技の再使用時間が短くなります。",
+    "icon": "assets/upgrades/upgrade-cooldown.png",
+    "maxLevel": 5,
+    "valuePerLevel": 0.03,
+    "costs": [260, 580, 1100, 1900, 3100]
+  },
+  {
+    "id": "pickup",
+    "name": "回収範囲",
+    "description": "DNA結晶やアイテムを引き寄せる範囲が広がります。",
+    "icon": "assets/upgrades/upgrade-pickup.png",
+    "maxLevel": 4,
+    "valuePerLevel": 18,
+    "costs": [150, 360, 800, 1500]
+  },
+  {
+    "id": "growth",
+    "name": "成長効率",
+    "description": "獲得経験値がランクごとに5%上がります。",
+    "icon": "assets/upgrades/upgrade-growth.png",
+    "maxLevel": 5,
+    "valuePerLevel": 0.05,
+    "costs": [220, 520, 1050, 1900, 3000]
+  },
+  {
+    "id": "dna_gain",
+    "name": "DNA効率",
+    "description": "プレイ中に獲得するDNAポイントが増えます。",
+    "icon": "assets/upgrades/upgrade-dna-gain.png",
+    "maxLevel": 5,
+    "valuePerLevel": 0.04,
+    "costs": [300, 720, 1450, 2500, 3900]
+  },
+  {
+    "id": "luck",
+    "name": "運",
+    "description": "回復アイテムや追加アイテムの出現率が少し上がります。",
+    "icon": "assets/upgrades/upgrade-luck.png",
+    "maxLevel": 4,
+    "valuePerLevel": 0.015,
+    "costs": [260, 640, 1400, 2600]
+  },
+  {
+    "id": "reroll",
+    "name": "リロール",
+    "description": "レベルアップ選択肢を再シャッフルできます。ランクごとに1回使えます。",
+    "icon": "assets/upgrades/upgrade-reroll.png",
+    "maxLevel": 3,
+    "valuePerLevel": 1,
+    "costs": [520, 1500, 3600]
+  },
+  {
+    "id": "banish",
+    "name": "選択肢消去",
+    "description": "選んだ候補をそのプレイ中の選択肢から消去できます。ランクごとに1回使えます。",
+    "icon": "assets/upgrades/upgrade-banish.png",
+    "maxLevel": 3,
+    "valuePerLevel": 1,
+    "costs": [700, 1900, 4300]
+  }
+]

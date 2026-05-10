@@ -218,9 +218,9 @@
     "effect": "tail_club",
     "action": "tail_club",
     "type": "area",
-    "cooldown": 1.05,
-    "damage": 21,
-    "range": 76,
+    "cooldown": 1.18,
+    "damage": 18,
+    "range": 70,
     "maxLevel": 1,
     "basicOnly": true,
     "effectSprite": "assets/effects/effect-tail-club.png"

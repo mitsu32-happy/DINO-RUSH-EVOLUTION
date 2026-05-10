@@ -546,6 +546,10 @@ button {
   grid-column: 1 / -1;
 }
 
+.home-menu-button {
+  min-height: 88px;
+}
+
 .home-menu-icon {
   width: 54px;
   height: 54px;
@@ -577,7 +581,7 @@ button {
 
 .codex-tabs {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin: 10px 0 6px;
 }
@@ -611,6 +615,56 @@ button {
   background: linear-gradient(135deg, rgba(255, 193, 92, 0.18), rgba(96, 213, 200, 0.1));
 }
 
+.codex-evolution-button {
+  cursor: pointer;
+}
+
+.codex-evolution-button.is-selected {
+  border-color: rgba(255, 239, 183, 0.7);
+  background: linear-gradient(135deg, rgba(255, 193, 92, 0.18), rgba(96, 213, 200, 0.1));
+}
+
+.codex-detail {
+  display: grid;
+  grid-template-columns: 62px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 223, 114, 0.26);
+  border-radius: 8px;
+  background: rgba(255, 193, 92, 0.1);
+}
+
+.codex-detail img,
+.codex-detail > .codex-unknown {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+}
+
+.codex-detail span {
+  display: grid;
+  gap: 4px;
+}
+
+.codex-detail strong {
+  font-size: 16px;
+}
+
+.codex-detail small {
+  color: var(--amber);
+  font-weight: 900;
+}
+
+.codex-detail em,
+.codex-stat-line {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+  font-style: normal;
+}
+
 .codex-unknown {
   display: grid;
   place-items: center;
@@ -627,6 +681,167 @@ button {
 
 .score-row {
   min-height: 66px;
+}
+
+.score-dino-list {
+  display: grid;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.score-dino-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.score-dino-row small {
+  color: var(--amber);
+  font-weight: 900;
+}
+
+.levelup-tools {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.levelup-tools .secondary-button {
+  min-height: 40px;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.upgrade-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.upgrade-card {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  min-height: 116px;
+  padding: 8px 6px;
+  border: 1px solid rgba(244, 242, 222, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--ink);
+  text-align: center;
+}
+
+.upgrade-card.is-selected {
+  border-color: rgba(255, 239, 183, 0.7);
+  background: linear-gradient(135deg, rgba(255, 193, 92, 0.18), rgba(96, 213, 200, 0.1));
+}
+
+.upgrade-card img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.upgrade-card span {
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.upgrade-card small {
+  color: var(--amber);
+  font-size: 10px;
+  line-height: 1;
+}
+
+.upgrade-card b {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.upgrade-detail {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid rgba(255, 223, 114, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 193, 92, 0.1);
+}
+
+.upgrade-detail .primary-button {
+  grid-column: 1 / -1;
+}
+
+.achievement-result {
+  color: #ffdf72;
+  font-weight: 900;
+}
+
+.achievement-list {
+  display: grid;
+  gap: 8px;
+  max-height: min(560px, calc(100dvh - 230px));
+  overflow: auto;
+}
+
+.achievement-row {
+  display: grid;
+  grid-template-columns: 26px 44px 1fr;
+  gap: 9px;
+  align-items: center;
+  padding: 9px;
+  border: 1px solid rgba(244, 242, 222, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  opacity: 0.62;
+}
+
+.achievement-row.is-unlocked {
+  opacity: 1;
+  border-color: rgba(255, 223, 114, 0.28);
+}
+
+.achievement-check {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(255, 223, 114, 0.45);
+  border-radius: 4px;
+  color: #ffdf72;
+  font-weight: 900;
+}
+
+.achievement-row img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: rgba(8, 21, 17, 0.7);
+}
+
+.achievement-row span:last-child {
+  display: grid;
+  gap: 3px;
+}
+
+.achievement-row strong {
+  font-size: 13px;
+}
+
+.achievement-row small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.35;
 }
 
 .settings-toggle {

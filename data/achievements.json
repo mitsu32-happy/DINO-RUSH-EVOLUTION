@@ -1,0 +1,154 @@
+[
+  {
+    "id": "first_run",
+    "name": "最初の出撃",
+    "description": "初めて探索を終えた。",
+    "hint": "探索を1回終える。",
+    "icon": "assets/upgrades/upgrade-growth.png",
+    "condition": { "runs": 1 }
+  },
+  {
+    "id": "level_10",
+    "name": "成長の兆し",
+    "description": "レベル10に到達した。",
+    "hint": "レベル10に到達する。",
+    "icon": "assets/upgrades/upgrade-growth.png",
+    "condition": { "level": 10 }
+  },
+  {
+    "id": "level_20",
+    "name": "進化の足音",
+    "description": "レベル20に到達した。",
+    "hint": "レベル20に到達する。",
+    "icon": "assets/upgrades/upgrade-growth.png",
+    "condition": { "level": 20 }
+  },
+  {
+    "id": "triassic_clear",
+    "name": "密林の覇者",
+    "description": "三畳紀の密林をクリアした。",
+    "hint": "三畳紀の密林をクリアする。",
+    "icon": "assets/ui/home-stage-icon-20260509.png",
+    "condition": { "map": "triassic", "mode": "normal", "clear": true }
+  },
+  {
+    "id": "volcanic_clear",
+    "name": "火山を越えて",
+    "description": "火山稜線をクリアした。",
+    "hint": "火山稜線をクリアする。",
+    "icon": "assets/backgrounds/volcanic-ridge-ground.png",
+    "condition": { "map": "volcanic_ridge", "mode": "normal", "clear": true }
+  },
+  {
+    "id": "crystal_clear",
+    "name": "結晶の突破者",
+    "description": "結晶化洞窟をクリアした。",
+    "hint": "結晶化洞窟をクリアする。",
+    "icon": "assets/backgrounds/crystal-cavern-ground.png",
+    "condition": { "map": "crystal_cavern", "mode": "normal", "clear": true }
+  },
+  {
+    "id": "storm_clear",
+    "name": "嵐海岸制圧",
+    "description": "嵐の海岸をクリアした。",
+    "hint": "嵐の海岸をクリアする。",
+    "icon": "assets/backgrounds/storm-coast-ground.png",
+    "condition": { "map": "storm_coast", "mode": "normal", "clear": true }
+  },
+  {
+    "id": "hard_clear_any",
+    "name": "ハードハンター",
+    "description": "いずれかのハードモードをクリアした。",
+    "hint": "ハードモードをクリアする。",
+    "icon": "assets/specials/special-tyrant-crash.png",
+    "condition": { "mode": "hard", "clear": true }
+  },
+  {
+    "id": "endless_5min",
+    "name": "果てなき5分",
+    "description": "エンドレスで5分生存した。",
+    "hint": "エンドレスで5分生存する。",
+    "icon": "assets/upgrades/upgrade-hp.png",
+    "condition": { "mode": "endless", "time": 300 }
+  },
+  {
+    "id": "endless_boss3",
+    "name": "ボス連戦",
+    "description": "エンドレスでボスを3体撃破した。",
+    "hint": "エンドレスでボスを3体撃破する。",
+    "icon": "assets/specials/special-primal-roar.png",
+    "condition": { "mode": "endless", "bossKills": 3 }
+  },
+  {
+    "id": "dna_1000",
+    "name": "DNA収集家",
+    "description": "累計1000 DNAを獲得した。",
+    "hint": "累計1000 DNAを獲得する。",
+    "icon": "assets/items/item-dna-stylized.png",
+    "condition": { "totalDna": 1000 }
+  },
+  {
+    "id": "dna_5000",
+    "name": "DNA富豪",
+    "description": "累計5000 DNAを獲得した。",
+    "hint": "累計5000 DNAを獲得する。",
+    "icon": "assets/items/item-dna-stylized.png",
+    "condition": { "totalDna": 5000 }
+  },
+  {
+    "id": "enemy_10",
+    "name": "敵性調査",
+    "description": "敵を10種類発見した。",
+    "hint": "敵を10種類発見する。",
+    "icon": "assets/enemies/enemy-jungle-stalker.png",
+    "condition": { "discoveredEnemies": 10 }
+  },
+  {
+    "id": "enemy_20",
+    "name": "生態系記録者",
+    "description": "敵を20種類発見した。",
+    "hint": "敵を20種類発見する。",
+    "icon": "assets/enemies/enemy-prism-stalker.png",
+    "condition": { "discoveredEnemies": 20 }
+  },
+  {
+    "id": "dino_3",
+    "name": "恐竜部隊",
+    "description": "恐竜を3種類発見した。",
+    "hint": "恐竜を3種類発見する。",
+    "icon": "assets/characters/tyranno-game-sample-sprite.png",
+    "condition": { "discoveredDinosaurs": 3 }
+  },
+  {
+    "id": "evo_5",
+    "name": "進化観測",
+    "description": "進化先を5種類発見した。",
+    "hint": "進化先を5種類発見する。",
+    "icon": "assets/evolutions/evolution-tyrant-rex-icon.png",
+    "condition": { "discoveredEvolutions": 5 }
+  },
+  {
+    "id": "skills_6",
+    "name": "技の収集家",
+    "description": "スキルを6種類解放した。",
+    "hint": "スキルを6種類解放する。",
+    "icon": "assets/skills/skill-fire-breath.png",
+    "condition": { "unlockedSkills": 6 }
+  },
+  {
+    "id": "upgrade_10",
+    "name": "強化の成果",
+    "description": "恒久強化を合計10ランク購入した。",
+    "hint": "恒久強化を合計10ランク購入する。",
+    "icon": "assets/upgrades/upgrade-power.png",
+    "condition": { "upgradeLevels": 10 }
+  },
+  {
+    "id": "clear_4",
+    "name": "全域調査",
+    "description": "合計4つのクリア記録を達成した。",
+    "hint": "複数のステージやモードをクリアする。",
+    "icon": "assets/upgrades/upgrade-luck.png",
+    "condition": { "clears": 4 }
+  }
+]

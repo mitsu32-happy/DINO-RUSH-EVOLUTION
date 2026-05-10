@@ -95,10 +95,10 @@
     "icon": "assets/characters/ankylosaurus-icon.png",
     "unlockCost": 900,
     "baseStats": {
-      "hp": 238,
-      "speed": 98,
-      "damage": 22,
-      "armor": 9,
+      "hp": 224,
+      "speed": 96,
+      "damage": 20,
+      "armor": 8,
       "size": 34
     },
     "basicAttack": "tail_club",
@@ -112,8 +112,8 @@
       "guard_roar"
     ],
     "trait": {
-      "barrierInterval": 18,
-      "barrierDuration": 2.5,
+      "barrierInterval": 22,
+      "barrierDuration": 2.1,
       "barrierColor": "#72dfff"
     }
   },

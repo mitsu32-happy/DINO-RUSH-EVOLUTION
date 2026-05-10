@@ -196,7 +196,7 @@ Scalability rules:
   - Added dedicated VFX assets for inferno, gaia, storm, tidal spine, and sky cyclone special families plus new basic-attack projectile/impact assets.
   - Added dinosaur-specific normal attacks and passive traits: Tyranno cleave, Velociraptor rapid claw, Triceratops horn thrust, Ankylosaurus tail sweep plus timed barrier, Spinosaurus water-spine shots plus HP regen, and Pteranodon wind feather shots plus dodge.
   - Skill appearance filtering now requires at least 6 enabled available skills instead of 8.
-  - Repaired corrupted `????` Japanese text in dinosaur descriptions and basic attack names/descriptions, then scanned all `data/*.json` for question-mark runs and common mojibake markers.
+  - Repaired corrupted question-mark placeholder Japanese text in dinosaur descriptions and basic attack names/descriptions, then scanned all `data/*.json` for question-mark runs and common mojibake markers.
 
 - Added a separate Title -> Home flow. Home contains Stage, Shop, Codex, High Score, and Settings.
 - Stage opens the existing map/mode selection.
@@ -325,6 +325,15 @@ Scalability rules:
   - All referenced gameplay effect/projectile assets under `assets/effects/` were regenerated as new AI illustration based sprites, split from controlled 3x3 sheets, chroma-keyed, trimmed, and saved as individual transparent PNGs.
   - Effect references are kept as per-skill/per-special/per-evolution asset paths where needed so future additions can receive unique visuals without changing existing save data.
   - Generation/audit files are in `tmp/effect-ai-generation-map.json` and `tmp/effect-ai-generated-audit-20260510.jpg`.
+- 2026-05-10 growth/achievements pass:
+  - Asset version: `20260510-growth-achievements1`.
+  - Save key remains `dinoRushEvolution.save.v1`; new fields are added with fallbacks only: `discoveredEnemies`, `achievements`, `permanentUpgrades`, `stats`, and per-dinosaur endless records under each map record.
+  - Added permanent upgrades via `data/upgrades.json`, including reroll and banish counts for level-up choices.
+  - Active skill slots increased to 4; minimum enabled skill filter count is 8.
+  - Codex now includes enemies, with HP/speed/power/special attack data and flavor text.
+  - High score view now shows each stage's endless record by dinosaur.
+  - Stage-specific BGM is set through each map's `bgm` field.
+  - Added eight new non-recolor enemy sprites and five new enemy projectile sprites; new asset audit sheet is `tmp/content-assets-audit-20260510-clean.jpg`.
 
 Run these after changes:
 

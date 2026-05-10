@@ -4,7 +4,7 @@
   const WIDTH = 390;
   const HEIGHT = 844;
   const SAVE_KEY = "dinoRushEvolution.save.v1";
-  const ASSET_VERSION = "20260510-balance-effects2";
+  const ASSET_VERSION = "20260510-growth-achievements1";
 
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
@@ -21,6 +21,7 @@
   let data = {};
   let images = new Map();
   let meta = loadMeta();
+  ensureMetaCollections();
   let run = null;
   let lastFrame = 0;
   let keys = new Set();
@@ -167,7 +168,8 @@
     enemy: { bob: 2.2, squash: 0.035, tilt: 0.06, cadence: 7 },
     pickup: { bob: 3.4, squash: 0.025, tilt: 0.05, cadence: 5.4 }
   };
-  const MIN_ACTIVE_SKILLS = 6;
+  const MAX_RUN_SKILLS = 4;
+  const MIN_ACTIVE_SKILLS = 8;
 
   function loadMeta() {
     try {
@@ -178,9 +180,13 @@
         discoveredEvolutions: Array.isArray(saved.discoveredEvolutions) ? saved.discoveredEvolutions : [],
         discoveredSkills: Array.isArray(saved.discoveredSkills) ? saved.discoveredSkills : [],
         discoveredDinosaurs: Array.isArray(saved.discoveredDinosaurs) ? saved.discoveredDinosaurs : ["tyranno"],
+        discoveredEnemies: Array.isArray(saved.discoveredEnemies) ? saved.discoveredEnemies : [],
         unlockedSkills: Array.isArray(saved.unlockedSkills) ? saved.unlockedSkills : [],
         unlockedDinosaurs: Array.isArray(saved.unlockedDinosaurs) ? saved.unlockedDinosaurs : ["tyranno"],
         unlockedItems: Array.isArray(saved.unlockedItems) ? saved.unlockedItems : ["meat", "dna_shard"],
+        achievements: Array.isArray(saved.achievements) ? saved.achievements : [],
+        permanentUpgrades: saved.permanentUpgrades && typeof saved.permanentUpgrades === "object" ? saved.permanentUpgrades : {},
+        stats: saved.stats && typeof saved.stats === "object" ? saved.stats : { totalDna: Number(saved.dna || 0) },
         selectedDinosaur: saved.selectedDinosaur || "tyranno",
         selectedMap: saved.selectedMap || "triassic",
         clears: saved.clears && typeof saved.clears === "object" ? saved.clears : {},
@@ -202,9 +208,13 @@
         discoveredEvolutions: [],
         discoveredSkills: [],
         discoveredDinosaurs: ["tyranno"],
+        discoveredEnemies: [],
         unlockedSkills: [],
         unlockedDinosaurs: ["tyranno"],
         unlockedItems: ["meat", "dna_shard"],
+        achievements: [],
+        permanentUpgrades: {},
+        stats: { totalDna: 0 },
         selectedDinosaur: "tyranno",
         selectedMap: "triassic",
         clears: {},
@@ -214,6 +224,13 @@
         settings: { audio: true, bgmVolume: 0.72, sfxVolume: 0.78, controlsSwapped: false, enabledSkills: null }
       };
     }
+  }
+
+  function ensureMetaCollections() {
+    meta.discoveredEnemies = Array.isArray(meta.discoveredEnemies) ? meta.discoveredEnemies : [];
+    meta.achievements = Array.isArray(meta.achievements) ? meta.achievements : [];
+    meta.permanentUpgrades = meta.permanentUpgrades && typeof meta.permanentUpgrades === "object" ? meta.permanentUpgrades : {};
+    meta.stats = meta.stats && typeof meta.stats === "object" ? meta.stats : {};
   }
 
   function clampVolume(value, fallback) {
@@ -372,8 +389,11 @@
       maps: await loadJson("maps"),
       modes: await loadJson("modes"),
       enemies: await loadJson("enemies"),
-      specials: await loadJson("specials")
+      specials: await loadJson("specials"),
+      upgrades: await loadJson("upgrades"),
+      achievements: await loadJson("achievements")
     };
+    ensureMetaCollections();
 
     const assetPaths = new Set();
     data.dinosaurs.forEach((item) => collectSpritePaths(item, assetPaths));
@@ -385,6 +405,8 @@
     data.items.forEach((item) => collectSpritePaths(item, assetPaths));
     data.skills.forEach((item) => collectSpritePaths(item, assetPaths));
     data.specials.forEach((item) => collectSpritePaths(item, assetPaths));
+    data.upgrades.forEach((item) => collectSpritePaths(item, assetPaths));
+    data.achievements.forEach((item) => collectSpritePaths(item, assetPaths));
     data.maps.forEach((item) => addSpritePath(item.background, assetPaths));
     assetPaths.add("assets/ui/title-hero-20260509.png");
     assetPaths.add("assets/ui/home-stage-icon-20260509.png");
@@ -412,7 +434,7 @@
     const mode = byId(data.modes, modeId) || byId(data.modes, "normal");
     const map = byId(data.maps, mapId) || byId(data.maps, "triassic");
     const specialTemplate = byId(data.specials, dinosaur.specialId || "primal_roar") || data.specials[0];
-    const stats = dinosaur.baseStats;
+    const stats = applyPermanentStats(dinosaur.baseStats);
     if (!meta.discoveredDinosaurs.includes(dinosaur.id)) {
       meta.discoveredDinosaurs.push(dinosaur.id);
       saveMeta();
@@ -444,7 +466,15 @@
       evolved: null,
       damageMultiplier: 1,
       speedMultiplier: 1,
-      specialCooldownMultiplier: 1,
+      specialCooldownMultiplier: Math.max(0.72, 1 - getUpgradeEffect("cooldown")),
+      xpMultiplier: 1 + getUpgradeEffect("growth"),
+      dnaMultiplier: 1 + getUpgradeEffect("dna_gain"),
+      luckBonus: getUpgradeEffect("luck"),
+      rerollsRemaining: getRunRerollCount(),
+      banishesRemaining: getRunBanishCount(),
+      banishedChoices: [],
+      levelChoices: [],
+      banishMode: false,
       auraDamage: 0,
       evolutionSequence: null,
       player: {
@@ -470,7 +500,7 @@
         trait: dinosaur.trait || {},
         barrierCooldown: dinosaur.trait && dinosaur.trait.barrierInterval ? dinosaur.trait.barrierInterval : 0,
         barrierTime: 0,
-        pickupRange: 92 + ((dinosaur.trait && dinosaur.trait.pickupRangeBonus) || 0),
+        pickupRange: 92 + ((dinosaur.trait && dinosaur.trait.pickupRangeBonus) || 0) + getUpgradeEffect("pickup"),
         statUpgrades: {
           hp: 0,
           damage: 0,
@@ -588,11 +618,70 @@
     }
   }
 
+  function getUpgradeLevel(id) {
+    ensureMetaCollections();
+    return Math.max(0, Number(meta.permanentUpgrades[id] || 0));
+  }
+
+  function getUpgradeDefinition(id) {
+    return byId(data.upgrades || [], id);
+  }
+
+  function getUpgradeMaxLevel(id) {
+    const upgrade = getUpgradeDefinition(id);
+    return upgrade ? Number(upgrade.maxLevel || 0) : 0;
+  }
+
+  function getUpgradeNextCost(upgrade) {
+    const level = getUpgradeLevel(upgrade.id);
+    if (level >= upgrade.maxLevel) {
+      return 0;
+    }
+    if (Array.isArray(upgrade.costs) && upgrade.costs[level] !== undefined) {
+      return Number(upgrade.costs[level] || 0);
+    }
+    const base = Number(upgrade.baseCost || 120);
+    const scale = Number(upgrade.costScale || 1.45);
+    return Math.round(base * Math.pow(scale, level) / 10) * 10;
+  }
+
+  function getUpgradeEffect(id) {
+    const level = getUpgradeLevel(id);
+    return (getUpgradeDefinition(id) && getUpgradeDefinition(id).valuePerLevel || 0) * level;
+  }
+
+  function applyPermanentStats(baseStats) {
+    return {
+      hp: Math.round(baseStats.hp * (1 + getUpgradeEffect("vitality"))),
+      speed: Math.round(baseStats.speed * (1 + getUpgradeEffect("speed"))),
+      damage: Math.round(baseStats.damage * (1 + getUpgradeEffect("power"))),
+      armor: Math.round(baseStats.armor + getUpgradeEffect("armor")),
+      size: baseStats.size
+    };
+  }
+
+  function getRunRerollCount() {
+    return getUpgradeLevel("reroll");
+  }
+
+  function getRunBanishCount() {
+    return getUpgradeLevel("banish");
+  }
+
   function markSkillDiscovered(id) {
     if (!id || meta.discoveredSkills.includes(id)) {
       return;
     }
     meta.discoveredSkills.push(id);
+    saveMeta();
+  }
+
+  function markEnemyDiscovered(id) {
+    ensureMetaCollections();
+    if (!id || meta.discoveredEnemies.includes(id)) {
+      return;
+    }
+    meta.discoveredEnemies.push(id);
     saveMeta();
   }
 
@@ -881,7 +970,7 @@
 
   function getBasicCooldown() {
     const trait = run.player.trait || {};
-    return Math.max(0.28, run.basicAttack.cooldown * (trait.basicCooldownMultiplier || 1));
+    return Math.max(0.24, run.basicAttack.cooldown * (trait.basicCooldownMultiplier || 1) * Math.max(0.72, 1 - getUpgradeEffect("cooldown")));
   }
 
   function getBasicDamage() {
@@ -1068,7 +1157,7 @@
 
   function getSkillCooldown(skill) {
     const levelBonus = 1 - (skill.level - 1) * 0.045;
-    return Math.max(0.25, skill.cooldown * levelBonus);
+    return Math.max(0.22, skill.cooldown * levelBonus * Math.max(0.72, 1 - getUpgradeEffect("cooldown")));
   }
 
   function getSkillDamage(skill) {
@@ -1744,7 +1833,7 @@
       return false;
     }
 
-    const traitReduction = player.trait && player.trait.damageReduction ? player.trait.damageReduction : 0;
+    const traitReduction = (player.trait && player.trait.damageReduction ? player.trait.damageReduction : 0) + getUpgradeEffect("armor") * 0.008;
     const damage = Math.max(2, Math.round(rawDamage * (1 - traitReduction) - player.armor * 1.6));
     const direction = normalize(player.x - sourceX, player.y - sourceY);
     playSound("damage");
@@ -1912,6 +2001,10 @@
 
   function spawnEnemy(enemyId) {
     const template = byId(data.enemies, enemyId);
+    if (!template) {
+      return;
+    }
+    markEnemyDiscovered(template.id);
     const angle = Math.random() * Math.PI * 2;
     const distance = Math.max(WIDTH, HEIGHT) * 0.58;
     const difficulty = getModeDifficulty();
@@ -1968,6 +2061,7 @@
 
   function spawnBoss(enemyId = ENEMY_BOSS_ID) {
     const template = byId(data.enemies, enemyId) || byId(data.enemies, ENEMY_BOSS_ID);
+    markEnemyDiscovered(template.id);
     const difficulty = getModeDifficulty();
     const bossScale = (run.mode.clearType === "endless" ? 1 + run.bossKills * 0.2 + Math.max(0, run.elapsed - 90) / 980 : 1) * (run.mode.enemyHpMultiplier || 1);
     run.bossSpawned = true;
@@ -2285,9 +2379,9 @@
   }
 
   function defeatEnemy(enemy) {
-    run.dnaRun += Math.ceil((enemy.dna || 0) * (run.map.dnaMultiplier || 1));
+    run.dnaRun += Math.ceil((enemy.dna || 0) * (run.map.dnaMultiplier || 1) * (run.dnaMultiplier || 1));
     addPickup("dna_shard", enemy.x, enemy.y);
-    const meatDropRate = run.elapsed < 95 ? 0.095 : run.mode.id === "hard" ? 0.055 : run.mode.clearType === "endless" ? 0.06 : 0.078;
+    const meatDropRate = (run.elapsed < 95 ? 0.095 : run.mode.id === "hard" ? 0.055 : run.mode.clearType === "endless" ? 0.06 : 0.078) + (run.luckBonus || 0) * 0.18;
     if (Math.random() < meatDropRate && !enemy.boss) {
       addPickup("meat", enemy.x + randomBetween(-18, 18), enemy.y + randomBetween(-18, 18));
     }
@@ -2328,7 +2422,7 @@
   }
 
   function maybeDropUnlockedRareItem(enemy) {
-    const rareRate = (run.map.rareDropRate || 0.035) * (run.mode.clearType === "endless" ? 1.15 : 1);
+    const rareRate = (run.map.rareDropRate || 0.035) * (run.mode.clearType === "endless" ? 1.15 : 1) + (run.luckBonus || 0) * 0.12;
     if (meta.unlockedItems.includes("ancient_amber") && Math.random() < rareRate) {
       addPickup("ancient_amber", enemy.x + randomBetween(-20, 20), enemy.y + randomBetween(-20, 20));
     }
@@ -2354,10 +2448,10 @@
     }
     if (effect.xp) {
       playSound("pickup");
-      gainXp(effect.xp * (run.mode.xpMultiplier || 1));
+      gainXp(effect.xp * (run.mode.xpMultiplier || 1) * (run.xpMultiplier || 1));
     }
     if (effect.dna) {
-      run.dnaRun += effect.dna;
+      run.dnaRun += Math.ceil(effect.dna * (run.dnaMultiplier || 1));
     }
     if (effect.specialCharge) {
       playSound("pickup");
@@ -2388,18 +2482,46 @@
   function triggerLevelUp() {
     run.screen = "levelup";
     setControlsVisible(false);
-    const choices = chooseLevelUpChoices(buildLevelUpChoices(), 3);
+    run.banishMode = false;
+    run.levelChoices = chooseLevelUpChoices(buildLevelUpChoices(), 3);
+    renderLevelUpPanel();
+  }
+
+  function renderLevelUpPanel() {
+    const choices = run.levelChoices && run.levelChoices.length ? run.levelChoices : chooseLevelUpChoices(buildLevelUpChoices(), 3);
+    run.levelChoices = choices;
     const cards = choices.map(renderLevelUpChoice).join("");
+    const banishText = run.banishMode ? "消去したい選択肢を選んでください。" : "今回の強化を選択してください。";
+    const rerollDisabled = run.rerollsRemaining <= 0 ? "disabled" : "";
+    const banishDisabled = run.banishesRemaining <= 0 ? "disabled" : "";
 
     panel.innerHTML = `
       <h2>スキル習得</h2>
-      <p>Lv${run.level} 到達</p>
+      <p>Lv${run.level} 到達。${banishText}</p>
+      <div class="levelup-tools">
+        <button id="rerollChoiceButton" class="secondary-button" type="button" ${rerollDisabled}>リロール ${run.rerollsRemaining}</button>
+        <button id="banishChoiceButton" class="secondary-button" type="button" ${banishDisabled}>選択肢消去 ${run.banishesRemaining}</button>
+      </div>
       <div class="cards">${cards}</div>
     `;
     showOverlay();
 
+    document.getElementById("rerollChoiceButton").addEventListener("click", () => {
+      if (run.rerollsRemaining <= 0) return;
+      run.rerollsRemaining -= 1;
+      run.banishMode = false;
+      run.levelChoices = chooseLevelUpChoices(buildLevelUpChoices(), 3);
+      renderLevelUpPanel();
+    });
+    document.getElementById("banishChoiceButton").addEventListener("click", () => {
+      if (run.banishesRemaining <= 0) return;
+      run.banishMode = !run.banishMode;
+      renderLevelUpPanel();
+    });
+
     panel.querySelectorAll("[data-skill]").forEach((button) => {
       button.addEventListener("click", () => {
+        if (handleBanishChoice(button.dataset.skill)) return;
         const skill = run.skills.find((item) => item.id === button.dataset.skill);
         skill.level += 1;
         completeLevelUpSelection();
@@ -2408,7 +2530,8 @@
 
     panel.querySelectorAll("[data-learn]").forEach((button) => {
       button.addEventListener("click", () => {
-        if (run.skills.length < 3) {
+        if (handleBanishChoice(button.dataset.learn)) return;
+        if (run.skills.length < MAX_RUN_SKILLS) {
           run.skills.push(createSkill(button.dataset.learn));
         }
         completeLevelUpSelection();
@@ -2417,6 +2540,7 @@
 
     panel.querySelectorAll("[data-stat]").forEach((button) => {
       button.addEventListener("click", () => {
+        if (handleBanishChoice(`stat:${button.dataset.stat}`)) return;
         applyStatUpgrade(button.dataset.stat);
         completeLevelUpSelection();
       });
@@ -2424,18 +2548,36 @@
 
     panel.querySelectorAll("[data-heal]").forEach((button) => {
       button.addEventListener("click", () => {
+        if (handleBanishChoice("heal")) return;
         healPlayerByRatio(0.35);
         completeLevelUpSelection();
       });
     });
   }
 
+  function handleBanishChoice(choiceKey) {
+    if (!run.banishMode || run.banishesRemaining <= 0) {
+      return false;
+    }
+    run.banishesRemaining -= 1;
+    run.banishMode = false;
+    if (!run.banishedChoices.includes(choiceKey)) {
+      run.banishedChoices.push(choiceKey);
+    }
+    run.levelChoices = chooseLevelUpChoices(buildLevelUpChoices(), 3);
+    renderLevelUpPanel();
+    return true;
+  }
+
   function buildLevelUpChoices() {
     const choices = [];
-    if (run.skills.length < 3) {
+    if (run.skills.length < MAX_RUN_SKILLS) {
       run.skillPool
       .filter((id) => !run.skills.some((skill) => skill.id === id))
       .forEach((id) => {
+        if (run.banishedChoices.includes(id)) {
+          return;
+        }
         const skill = byId(data.skills, id);
         choices.push({
           type: "learn",
@@ -2449,6 +2591,9 @@
 
     let hasMaxedSkill = false;
     run.skills.forEach((skill) => {
+      if (run.banishedChoices.includes(skill.id)) {
+        return;
+      }
       if (skill.level < skill.maxLevel) {
         choices.push({
           type: "skill",
@@ -2462,18 +2607,23 @@
       }
     });
 
-    if (hasMaxedSkill) {
+    if (hasMaxedSkill && !run.banishedChoices.includes("heal")) {
       choices.push(createHealChoice());
     }
 
-    choices.push(...getStatUpgradeChoices());
+    choices.push(...getStatUpgradeChoices().filter((choice) => !run.banishedChoices.includes(`stat:${choice.id}`)));
     return choices;
   }
 
   function chooseLevelUpChoices(choices, count) {
     const picked = shuffle(choices).slice(0, count);
-    while (picked.length < count) {
+    while (picked.length < count && !run.banishedChoices.includes("heal")) {
       picked.push(createHealChoice());
+    }
+    while (picked.length < count) {
+      const fallback = getStatUpgradeChoices().find((choice) => !picked.some((item) => item.type === "stat" && item.id === choice.id) && !run.banishedChoices.includes(`stat:${choice.id}`));
+      if (!fallback) break;
+      picked.push(fallback);
     }
     return picked;
   }
@@ -2825,6 +2975,55 @@
     }[type] || "スキル";
   }
 
+  function checkAchievements(victory) {
+    ensureMetaCollections();
+    const unlockedNow = [];
+    const context = {
+      victory,
+      run,
+      clears: Object.keys(meta.clears || {}).length,
+      totalDna: Number(meta.stats.totalDna || 0),
+      totalRuns: Number(meta.runs || 0),
+      discoveredEnemies: meta.discoveredEnemies.length,
+      discoveredDinosaurs: meta.discoveredDinosaurs.length,
+      discoveredEvolutions: meta.discoveredEvolutions.length,
+      unlockedSkills: meta.unlockedSkills.length,
+      unlockedDinosaurs: meta.unlockedDinosaurs.length,
+      upgradeLevels: Object.values(meta.permanentUpgrades || {}).reduce((sum, level) => sum + Number(level || 0), 0)
+    };
+    (data.achievements || []).forEach((achievement) => {
+      if (meta.achievements.includes(achievement.id)) {
+        return;
+      }
+      if (isAchievementMet(achievement.condition || {}, context)) {
+        meta.achievements.push(achievement.id);
+        unlockedNow.push(achievement);
+      }
+    });
+    return unlockedNow;
+  }
+
+  function isAchievementMet(condition, context) {
+    if (condition.runs && context.totalRuns < condition.runs) return false;
+    if (condition.totalDna && context.totalDna < condition.totalDna) return false;
+    if (condition.level && context.run.level < condition.level) return false;
+    if (condition.map && context.run.map.id !== condition.map) return false;
+    if (condition.mode && context.run.mode.id !== condition.mode) return false;
+    if (condition.dinosaur && context.run.dinosaur.id !== condition.dinosaur) return false;
+    if (condition.victory && !context.victory) return false;
+    if (condition.clear && !context.victory) return false;
+    if (condition.time && context.run.elapsed < condition.time) return false;
+    if (condition.bossKills && context.run.bossKills < condition.bossKills) return false;
+    if (condition.discoveredEnemies && context.discoveredEnemies < condition.discoveredEnemies) return false;
+    if (condition.discoveredDinosaurs && context.discoveredDinosaurs < condition.discoveredDinosaurs) return false;
+    if (condition.discoveredEvolutions && context.discoveredEvolutions < condition.discoveredEvolutions) return false;
+    if (condition.unlockedSkills && context.unlockedSkills < condition.unlockedSkills) return false;
+    if (condition.unlockedDinosaurs && context.unlockedDinosaurs < condition.unlockedDinosaurs) return false;
+    if (condition.upgradeLevels && context.upgradeLevels < condition.upgradeLevels) return false;
+    if (condition.clears && context.clears < condition.clears) return false;
+    return true;
+  }
+
   function finishRun(victory) {
     if (run.saved) {
       return;
@@ -2835,24 +3034,40 @@
     setControlsVisible(false);
     meta.dna += run.dnaRun;
     meta.runs += 1;
+    meta.stats.totalDna = Number(meta.stats.totalDna || 0) + run.dnaRun;
+    meta.stats.totalBossKills = Number(meta.stats.totalBossKills || 0) + run.bossKills;
+    meta.stats.bestLevel = Math.max(Number(meta.stats.bestLevel || 0), run.level);
+    meta.stats.bestTime = Math.max(Number(meta.stats.bestTime || 0), run.elapsed);
     if (victory && run.mode.clearType === "boss") {
       meta.clears[getClearKey(run.map.id, run.mode.id)] = true;
     }
     if (run.mode.clearType === "endless") {
       meta.endlessBestTime = Math.max(meta.endlessBestTime || 0, run.elapsed);
       meta.endlessBestBosses = Math.max(meta.endlessBestBosses || 0, run.bossKills);
-      const record = meta.endlessRecords[run.map.id] || { time: 0, bosses: 0 };
+      const record = meta.endlessRecords[run.map.id] || { time: 0, bosses: 0, dinosaurs: {} };
+      const dinosaurRecords = record.dinosaurs && typeof record.dinosaurs === "object" ? record.dinosaurs : {};
+      const dinosaurRecord = dinosaurRecords[run.dinosaur.id] || { time: 0, bosses: 0 };
+      dinosaurRecords[run.dinosaur.id] = {
+        time: Math.max(Number(dinosaurRecord.time || 0), run.elapsed),
+        bosses: Math.max(Number(dinosaurRecord.bosses || 0), run.bossKills)
+      };
       meta.endlessRecords[run.map.id] = {
         time: Math.max(Number(record.time || 0), run.elapsed),
-        bosses: Math.max(Number(record.bosses || 0), run.bossKills)
+        bosses: Math.max(Number(record.bosses || 0), run.bossKills),
+        dinosaurs: dinosaurRecords
       };
     }
+    const achievementsUnlocked = checkAchievements(victory);
     saveMeta();
     playSound(victory ? "clear" : "result");
+    const achievementText = achievementsUnlocked.length
+      ? `<p class="achievement-result">実績解除: ${achievementsUnlocked.map((item) => item.name).join(" / ")}</p>`
+      : "";
 
     panel.innerHTML = `
       <h2>${victory ? "討伐成功" : "探索終了"}</h2>
       <p>${run.map.name} / ${run.mode.name}</p>
+      ${achievementText}
       <div class="stats-grid">
         <div class="stat-tile"><b>${formatTime(run.elapsed)}</b><span>生存時間</span></div>
         <div class="stat-tile"><b>${run.dnaRun}</b><span>獲得DNA</span></div>
@@ -3111,6 +3326,10 @@
           <img class="home-menu-icon" src="${withVersion("assets/items/item-dna-stylized.png")}" alt="">
           <strong>\u30b7\u30e7\u30c3\u30d7</strong>
         </button>
+        <button id="upgradeButton" class="card-button home-menu-button" type="button">
+          <img class="home-menu-icon" src="${withVersion("assets/upgrades/upgrade-power.png")}" alt="">
+          <strong>\u5f37\u5316</strong>
+        </button>
         <button id="codexButton" class="card-button home-menu-button" type="button">
           <img class="home-menu-icon" src="${withVersion("assets/characters/tyranno-game-sample-sprite.png")}" alt="">
           <strong>\u56f3\u9451</strong>
@@ -3123,18 +3342,24 @@
           <img class="home-menu-icon" src="${withVersion("assets/upgrades/upgrade-speed.png")}" alt="">
           <strong>\u8a2d\u5b9a</strong>
         </button>
+        <button id="achievementsButton" class="card-button home-menu-button" type="button">
+          <img class="home-menu-icon" src="${withVersion("assets/upgrades/upgrade-luck.png")}" alt="">
+          <strong>\u5b9f\u7e3e</strong>
+        </button>
       </div>
     `;
     showOverlay();
     startHomeAudio();
     document.getElementById("stageButton").addEventListener("click", showStageSelect);
     document.getElementById("shopButton").addEventListener("click", showShop);
+    document.getElementById("upgradeButton").addEventListener("click", showUpgrades);
     document.getElementById("codexButton").addEventListener("click", showCodex);
     document.getElementById("scoreButton").addEventListener("click", showHighScores);
     document.getElementById("settingsButton").addEventListener("click", showSettings);
+    document.getElementById("achievementsButton").addEventListener("click", showAchievements);
   }
 
-  function showStageSelect() {
+  function showStageSelect(scrollState = {}) {
     run = null;
     setControlsVisible(false);
     setPanelVariant("stage");
@@ -3205,10 +3430,20 @@
     `;
     showOverlay();
     bindPanelHomeButtons();
+    const stageScroller = panel.querySelector(".stage-scroll");
+    const dinosaurScroller = panel.querySelector(".dinosaur-scroll");
+    if (stageScroller && scrollState.stageLeft !== undefined) {
+      stageScroller.scrollLeft = scrollState.stageLeft;
+    }
+    if (dinosaurScroller && scrollState.dinosaurLeft !== undefined) {
+      dinosaurScroller.scrollLeft = scrollState.dinosaurLeft;
+    }
     const selectMap = (button) => {
+      const currentStageLeft = stageScroller ? stageScroller.scrollLeft : 0;
+      const currentDinosaurLeft = dinosaurScroller ? dinosaurScroller.scrollLeft : 0;
       meta.selectedMap = button.dataset.map;
       saveMeta();
-      showStageSelect();
+      showStageSelect({ stageLeft: currentStageLeft, dinosaurLeft: currentDinosaurLeft });
     };
     const selectDinosaur = (button) => {
       meta.selectedDinosaur = button.dataset.dinosaur;
@@ -3319,6 +3554,79 @@
       if (pointerId === event.pointerId && dragging) {
         finishDrag(event);
       }
+    });
+  }
+
+  function showUpgrades(selectedId = null) {
+    run = null;
+    setControlsVisible(false);
+    setPanelVariant();
+    ensureMetaCollections();
+    const selectedUpgrade = byId(data.upgrades, selectedId) || data.upgrades[0];
+    const upgradeCards = data.upgrades.map((upgrade) => {
+      const level = getUpgradeLevel(upgrade.id);
+      const maxed = level >= upgrade.maxLevel;
+      const cost = getUpgradeNextCost(upgrade);
+      const affordable = meta.dna >= cost;
+      const selected = selectedUpgrade && selectedUpgrade.id === upgrade.id;
+      return `
+        <button class="upgrade-card ${selected ? "is-selected" : ""}" type="button" data-upgrade="${upgrade.id}">
+          <span>${upgrade.name}</span>
+          <img src="${withVersion(upgrade.icon)}" alt="">
+          <small>${"■".repeat(level)}${"□".repeat(Math.max(0, upgrade.maxLevel - level))}</small>
+          <b>${maxed ? "MAX" : `${cost} DNA`}</b>
+        </button>
+      `;
+    }).join("");
+    const selectedLevel = getUpgradeLevel(selectedUpgrade.id);
+    const selectedCost = getUpgradeNextCost(selectedUpgrade);
+    const selectedMaxed = selectedLevel >= selectedUpgrade.maxLevel;
+    panel.innerHTML = `
+      ${panelHeader("強化")}
+      <div class="screen-resource-pill"><span>DNA</span><b>${meta.dna}</b></div>
+      <h2>恒久強化</h2>
+      <div class="upgrade-grid">${upgradeCards}</div>
+      <div class="upgrade-detail">
+        <img class="skill-card-icon" src="${withVersion(selectedUpgrade.icon)}" alt="">
+        <div>
+          <strong>${selectedUpgrade.name}</strong>
+          <span>${selectedUpgrade.description}</span>
+          <small>Lv ${selectedLevel}/${selectedUpgrade.maxLevel}</small>
+        </div>
+        <button id="upgradeBuyButton" class="primary-button" type="button" ${selectedMaxed || meta.dna < selectedCost ? "disabled" : ""}>
+          ${selectedMaxed ? "強化済み" : `${selectedCost} DNAで強化`}
+        </button>
+      </div>
+    `;
+    showOverlay();
+    bindPanelHomeButtons();
+    panel.querySelectorAll("[data-upgrade]").forEach((button) => {
+      button.addEventListener("click", () => showUpgrades(button.dataset.upgrade));
+    });
+    document.getElementById("upgradeBuyButton").addEventListener("click", () => {
+      const level = getUpgradeLevel(selectedUpgrade.id);
+      const cost = getUpgradeNextCost(selectedUpgrade);
+      if (level >= selectedUpgrade.maxLevel || meta.dna < cost) {
+        return;
+      }
+      showConfirmDialog({
+        kicker: "強化",
+        title: "強化確認",
+        message: `${selectedUpgrade.name}を ${cost} DNA で強化しますか？`,
+        confirmLabel: "強化する",
+        onCancel: () => showUpgrades(selectedUpgrade.id),
+        onConfirm: () => {
+          if (getUpgradeLevel(selectedUpgrade.id) >= selectedUpgrade.maxLevel || meta.dna < cost) {
+            showUpgrades(selectedUpgrade.id);
+            return;
+          }
+          meta.dna -= cost;
+          meta.permanentUpgrades[selectedUpgrade.id] = level + 1;
+          saveMeta();
+          playSound("buy");
+          showUpgrades(selectedUpgrade.id);
+        }
+      });
     });
   }
 
@@ -3478,15 +3786,16 @@
     });
   }
 
-  function showCodex(tabId = "skills", selectedDinosaurId = null) {
+  function showCodex(tabId = "skills", selectedDinosaurId = null, selectedEvolutionId = null, scrollState = {}) {
     run = null;
     setControlsVisible(false);
     setPanelVariant();
-    const activeTab = tabId === "dinosaurs" ? "dinosaurs" : "skills";
+    const activeTab = ["skills", "dinosaurs", "enemies"].includes(tabId) ? tabId : "skills";
     const knownDinosaurs = data.dinosaurs.filter((dinosaur) => meta.discoveredDinosaurs.includes(dinosaur.id));
     const fallbackDinosaur = byId(data.dinosaurs, meta.selectedDinosaur) || knownDinosaurs[0] || data.dinosaurs[0];
     const selectedDinosaur = byId(data.dinosaurs, selectedDinosaurId) || fallbackDinosaur;
     const selectedKnown = selectedDinosaur && meta.discoveredDinosaurs.includes(selectedDinosaur.id);
+    const selectedEvolution = byId(data.evolutions, selectedEvolutionId) || (selectedDinosaur ? data.evolutions.find((item) => item.baseDinosaur === selectedDinosaur.id) : null);
     const dinosaurCards = data.dinosaurs.map((dinosaur) => {
       const known = meta.discoveredDinosaurs.includes(dinosaur.id);
       const selected = selectedDinosaur && dinosaur.id === selectedDinosaur.id;
@@ -3497,9 +3806,42 @@
         .filter((evolution) => evolution.baseDinosaur === selectedDinosaur.id)
         .map((evolution) => {
           const known = meta.discoveredEvolutions.includes(evolution.id);
-          return createCodexCard(known ? evolution.name : "???", known ? evolution.description : "\u307e\u3060\u9032\u5316\u3057\u3066\u3044\u306a\u3044\u59ff\u3067\u3059\u3002", known ? evolution.icon : null, known ? evolution.condition : "\u672a\u767a\u898b");
+          const selected = selectedEvolution && selectedEvolution.id === evolution.id;
+          return `
+            <button class="card-button skill-card-button codex-card codex-evolution-button ${selected ? "is-selected" : ""}" type="button" data-codex-evolution="${evolution.id}">
+              ${known ? `<img class="skill-card-icon" src="${withVersion(evolution.icon)}" alt="">` : `<span class="skill-card-icon codex-unknown">?</span>`}
+              <span class="skill-card-copy">
+                <strong>${known ? evolution.name : "???"}</strong>
+                <span>${known ? evolution.description : "\u307e\u3060\u9032\u5316\u3057\u3066\u3044\u306a\u3044\u59ff\u3067\u3059\u3002"}</span>
+                <small>${known ? evolution.condition : "\u672a\u767a\u898b"}</small>
+              </span>
+            </button>
+          `;
         }).join("")
       : "";
+    const selectedEvolutionKnown = selectedEvolution && meta.discoveredEvolutions.includes(selectedEvolution.id);
+    const selectedEvolutionDetail = selectedEvolution ? `
+      <div class="codex-detail">
+        ${selectedEvolutionKnown ? `<img src="${withVersion(selectedEvolution.icon || selectedEvolution.sprite)}" alt="">` : `<span class="codex-unknown">?</span>`}
+        <span>
+          <strong>${selectedEvolutionKnown ? selectedEvolution.name : "???"}</strong>
+          <small>${selectedEvolutionKnown ? selectedEvolution.condition : "\u672a\u767a\u898b"}</small>
+          <em>${selectedEvolutionKnown ? selectedEvolution.description : "\u6761\u4ef6\u3092\u6e80\u305f\u3057\u3066\u9032\u5316\u3059\u308b\u3068\u8a73\u7d30\u304c\u8868\u793a\u3055\u308c\u307e\u3059\u3002"}</em>
+        </span>
+      </div>
+    ` : "";
+    const enemyCards = data.enemies.map((enemy) => {
+      const known = meta.discoveredEnemies.includes(enemy.id);
+      const special = getEnemySpecialText(enemy);
+      const note = known ? (enemy.boss ? "\u30dc\u30b9" : special) : "\u672a\u767a\u898b";
+      return createCodexCard(
+        known ? enemy.name : "???",
+        known ? getEnemyFlavorText(enemy) : "\u307e\u3060\u906d\u9047\u3057\u3066\u3044\u306a\u3044\u6575\u3067\u3059\u3002",
+        known ? enemy.sprite : null,
+        note,
+        known ? `HP ${enemy.hp} / \u901f\u5ea6 ${enemy.speed} / \u30d1\u30ef\u30fc ${enemy.damage}` : ""
+      );
+    }).join("");
     const groups = {
       skills: {
         label: "\u30b9\u30ad\u30eb",
@@ -3513,8 +3855,13 @@
         body: `
           <div class="cards codex-grid codex-dinosaur-list">${dinosaurCards}</div>
           <div class="section-label">${selectedKnown ? selectedDinosaur.name : "???"}\u306e\u9032\u5316\u5148</div>
-          <div class="cards codex-grid">${evolutionCards || `<div class="stat-tile"><span>\u9032\u5316\u5148\u306f\u307e\u3060\u767b\u9332\u3055\u308c\u3066\u3044\u307e\u305b\u3093\u3002</span></div>`}</div>
+          <div class="cards codex-grid codex-evolution-list">${evolutionCards || `<div class="stat-tile"><span>\u9032\u5316\u5148\u306f\u307e\u3060\u767b\u9332\u3055\u308c\u3066\u3044\u307e\u305b\u3093\u3002</span></div>`}</div>
+          ${selectedEvolutionDetail}
         `
+      },
+      enemies: {
+        label: "\u6575",
+        body: `<div class="cards codex-grid">${enemyCards}</div>`
       }
     };
     const tabs = Object.entries(groups).map(([id, group]) => `
@@ -3530,11 +3877,35 @@
     `;
     showOverlay();
     bindPanelHomeButtons();
+    const dinosaurList = panel.querySelector(".codex-dinosaur-list");
+    const evolutionList = panel.querySelector(".codex-evolution-list");
+    if (dinosaurList && scrollState.dinosaurTop !== undefined) {
+      dinosaurList.scrollTop = scrollState.dinosaurTop;
+    }
+    if (evolutionList && scrollState.evolutionTop !== undefined) {
+      evolutionList.scrollTop = scrollState.evolutionTop;
+    }
     panel.querySelectorAll("[data-codex-tab]").forEach((button) => {
-      button.addEventListener("click", () => showCodex(button.dataset.codexTab, selectedDinosaur && selectedDinosaur.id));
+      button.addEventListener("click", () => showCodex(button.dataset.codexTab, selectedDinosaur && selectedDinosaur.id, selectedEvolution && selectedEvolution.id));
     });
     panel.querySelectorAll("[data-codex-dinosaur]").forEach((button) => {
-      button.addEventListener("click", () => showCodex("dinosaurs", button.dataset.codexDinosaur));
+      button.addEventListener("click", () => {
+        const currentDinosaurList = panel.querySelector(".codex-dinosaur-list");
+        showCodex("dinosaurs", button.dataset.codexDinosaur, null, {
+          dinosaurTop: currentDinosaurList ? currentDinosaurList.scrollTop : 0,
+          evolutionTop: 0
+        });
+      });
+    });
+    panel.querySelectorAll("[data-codex-evolution]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const currentDinosaurList = panel.querySelector(".codex-dinosaur-list");
+        const currentEvolutionList = panel.querySelector(".codex-evolution-list");
+        showCodex("dinosaurs", selectedDinosaur && selectedDinosaur.id, button.dataset.codexEvolution, {
+          dinosaurTop: currentDinosaurList ? currentDinosaurList.scrollTop : 0,
+          evolutionTop: currentEvolutionList ? currentEvolutionList.scrollTop : 0
+        });
+      });
     });
   }
 
@@ -3551,17 +3922,52 @@
     `;
   }
 
-  function createCodexCard(title, description, icon, note) {
+  function createCodexCard(title, description, icon, note, statsText = "") {
     return `
       <div class="card-button skill-card-button codex-card">
         ${icon ? `<img class="skill-card-icon" src="${withVersion(icon)}" alt="">` : `<span class="skill-card-icon codex-unknown">?</span>`}
         <span class="skill-card-copy">
           <strong>${title}</strong>
           <span>${description}</span>
+          ${statsText ? `<span class="codex-stat-line">${statsText}</span>` : ""}
           <small>${note}</small>
         </span>
       </div>
     `;
+  }
+
+  function getEnemySpecialText(enemy) {
+    return {
+      charger: "突進",
+      fire_spit: "火炎弾",
+      crystal_shard: "結晶弾",
+      storm_bolt: "雷撃",
+      storm_bolts: "連続雷撃",
+      obsidian_spikes: "地面棘",
+      poison_spit: "毒液弾"
+    }[enemy.attackPattern] || "接触攻撃";
+  }
+
+  function getEnemyFlavorText(enemy) {
+    if (enemy.boss) {
+      return "ステージ奥地を支配する大型恐竜。高い体力と専用攻撃で探索者を追い詰めます。";
+    }
+    if (enemy.attackPattern === "charger") {
+      return "間合いに入ると一気に距離を詰める突進型。直線上に立ち続けないことが重要です。";
+    }
+    if (enemy.attackPattern === "fire_spit") {
+      return "距離を取りながら火炎弾を吐く遠距離型。序盤を抜けた頃から圧をかけてきます。";
+    }
+    if (enemy.attackPattern === "crystal_shard") {
+      return "硬い外殻と鋭い結晶弾を持つ中距離型。密集すると弾幕が危険になります。";
+    }
+    if (enemy.attackPattern === "storm_bolt") {
+      return "素早く動きながら雷撃を放つ機動型。終盤ほど回避精度を求められます。";
+    }
+    if (enemy.attackPattern === "poison_spit") {
+      return "毒液を飛ばして進路を削る妨害型。安全な逃げ道を残しながら戦いましょう。";
+    }
+    return "群れで接近してくる基本型。攻撃範囲を広げるほど安定して処理できます。";
   }
 
   function showHighScores() {
@@ -3572,10 +3978,22 @@
       const record = meta.endlessRecords[map.id] || {};
       const time = record.time || (map.id === "triassic" ? meta.endlessBestTime : 0);
       const bosses = record.bosses || (map.id === "triassic" ? meta.endlessBestBosses : 0);
+      const dinosaurRows = data.dinosaurs
+        .filter((dinosaur) => meta.unlockedDinosaurs.includes(dinosaur.id))
+        .map((dinosaur) => {
+          const dinosaurRecord = record.dinosaurs && record.dinosaurs[dinosaur.id] ? record.dinosaurs[dinosaur.id] : {};
+          return `
+            <div class="score-dino-row">
+              <span>${dinosaur.name}</span>
+              <small>${formatTime(dinosaurRecord.time || 0)} / \u30dc\u30b9 ${dinosaurRecord.bosses || 0}\u4f53</small>
+            </div>
+          `;
+        }).join("");
       return `
         <div class="stat-tile score-row">
           <b>${map.name}</b>
           <span>\u751f\u5b58 ${formatTime(time || 0)} / \u30dc\u30b9 ${bosses || 0}\u4f53</span>
+          <div class="score-dino-list">${dinosaurRows}</div>
         </div>
       `;
     }).join("");
@@ -3584,6 +4002,35 @@
       ${panelHeader("\u30cf\u30a4\u30b9\u30b3\u30a2")}
       <h2>\u30a8\u30f3\u30c9\u30ec\u30b9\u8a18\u9332</h2>
       <div class="score-list">${rows}</div>
+    `;
+    showOverlay();
+    bindPanelHomeButtons();
+  }
+
+  function showAchievements() {
+    run = null;
+    setControlsVisible(false);
+    setPanelVariant();
+    ensureMetaCollections();
+    const achieved = new Set(meta.achievements);
+    const rows = data.achievements.map((achievement) => {
+      const unlocked = achieved.has(achievement.id);
+      return `
+        <div class="achievement-row ${unlocked ? "is-unlocked" : ""}">
+          <span class="achievement-check">${unlocked ? "✓" : ""}</span>
+          <img src="${withVersion(achievement.icon)}" alt="">
+          <span>
+            <strong>${achievement.name}</strong>
+            <small>${unlocked ? achievement.description : achievement.hint}</small>
+          </span>
+        </div>
+      `;
+    }).join("");
+    panel.innerHTML = `
+      ${panelHeader("実績")}
+      <h2>達成記録</h2>
+      <p>進行度：${meta.achievements.length} / ${data.achievements.length}</p>
+      <div class="achievement-list">${rows}</div>
     `;
     showOverlay();
     bindPanelHomeButtons();
@@ -3754,7 +4201,7 @@
     }
     const engine = ensureAudio();
     warmSfxBuffers(engine);
-    if (startBgmTrack("game")) {
+    if (startBgmTrack("game", run && run.map && run.map.bgm)) {
       return;
     }
     if (!engine || engine.musicTimer) {
@@ -3803,8 +4250,8 @@
     }
   }
 
-  function startBgmTrack(kind) {
-    const src = kind === "home" ? AUDIO_FILES.homeBgm : AUDIO_FILES.gameBgm;
+  function startBgmTrack(kind, sourceOverride = null) {
+    const src = sourceOverride || (kind === "home" ? AUDIO_FILES.homeBgm : AUDIO_FILES.gameBgm);
     if (!src) {
       return false;
     }
@@ -3812,7 +4259,8 @@
     if (!engine) {
       return false;
     }
-    if (!bgmTrack || bgmKind !== kind) {
+    const trackKey = `${kind}:${src}`;
+    if (!bgmTrack || bgmKind !== trackKey) {
       if (bgmTrack) {
         bgmTrack.pause();
       }
@@ -3827,7 +4275,7 @@
       bgmTrack = new Audio(withVersion(src));
       bgmTrack.loop = true;
       bgmTrack.preload = "auto";
-      bgmKind = kind;
+      bgmKind = trackKey;
       try {
         bgmSourceNode = engine.context.createMediaElementSource(bgmTrack);
         bgmSourceNode.connect(engine.musicGain);
@@ -3845,7 +4293,7 @@
   }
 
   function getTrackVolume(kind) {
-    const base = kind === "home" ? 0.22 : 0.34;
+    const base = String(kind || "").startsWith("home") ? 0.22 : 0.34;
     return base * getBgmVolume();
   }
 
