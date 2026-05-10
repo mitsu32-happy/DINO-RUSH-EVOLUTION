@@ -334,6 +334,9 @@ Scalability rules:
   - High score view now shows each stage's endless record by dinosaur.
   - Stage-specific BGM is set through each map's `bgm` field.
   - Added eight new non-recolor enemy sprites and five new enemy projectile sprites; new asset audit sheet is `tmp/content-assets-audit-20260510-clean.jpg`.
+- 2026-05-10 spinosaurus regen balance pass:
+  - Asset version: `20260510-spino-regen1`.
+  - Reduced Spinosaurus passive HP regeneration from `1.4` to `0.85` HP/sec. This keeps its sustain identity but lowers minute-long recovery from about 84 HP to about 51 HP before upgrades.
 
 Run these after changes:
 

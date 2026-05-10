@@ -4,7 +4,7 @@
   const WIDTH = 390;
   const HEIGHT = 844;
   const SAVE_KEY = "dinoRushEvolution.save.v1";
-  const ASSET_VERSION = "20260510-growth-achievements1";
+  const ASSET_VERSION = "20260510-spino-regen1";
 
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
