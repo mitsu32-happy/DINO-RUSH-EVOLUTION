@@ -47,7 +47,7 @@
       "name": "インフェルノバースト",
       "description": "炎の爆発で周囲を焼き、全方位へ火炎弾を放つ。",
       "icon": "assets/specials/special-inferno-burst.png",
-      "projectileSprite": "assets/effects/projectile-fireball.png",
+      "projectileSprite": "assets/effects/projectile-inferno-burst.png",
       "cooldown": 10.8,
       "damage": 82,
       "range": 185,
@@ -155,7 +155,7 @@
       "name": "ヴェノムインフェルノ",
       "description": "毒炎の爆発で周囲を焼き払う。",
       "icon": "assets/specials/special-venom-inferno.png",
-      "projectileSprite": "assets/effects/projectile-fireball.png",
+      "projectileSprite": "assets/effects/projectile-venom-inferno.png",
       "cooldown": 10.2,
       "damage": 84,
       "range": 190,
@@ -229,7 +229,7 @@
       "damage": 94,
       "range": 225,
       "effect": "raptor_pounce",
-      "effectSprite": "assets/effects/special-raptor-pounce-effect.png",
+      "effectSprite": "assets/effects/special-storm-pounce-effect.png",
       "sound": "special"
     },
     "requirements": {
@@ -264,7 +264,7 @@
       "damage": 88,
       "range": 190,
       "effect": "guardian_charge",
-      "effectSprite": "assets/effects/special-triceratops-guardian-effect.png",
+      "effectSprite": "assets/effects/special-fortress-bastion-effect.png",
       "sound": "special"
     },
     "requirements": {
@@ -300,8 +300,8 @@
       "range": 210,
       "effect": "inferno_burst",
       "sound": "special",
-      "effectSprite": "assets/effects/special-inferno-burst-effect.png",
-      "projectileSprite": "assets/effects/projectile-fireball.png"
+      "effectSprite": "assets/effects/special-blaze-pounce-effect.png",
+      "projectileSprite": "assets/effects/projectile-blaze-pounce.png"
     },
     "requirements": {
       "level": 7,
@@ -337,8 +337,8 @@
       "range": 205,
       "effect": "venom_inferno",
       "sound": "special",
-      "effectSprite": "assets/effects/special-venom-inferno-effect.png",
-      "projectileSprite": "assets/effects/projectile-fireball.png"
+      "effectSprite": "assets/effects/special-venom-pounce-effect.png",
+      "projectileSprite": "assets/effects/projectile-venom-pounce.png"
     },
     "requirements": {
       "level": 7,
@@ -374,7 +374,7 @@
       "range": 210,
       "effect": "gaia_break",
       "sound": "special",
-      "effectSprite": "assets/effects/special-gaia-break-effect.png"
+      "effectSprite": "assets/effects/special-crystal-pounce-effect.png"
     },
     "requirements": {
       "level": 7,
@@ -410,7 +410,7 @@
       "range": 220,
       "effect": "raptor_pounce",
       "sound": "special",
-      "effectSprite": "assets/effects/special-raptor-pounce-effect.png"
+      "effectSprite": "assets/effects/special-shadow-pounce-effect.png"
     },
     "requirements": {
       "level": 7,
@@ -445,7 +445,7 @@
       "range": 225,
       "effect": "raptor_pounce",
       "sound": "special",
-      "effectSprite": "assets/effects/special-raptor-pounce-effect.png"
+      "effectSprite": "assets/effects/special-alpha-pounce-effect.png"
     },
     "requirements": {
       "level": 8,
@@ -480,8 +480,8 @@
       "range": 195,
       "effect": "inferno_burst",
       "sound": "special",
-      "effectSprite": "assets/effects/special-inferno-burst-effect.png",
-      "projectileSprite": "assets/effects/projectile-fireball.png"
+      "effectSprite": "assets/effects/special-magma-bastion-effect.png",
+      "projectileSprite": "assets/effects/projectile-magma-bastion.png"
     },
     "requirements": {
       "level": 7,
@@ -517,7 +517,7 @@
       "range": 205,
       "effect": "gaia_break",
       "sound": "special",
-      "effectSprite": "assets/effects/special-gaia-break-effect.png"
+      "effectSprite": "assets/effects/special-crystal-bastion-effect.png"
     },
     "requirements": {
       "level": 7,
@@ -553,7 +553,7 @@
       "range": 220,
       "effect": "storm_crash",
       "sound": "special",
-      "effectSprite": "assets/effects/special-storm-crash-effect.png"
+      "effectSprite": "assets/effects/special-storm-bastion-effect.png"
     },
     "requirements": {
       "level": 7,
@@ -588,8 +588,8 @@
       "range": 200,
       "effect": "venom_inferno",
       "sound": "special",
-      "effectSprite": "assets/effects/special-venom-inferno-effect.png",
-      "projectileSprite": "assets/effects/projectile-fireball.png"
+      "effectSprite": "assets/effects/special-venom-bastion-effect.png",
+      "projectileSprite": "assets/effects/projectile-venom-bastion.png"
     },
     "requirements": {
       "level": 7,
@@ -625,7 +625,7 @@
       "range": 215,
       "effect": "iron_roar",
       "sound": "special",
-      "effectSprite": "assets/effects/special-iron-roar-effect.png"
+      "effectSprite": "assets/effects/special-titan-bastion-effect.png"
     },
     "requirements": {
       "level": 8,
@@ -660,8 +660,8 @@
       "range": 194,
       "effect": "inferno_burst",
       "sound": "impact",
-      "effectSprite": "assets/effects/special-inferno-burst-effect.png",
-      "projectileSprite": "assets/effects/projectile-fireball.png"
+      "effectSprite": "assets/effects/special-magma-tail-crash-effect.png",
+      "projectileSprite": "assets/effects/projectile-magma-tail-crash.png"
     },
     "requirements": {
       "level": 7,
@@ -697,7 +697,7 @@
       "range": 205,
       "effect": "gaia_break",
       "sound": "crystal",
-      "effectSprite": "assets/effects/special-gaia-break-effect.png"
+      "effectSprite": "assets/effects/special-crystal-tail-bastion-effect.png"
     },
     "requirements": {
       "level": 7,
@@ -733,8 +733,8 @@
       "range": 198,
       "effect": "inferno_burst",
       "sound": "special",
-      "effectSprite": "assets/effects/special-tidal-spine-effect.png",
-      "projectileSprite": "assets/effects/projectile-water-spine.png"
+      "effectSprite": "assets/effects/special-tidal-spine-burst-effect.png",
+      "projectileSprite": "assets/effects/projectile-tidal-spine-burst.png"
     },
     "requirements": {
       "level": 7,
@@ -769,8 +769,8 @@
       "range": 205,
       "effect": "venom_inferno",
       "sound": "toxic",
-      "effectSprite": "assets/effects/special-venom-inferno-effect.png",
-      "projectileSprite": "assets/effects/projectile-toxic-venom.png"
+      "effectSprite": "assets/effects/special-venom-spine-inferno-effect.png",
+      "projectileSprite": "assets/effects/projectile-venom-spine-inferno.png"
     },
     "requirements": {
       "level": 8,
@@ -806,7 +806,7 @@
       "range": 235,
       "effect": "storm_crash",
       "sound": "lightning",
-      "effectSprite": "assets/effects/special-sky-cyclone-effect.png"
+      "effectSprite": "assets/effects/special-storm-wing-cyclone-effect.png"
     },
     "requirements": {
       "level": 7,
@@ -841,7 +841,7 @@
       "range": 215,
       "effect": "raptor_pounce",
       "sound": "special",
-      "effectSprite": "assets/effects/special-raptor-pounce-effect.png"
+      "effectSprite": "assets/effects/special-alpha-wing-order-effect.png"
     },
     "requirements": {
       "level": 8,
@@ -876,7 +876,7 @@
       "range": 210,
       "effect": "storm_crash",
       "sound": "lightning",
-      "effectSprite": "assets/effects/special-storm-crash-effect.png"
+      "effectSprite": "assets/effects/special-storm-tail-crash-effect.png"
     },
     "requirements": {
       "level": 7,
@@ -911,7 +911,7 @@
       "range": 210,
       "effect": "iron_roar",
       "sound": "impact",
-      "effectSprite": "assets/effects/special-iron-roar-effect.png"
+      "effectSprite": "assets/effects/special-iron-tail-roar-effect.png"
     },
     "requirements": {
       "level": 8,
@@ -946,8 +946,8 @@
       "range": 202,
       "effect": "venom_inferno",
       "sound": "toxic",
-      "effectSprite": "assets/effects/special-venom-inferno-effect.png",
-      "projectileSprite": "assets/effects/projectile-toxic-venom.png"
+      "effectSprite": "assets/effects/special-venom-tail-inferno-effect.png",
+      "projectileSprite": "assets/effects/projectile-venom-tail-inferno.png"
     },
     "requirements": {
       "level": 8,
@@ -983,7 +983,7 @@
       "range": 220,
       "effect": "iron_roar",
       "sound": "impact",
-      "effectSprite": "assets/effects/special-iron-roar-effect.png"
+      "effectSprite": "assets/effects/special-titan-tail-bastion-effect.png"
     },
     "requirements": {
       "level": 8,
@@ -1018,8 +1018,8 @@
       "range": 200,
       "effect": "inferno_burst",
       "sound": "fire",
-      "effectSprite": "assets/effects/special-inferno-burst-effect.png",
-      "projectileSprite": "assets/effects/projectile-fireball.png"
+      "effectSprite": "assets/effects/special-blaze-spine-burst-effect.png",
+      "projectileSprite": "assets/effects/projectile-blaze-spine-burst.png"
     },
     "requirements": {
       "level": 7,
@@ -1055,7 +1055,7 @@
       "range": 228,
       "effect": "storm_crash",
       "sound": "lightning",
-      "effectSprite": "assets/effects/special-storm-crash-effect.png"
+      "effectSprite": "assets/effects/special-storm-spine-crash-effect.png"
     },
     "requirements": {
       "level": 7,
@@ -1090,7 +1090,7 @@
       "range": 210,
       "effect": "gaia_break",
       "sound": "crystal",
-      "effectSprite": "assets/effects/special-gaia-break-effect.png"
+      "effectSprite": "assets/effects/special-crystal-spine-wall-effect.png"
     },
     "requirements": {
       "level": 8,
@@ -1126,7 +1126,7 @@
       "range": 216,
       "effect": "guardian_charge",
       "sound": "special",
-      "effectSprite": "assets/effects/special-triceratops-guardian-effect.png"
+      "effectSprite": "assets/effects/special-alpha-spine-order-effect.png"
     },
     "requirements": {
       "level": 8,
@@ -1161,8 +1161,8 @@
       "range": 200,
       "effect": "inferno_burst",
       "sound": "fire",
-      "effectSprite": "assets/effects/special-inferno-burst-effect.png",
-      "projectileSprite": "assets/effects/projectile-fireball.png"
+      "effectSprite": "assets/effects/special-blaze-wing-burst-effect.png",
+      "projectileSprite": "assets/effects/projectile-blaze-wing-burst.png"
     },
     "requirements": {
       "level": 7,
@@ -1198,7 +1198,7 @@
       "range": 205,
       "effect": "gaia_break",
       "sound": "crystal",
-      "effectSprite": "assets/effects/special-gaia-break-effect.png"
+      "effectSprite": "assets/effects/special-crystal-wing-break-effect.png"
     },
     "requirements": {
       "level": 7,
@@ -1233,8 +1233,8 @@
       "range": 202,
       "effect": "venom_inferno",
       "sound": "toxic",
-      "effectSprite": "assets/effects/special-venom-inferno-effect.png",
-      "projectileSprite": "assets/effects/projectile-toxic-venom.png"
+      "effectSprite": "assets/effects/special-venom-wing-inferno-effect.png",
+      "projectileSprite": "assets/effects/projectile-venom-wing-inferno.png"
     },
     "requirements": {
       "level": 8,
@@ -1270,7 +1270,7 @@
       "range": 208,
       "effect": "iron_roar",
       "sound": "impact",
-      "effectSprite": "assets/effects/special-iron-roar-effect.png"
+      "effectSprite": "assets/effects/special-iron-wing-roar-effect.png"
     },
     "requirements": {
       "level": 8,

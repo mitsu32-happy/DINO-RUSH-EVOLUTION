@@ -4,7 +4,7 @@
   const WIDTH = 390;
   const HEIGHT = 844;
   const SAVE_KEY = "dinoRushEvolution.save.v1";
-  const ASSET_VERSION = "20260509-content8";
+  const ASSET_VERSION = "20260510-balance-effects2";
 
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
@@ -425,7 +425,7 @@
       mode,
       map,
       elapsed: 0,
-      spawnTimer: 0,
+      spawnTimer: 2.2,
       hazardTimer: (map.hazard && (map.hazard.grace || map.hazard.interval) ? map.hazard.grace || map.hazard.interval * 0.55 : 0),
       bossTimer: 0,
       bossSpawned: false,
@@ -1848,9 +1848,10 @@
     }
 
     const difficulty = getModeDifficulty();
-    const interval = Math.max(0.34, (1.45 - run.elapsed / 240) * (run.mode.spawnIntervalMultiplier || 1) / difficulty / (run.map.spawnIntensity || 1));
+    const ramp = getRunPacingRamp();
+    const interval = Math.max(0.44, (1.72 - run.elapsed / 420) * (run.mode.spawnIntervalMultiplier || 1) / difficulty / (run.map.spawnIntensity || 1) / ramp.spawnPressure);
     run.spawnTimer = interval;
-    const count = (run.elapsed > 135 ? 3 : run.elapsed > 75 ? 2 : 1) + (run.map.spawnCountBonus || 0);
+    const count = (run.elapsed > 175 ? 3 : run.elapsed > 95 ? 2 : 1) + (run.map.spawnCountBonus || 0);
     for (let i = 0; i < count; i += 1) {
       spawnEnemy(chooseEnemyId());
     }
@@ -1860,7 +1861,19 @@
     if (!run || run.mode.clearType !== "endless") {
       return 1;
     }
-    return 1 + Math.min(2.4, run.elapsed / 360 + run.bossKills * 0.18);
+    return 1 + Math.min(2.25, Math.max(0, run.elapsed - 75) / 390 + run.bossKills * 0.16);
+  }
+
+  function getRunPacingRamp() {
+    const elapsed = run ? run.elapsed : 0;
+    const early = clamp(elapsed / 80, 0, 1);
+    const mid = clamp((elapsed - 80) / 150, 0, 1);
+    return {
+      hpPressure: 0.82 + early * 0.12 + mid * 0.16,
+      speedPressure: 0.9 + early * 0.06 + mid * 0.12,
+      damagePressure: 0.78 + early * 0.1 + mid * 0.18,
+      spawnPressure: 0.82 + early * 0.08 + mid * 0.18
+    };
   }
 
   function updateSpecial(dt) {
@@ -1902,15 +1915,16 @@
     const angle = Math.random() * Math.PI * 2;
     const distance = Math.max(WIDTH, HEIGHT) * 0.58;
     const difficulty = getModeDifficulty();
-    const scale = (1 + run.elapsed / 360) * (run.mode.enemyHpMultiplier || 1) * difficulty;
+    const ramp = getRunPacingRamp();
+    const scale = ramp.hpPressure * (1 + Math.max(0, run.elapsed - 70) / 440) * (run.mode.enemyHpMultiplier || 1) * difficulty;
     run.enemies.push({
       ...template,
       x: run.player.x + Math.cos(angle) * distance,
       y: run.player.y + Math.sin(angle) * distance,
       hp: template.hp * scale,
       maxHp: template.hp * scale,
-      speed: template.speed * (1 + run.elapsed / 620) * (run.mode.enemySpeedMultiplier || 1) * Math.min(1.55, 1 + (difficulty - 1) * 0.22),
-      damage: template.damage * (1 + run.elapsed / 780) * (run.mode.enemyDamageMultiplier || 1) * Math.min(1.9, 1 + (difficulty - 1) * 0.3),
+      speed: template.speed * ramp.speedPressure * (1 + Math.max(0, run.elapsed - 90) / 760) * (run.mode.enemySpeedMultiplier || 1) * Math.min(1.5, 1 + (difficulty - 1) * 0.2),
+      damage: template.damage * ramp.damagePressure * (1 + Math.max(0, run.elapsed - 110) / 900) * (run.mode.enemyDamageMultiplier || 1) * Math.min(1.75, 1 + (difficulty - 1) * 0.26),
       wobble: Math.random() * 8,
       wobbleSpeed: 4 + Math.random() * 3,
       attackTimer: 0.65 + Math.random() * 0.35,
@@ -1955,7 +1969,7 @@
   function spawnBoss(enemyId = ENEMY_BOSS_ID) {
     const template = byId(data.enemies, enemyId) || byId(data.enemies, ENEMY_BOSS_ID);
     const difficulty = getModeDifficulty();
-    const bossScale = (run.mode.clearType === "endless" ? 1 + run.bossKills * 0.22 + run.elapsed / 900 : 1) * (run.mode.enemyHpMultiplier || 1);
+    const bossScale = (run.mode.clearType === "endless" ? 1 + run.bossKills * 0.2 + Math.max(0, run.elapsed - 90) / 980 : 1) * (run.mode.enemyHpMultiplier || 1);
     run.bossSpawned = true;
     run.bossActive = true;
     run.alertText = `${template.name} 出現`;
@@ -2273,7 +2287,7 @@
   function defeatEnemy(enemy) {
     run.dnaRun += Math.ceil((enemy.dna || 0) * (run.map.dnaMultiplier || 1));
     addPickup("dna_shard", enemy.x, enemy.y);
-    const meatDropRate = run.mode.id === "hard" ? 0.045 : run.mode.clearType === "endless" ? 0.05 : 0.07;
+    const meatDropRate = run.elapsed < 95 ? 0.095 : run.mode.id === "hard" ? 0.055 : run.mode.clearType === "endless" ? 0.06 : 0.078;
     if (Math.random() < meatDropRate && !enemy.boss) {
       addPickup("meat", enemy.x + randomBetween(-18, 18), enemy.y + randomBetween(-18, 18));
     }

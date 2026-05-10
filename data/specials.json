@@ -32,7 +32,7 @@
     "damage": 76,
     "range": 170,
     "effect": "guardian_charge",
-    "effectSprite": "assets/effects/special-triceratops-guardian-effect.png",
+    "effectSprite": "assets/effects/special-guardian-charge-effect.png",
     "sound": "special"
   },
   {
@@ -45,14 +45,14 @@
     "range": 185,
     "effect": "iron_roar",
     "sound": "impact",
-    "effectSprite": "assets/effects/special-iron-roar-effect.png"
+    "effectSprite": "assets/effects/special-iron-tail-crash-effect.png"
   },
   {
     "id": "tidal_spine",
     "name": "スパインバースト",
     "description": "帆に力を集めて前方と周囲へ爆発的な衝撃を放つ。",
     "icon": "assets/specials/special-inferno-burst.png",
-    "projectileSprite": "assets/effects/projectile-water-spine.png",
+    "projectileSprite": "assets/effects/projectile-tidal-spine.png",
     "cooldown": 10.4,
     "damage": 78,
     "range": 188,

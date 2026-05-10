@@ -49,7 +49,7 @@
     "sound": "fire",
     "effect": "fire_breath",
     "action": "fireball_burst",
-    "projectileSprite": "assets/effects/projectile-fireball.png",
+    "projectileSprite": "assets/effects/projectile-fire-breath.png",
     "type": "cone",
     "cooldown": 4.4,
     "damage": 25,
@@ -122,7 +122,7 @@
     "sound": "toxic",
     "effect": "toxic_spit",
     "action": "fireball_burst",
-    "projectileSprite": "assets/effects/projectile-toxic-venom.png",
+    "projectileSprite": "assets/effects/projectile-toxic-spit.png",
     "type": "cone",
     "cooldown": 4.7,
     "damage": 23,
@@ -154,7 +154,7 @@
     "sound": "crystal",
     "effect": "bone_shards",
     "action": "fireball_burst",
-    "projectileSprite": "assets/effects/projectile-bone-shard.png",
+    "projectileSprite": "assets/effects/projectile-bone-shards.png",
     "type": "cone",
     "cooldown": 4.15,
     "damage": 24,
@@ -176,7 +176,7 @@
     "range": 138,
     "maxLevel": 8,
     "unlockCost": 760,
-    "effectSprite": "assets/effects/special-raptor-pounce-effect.png"
+    "effectSprite": "assets/effects/effect-cyclone-feather.png"
   },
   {
     "id": "raptor_slash",
@@ -207,7 +207,7 @@
     "range": 112,
     "maxLevel": 1,
     "basicOnly": true,
-    "effectSprite": "assets/effects/basic-horn-thrust-effect.png"
+    "effectSprite": "assets/effects/effect-horn-thrust.png"
   },
   {
     "id": "tail_club",
@@ -223,7 +223,7 @@
     "range": 76,
     "maxLevel": 1,
     "basicOnly": true,
-    "effectSprite": "assets/effects/basic-tail-club-effect.png"
+    "effectSprite": "assets/effects/effect-tail-club.png"
   },
   {
     "id": "spine_wave",
@@ -239,7 +239,7 @@
     "range": 210,
     "maxLevel": 1,
     "basicOnly": true,
-    "projectileSprite": "assets/effects/projectile-water-spine.png",
+    "projectileSprite": "assets/effects/projectile-spine-wave.png",
     "projectileSpeed": 255,
     "projectileRadius": 12,
     "projectileLife": 0.82

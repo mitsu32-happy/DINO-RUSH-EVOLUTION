@@ -65,7 +65,8 @@
         "enemyId": "storm_quetzal",
         "at": 480
       }
-    ]
+    ],
+    "spawnIntensity": 0.88
   },
   {
     "id": "volcanic_ridge",
@@ -80,15 +81,15 @@
       "water": "#b94b21"
     },
     "dnaMultiplier": 1.25,
-    "spawnIntensity": 1,
+    "spawnIntensity": 0.9,
     "rareDropRate": 0.045,
     "hazard": {
       "type": "lava_vent",
-      "interval": 8.2,
-      "grace": 30,
-      "warning": 0.8,
-      "radius": 50,
-      "damage": 9,
+      "interval": 10.5,
+      "grace": 45,
+      "warning": 0.95,
+      "radius": 46,
+      "damage": 7,
       "color": "#ff7a2d"
     },
     "spawnTable": [
@@ -100,29 +101,29 @@
       {
         "enemyId": "cinder_runner",
         "weight": 5,
-        "minElapsed": 24
+        "minElapsed": 38
       },
       {
         "enemyId": "magma_shellback",
         "weight": 3,
-        "minElapsed": 58
+        "minElapsed": 82
       },
       {
         "enemyId": "ash_wyvern",
         "weight": 4,
-        "minElapsed": 82,
+        "minElapsed": 112,
         "minMode": "hard"
       },
       {
         "enemyId": "lava_beetle",
         "weight": 3,
-        "minElapsed": 130,
+        "minElapsed": 165,
         "minMode": "endless"
       },
       {
         "enemyId": "basalt_charger",
         "weight": 3,
-        "minElapsed": 178,
+        "minElapsed": 220,
         "minMode": "endless"
       }
     ],
@@ -160,15 +161,15 @@
       "water": "#1f91a5"
     },
     "dnaMultiplier": 1.45,
-    "spawnIntensity": 1.16,
+    "spawnIntensity": 1,
     "rareDropRate": 0.055,
     "hazard": {
       "type": "crystal_spike",
-      "interval": 6.6,
-      "grace": 24,
-      "warning": 0.92,
-      "radius": 50,
-      "damage": 13,
+      "interval": 8.8,
+      "grace": 42,
+      "warning": 1.05,
+      "radius": 46,
+      "damage": 10,
       "color": "#60d5c8",
       "sprite": "assets/effects/effect-crystal-spikes.png"
     },
@@ -181,29 +182,29 @@
       {
         "enemyId": "shard_spitter",
         "weight": 4,
-        "minElapsed": 18
+        "minElapsed": 42
       },
       {
         "enemyId": "mirror_raptor",
         "weight": 4,
-        "minElapsed": 48
+        "minElapsed": 78
       },
       {
         "enemyId": "geode_tank",
         "weight": 3,
-        "minElapsed": 90,
+        "minElapsed": 125,
         "minMode": "hard"
       },
       {
         "enemyId": "crystal_wasp",
         "weight": 3,
-        "minElapsed": 132,
+        "minElapsed": 168,
         "minMode": "endless"
       },
       {
         "enemyId": "prism_stalker",
         "weight": 3,
-        "minElapsed": 176,
+        "minElapsed": 225,
         "minMode": "endless"
       }
     ],
@@ -241,15 +242,15 @@
       "water": "#1d6f8f"
     },
     "dnaMultiplier": 1.7,
-    "spawnIntensity": 1.24,
+    "spawnIntensity": 1.08,
     "rareDropRate": 0.065,
     "hazard": {
       "type": "lightning_strike",
-      "interval": 5.8,
-      "grace": 22,
-      "warning": 0.76,
-      "radius": 46,
-      "damage": 15,
+      "interval": 7.8,
+      "grace": 38,
+      "warning": 0.9,
+      "radius": 42,
+      "damage": 12,
       "color": "#72dfff"
     },
     "spawnTable": [
@@ -261,29 +262,29 @@
       {
         "enemyId": "storm_pteranodon",
         "weight": 4,
-        "minElapsed": 20
+        "minElapsed": 46
       },
       {
         "enemyId": "thunder_charger",
         "weight": 3,
-        "minElapsed": 52
+        "minElapsed": 88
       },
       {
         "enemyId": "tide_spitter",
         "weight": 4,
-        "minElapsed": 88,
+        "minElapsed": 128,
         "minMode": "hard"
       },
       {
         "enemyId": "gale_wing",
         "weight": 3,
-        "minElapsed": 130,
+        "minElapsed": 172,
         "minMode": "endless"
       },
       {
         "enemyId": "storm_shellback",
         "weight": 3,
-        "minElapsed": 178,
+        "minElapsed": 230,
         "minMode": "endless"
       }
     ],

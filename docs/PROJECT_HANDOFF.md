@@ -318,6 +318,13 @@ Scalability rules:
   - Asset version: `20260509-title-audiofix1`.
   - Title video playback is now explicitly stopped, muted, reset, and source-detached whenever leaving the title screen or starting a run.
   - The title video keydown audio-unlock handler is removed when leaving title, preventing stale title movie audio from being resumed by gameplay input such as special activation.
+- 2026-05-10 balance/effects pass:
+  - Asset version: `20260510-balance-effects2`.
+  - Overall difficulty was softened for the early and mid game, then ramped more gradually toward late game and endless play.
+  - Stage enemy unlock timings, early enemy stats, hazard timings, and mode multipliers were tuned so stage 2+ starts with fewer punishing special attacks.
+  - All referenced gameplay effect/projectile assets under `assets/effects/` were regenerated as new AI illustration based sprites, split from controlled 3x3 sheets, chroma-keyed, trimmed, and saved as individual transparent PNGs.
+  - Effect references are kept as per-skill/per-special/per-evolution asset paths where needed so future additions can receive unique visuals without changing existing save data.
+  - Generation/audit files are in `tmp/effect-ai-generation-map.json` and `tmp/effect-ai-generated-audit-20260510.jpg`.
 
 Run these after changes:
 

@@ -2,24 +2,25 @@
   {
     "id": "normal",
     "name": "ノーマル",
-    "bossAt": 105,
+    "bossAt": 120,
     "clearType": "boss",
-    "spawnIntervalMultiplier": 1,
-    "enemyHpMultiplier": 1,
-    "enemyDamageMultiplier": 1,
-    "enemySpeedMultiplier": 1,
-    "description": "進化とボス討伐を目指す基本モード。"
+    "spawnIntervalMultiplier": 1.08,
+    "enemyHpMultiplier": 0.92,
+    "enemyDamageMultiplier": 0.86,
+    "enemySpeedMultiplier": 0.96,
+    "description": "進化とボス討伐を目指す基本モード。",
+    "xpMultiplier": 1.08
   },
   {
     "id": "hard",
     "name": "ハード",
-    "bossAt": 210,
+    "bossAt": 215,
     "clearType": "boss",
-    "spawnIntervalMultiplier": 0.55,
-    "enemyHpMultiplier": 1.65,
-    "enemyDamageMultiplier": 1.58,
-    "enemySpeedMultiplier": 1.16,
-    "xpMultiplier": 1.05,
+    "spawnIntervalMultiplier": 0.68,
+    "enemyHpMultiplier": 1.38,
+    "enemyDamageMultiplier": 1.32,
+    "enemySpeedMultiplier": 1.1,
+    "xpMultiplier": 1.1,
     "description": "短めに締まった時間で、敵の圧が高い上級モード。"
   },
   {
@@ -27,15 +28,24 @@
     "name": "エンドレス",
     "bossAt": 120,
     "clearType": "endless",
-    "spawnIntervalMultiplier": 0.9,
-    "enemyHpMultiplier": 1.12,
-    "enemyDamageMultiplier": 1.08,
-    "enemySpeedMultiplier": 1.04,
-    "xpMultiplier": 1.15,
+    "spawnIntervalMultiplier": 1,
+    "enemyHpMultiplier": 1.02,
+    "enemyDamageMultiplier": 0.98,
+    "enemySpeedMultiplier": 1,
+    "xpMultiplier": 1.18,
     "endlessBosses": [
-      { "enemyId": "ancient_spino", "at": 120 },
-      { "enemyId": "obsidian_ceratops", "at": 300 },
-      { "enemyId": "storm_quetzal", "at": 480 }
+      {
+        "enemyId": "ancient_spino",
+        "at": 120
+      },
+      {
+        "enemyId": "obsidian_ceratops",
+        "at": 300
+      },
+      {
+        "enemyId": "storm_quetzal",
+        "at": 480
+      }
     ],
     "randomBossInterval": 180,
     "description": "ボス討伐後も続き、時間経過で難度が上がる挑戦モード。"
