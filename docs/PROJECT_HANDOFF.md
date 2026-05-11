@@ -337,6 +337,10 @@ Scalability rules:
 - 2026-05-10 spinosaurus regen balance pass:
   - Asset version: `20260510-spino-regen1`.
   - Reduced Spinosaurus passive HP regeneration from `1.4` to `0.85` HP/sec. This keeps its sustain identity but lowers minute-long recovery from about 84 HP to about 51 HP before upgrades.
+- 2026-05-11 tyranno bite balance pass:
+  - Asset version: `20260511-tyranno-bite1`.
+  - Buffed Tyrannosaurus basic bite by widening `bite` range from `78` to `92` and adding `halfAngle: 0.86`.
+  - Added `assets/effects/basic-tyranno-bite-effect.png` as the dedicated bite VFX sprite, generated with chroma-key removal and edge-padding validation.
 
 Run these after changes:
 

@@ -4,7 +4,7 @@
   const WIDTH = 390;
   const HEIGHT = 844;
   const SAVE_KEY = "dinoRushEvolution.save.v1";
-  const ASSET_VERSION = "20260510-spino-regen1";
+  const ASSET_VERSION = "20260511-tyranno-bite1";
 
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
@@ -1021,12 +1021,13 @@
     const player = run.player;
     const facing = normalize(player.facingX, player.facingY);
     const range = run.basicAttack.range;
+    const halfAngle = run.basicAttack.halfAngle || 0.74;
     let hit = false;
     run.enemies.forEach((enemy) => {
       const dx = enemy.x - player.x;
       const dy = enemy.y - player.y;
       const distance = Math.hypot(dx, dy);
-      if (distance <= range + enemy.size && Math.abs(angleDelta(Math.atan2(dy, dx), Math.atan2(facing.y, facing.x))) < 0.74) {
+      if (distance <= range + enemy.size && Math.abs(angleDelta(Math.atan2(dy, dx), Math.atan2(facing.y, facing.x))) < halfAngle) {
         damageEnemy(enemy, getBasicDamage(), "basic");
         pushEnemy(enemy, player, 24);
         hit = true;
@@ -1036,14 +1037,15 @@
     player.attackPulse = 0.18;
     playSound("bite");
     run.effects.push({
-      type: "cone",
-      x: player.x + facing.x * 24,
-      y: player.y + facing.y * 24,
+      type: run.basicAttack.effectSprite ? "biteSprite" : "cone",
+      sprite: run.basicAttack.effectSprite,
+      x: player.x + facing.x * 38,
+      y: player.y + facing.y * 38,
       dx: facing.x,
       dy: facing.y,
-      life: 0.18,
-      maxLife: 0.18,
-      radius: range,
+      life: 0.22,
+      maxLife: 0.22,
+      radius: range * 1.65,
       color: "rgba(255, 223, 114, 0.34)"
     });
   }
@@ -4865,11 +4867,11 @@
         ctx.stroke();
       }
 
-      if (effect.type === "skillSprite" || effect.type === "dashSprite") {
+      if (effect.type === "skillSprite" || effect.type === "dashSprite" || effect.type === "biteSprite") {
         const image = images.get(effect.sprite);
         if (image) {
           ctx.globalCompositeOperation = "lighter";
-          const angle = effect.type === "dashSprite" ? Math.atan2(effect.dy, effect.dx) : 0;
+          const angle = effect.type === "dashSprite" || effect.type === "biteSprite" ? Math.atan2(effect.dy, effect.dx) : 0;
           const scale = effect.type === "dashSprite" ? 1 - progress * 0.18 : 0.86 + Math.sin(progress * Math.PI) * 0.22;
           drawSprite(image, position.x, position.y, effect.radius * scale, false, Math.max(0, 1 - progress * 0.25), {
             rotation: angle,

@@ -2,16 +2,18 @@
   {
     "id": "bite",
     "name": "王者の噛み砕き",
-    "description": "正面の敵を噛み砕き、近い範囲の敵も巻き込むティラノサウルスの通常技。",
+    "description": "広めの正面範囲を噛み砕き、近い敵をまとめて巻き込むティラノサウルスの通常技。",
     "icon": "assets/skills/skill-bite.png",
     "sound": "bite",
     "effect": "bite",
     "type": "cone",
     "cooldown": 0.66,
     "damage": 23,
-    "range": 78,
+    "range": 92,
+    "halfAngle": 0.86,
     "maxLevel": 8,
-    "action": "cleave"
+    "action": "cleave",
+    "effectSprite": "assets/effects/basic-tyranno-bite-effect.png"
   },
   {
     "id": "tail_sweep",
